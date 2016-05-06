@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Accuracy</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ accuracy.id }}</td>
+            </tr>
+            <tr>
+                <th>Value</th>
+                <td>{{ accuracy.value }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('accuracy_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('accuracy_edit', { 'id': accuracy.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

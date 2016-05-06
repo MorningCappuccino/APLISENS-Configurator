@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Accuracy list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Value</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for accuracy in accuracies %}
+            <tr>
+                <td><a href="{{ path('accuracy_show', { 'id': accuracy.id }) }}">{{ accuracy.id }}</a></td>
+                <td>{{ accuracy.value + 0}}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('accuracy_show', { 'id': accuracy.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('accuracy_edit', { 'id': accuracy.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('accuracy_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,22 @@
+{
+  "name": "rainbow2",
+  "authors": [
+    "MorningCappuccino <KnockKnockWakeUp@gmail.com>"
+  ],
+  "description": "Rainbow configurator for aplisens.",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "requirejs": "^2.2.0"
+  }
+}

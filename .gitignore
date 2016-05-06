@@ -1,0 +1,23 @@
+/.idea/
+/vendor/
+/var/*
+!var/SymfonyRequirements.php
+/phpunit.xml*
+/web/bundles/*
+
+/web/assets/vendor/*
+
+!/var/cache
+/var/cache/*
+!var/cache/.gitkeep
+!/var/logs
+/var/logs/*
+!var/logs/.gitkeep
+!/var/sessions
+/var/sessions/*
+!var/sessions/.gitkeep
+
+# Logs and databases #
+######################
+*.log
+*.sqlite

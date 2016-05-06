@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="h2">EquipmentMode list</h1>
+
+
+    <a class="btn btn-success pull-right" href="{{ path('eqmode_new') }}">Create a new entry</a>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Modification name</th>
+                <th>Description</th>
+                <th>Image</th>
+                {#<th>Eqmodeid</th>#}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for eqmode in eqModes %}
+            <tr>
+                <td><a href="{{ path('eqmode_show', { 'id': eqmode.id }) }}">{{ eqmode.name }}</a></td>
+                <td>{{ eqmode.descr }}</td>
+                <td>{{ eqmode.img }}</td>
+                {#<td>{{ eqmode.eqModeId }}</td>#}
+                <td>
+                            <a class="btn btn-warning" href="{{ path('eqmode_edit', { 'id': eqmode.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

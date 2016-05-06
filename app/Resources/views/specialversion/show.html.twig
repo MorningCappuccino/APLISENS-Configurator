@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>SpecialVersion</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ specialVersion.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ specialVersion.name }}</td>
+            </tr>
+            <tr>
+                <th>Descr</th>
+                <td>{{ specialVersion.descr }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('specialversion_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('specialversion_edit', { 'id': specialVersion.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

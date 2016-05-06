@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>SpecialVersion list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Descr</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for specialVersion in specialVersions %}
+            <tr>
+                <td><a href="{{ path('specialversion_show', { 'id': specialVersion.id }) }}">{{ specialVersion.id }}</a></td>
+                <td>{{ specialVersion.name }}</td>
+                <td>{{ specialVersion.descr }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('specialversion_edit', { 'id': specialVersion.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('specialversion_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

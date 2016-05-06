@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>EqType list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for eqType in eqTypes %}
+            <tr>
+                <td><a href="{{ path('eqtype_show', { 'id': eqType.id }) }}">{{ eqType.id }}</a></td>
+                <td>{{ eqType.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('eqtype_show', { 'id': eqType.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('eqtype_edit', { 'id': eqType.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('eqtype_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
