@@ -20,7 +20,12 @@
 
        {{ form_widget(edit_form) }}
 
-  {#{{  form_widget(edit_form.accuracyClasses) }}#}
+{#<ul>
+    {% for measurementRange in edit_form.measurementRanges %}
+        <li>{{ form_widget(measurementRange) }}</li>
+    {% endfor %}
+</ul>#}
+  {#{{  form_widget(edit_form.measurementRanges) }}#}
 
 
     <ul class="nav nav-pills">

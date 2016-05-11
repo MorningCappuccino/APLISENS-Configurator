@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>MeasurementRange list</h1>
+
+    <a class="btn btn-success pull-right" href="{{ path('measurementrange_new') }}">Create a new entry</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Therange</th>
+                <th>Unit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for measurementRange in measurementRanges %}
+            <tr>
+                <td><a href="{{ path('measurementrange_show', { 'id': measurementRange.id }) }}">{{ measurementRange.id }}</a></td>
+                <td>{{ measurementRange.theRange }}</td>
+                <td>{{ measurementRange.unit }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('measurementrange_edit', { 'id': measurementRange.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

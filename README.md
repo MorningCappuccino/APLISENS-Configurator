@@ -9,6 +9,8 @@ This is configurator for Aplisens.
 
 ###DetailedTodo List
 [+]make relationship ManyToMany + better with Doctrine Collection
+[+]make label for "MeasurementRanges" like "range + unit"
+[+]make label for "Accuracy" with Round()
 
 
 ###May be on future

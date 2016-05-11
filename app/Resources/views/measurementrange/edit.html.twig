@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
-{% use 'bootstrap_3_layout.html.twig' %}
-{% form_theme edit_form _self %}
 
 {% block body %}
-    <h1>Accuracy edit</h1>
+    <h1>MeasurementRange edit</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -12,7 +10,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('accuracy_index') }}">Back to the list</a>
+            <a href="{{ path('measurementrange_index') }}">Back to the list</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

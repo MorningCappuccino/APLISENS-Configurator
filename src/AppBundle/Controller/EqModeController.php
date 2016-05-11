@@ -12,7 +12,7 @@ use AppBundle\Form\EqModeType;
 /**
  * EqMode controller.
  *
- * @Route("/eqmode")
+ * @Route("admin/eqmode")
  */
 class EqModeController extends Controller
 {

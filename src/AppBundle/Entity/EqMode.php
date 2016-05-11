@@ -62,10 +62,16 @@ class EqMode
      */
     private $specialVersions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="MeasurementRange")
+     */
+    private $measurementRanges;
+
     public function __construct()
     {
         $this->accuracyClasses = new ArrayCollection();
         $this->specialVersions = new ArrayCollection();
+        $this->measurementRanges = new ArrayCollection();
     }
 
     /**
@@ -188,6 +194,14 @@ class EqMode
     public function getSpecialVersions()
     {
         return $this->specialVersions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hasMeasurementRanges()
+    {
+        return $this->measurementRanges;
     }
 
 
