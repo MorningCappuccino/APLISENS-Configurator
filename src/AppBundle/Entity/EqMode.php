@@ -52,18 +52,18 @@ class EqMode
     private $img;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Accuracy")
+     * @ORM\ManyToMany(targetEntity="Accuracy", inversedBy="eqModes")
      *
      */
     private $accuracyClasses;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SpecialVersion")
+     * @ORM\ManyToMany(targetEntity="SpecialVersion", inversedBy="eqModes")
      */
     private $specialVersions;
 
     /**
-     * @ORM\ManyToMany(targetEntity="MeasurementRange")
+     * @ORM\ManyToMany(targetEntity="MeasurementRange", inversedBy="eqModes")
      */
     private $measurementRanges;
 

@@ -50,7 +50,7 @@ class EqModeController extends Controller
             $em->persist($eqMode);
             $em->flush();
 
-            return $this->redirectToRoute('eqmode_show', array('id' => $eqMode->getId()));
+            return $this->redirectToRoute('eqmode_index', array('id' => $eqMode->getId()));
         }
 
         return $this->render('eqmode/new.html.twig', array(

@@ -35,6 +35,16 @@ class MeasurementRange
      */
     private $unit;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="measurementRanges")
+     */
+    private $eqModes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Accuracy", mappedBy="measurementRanges")
+     */
+    private $accuracyClasses;
+
     public function __toString()
     {
         return $this->theRange;

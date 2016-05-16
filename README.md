@@ -15,7 +15,8 @@ This is configurator for Aplisens.
 
 ###May be on future
  -Admin panel with login. Do you want?
- -Text file for page's title or How make multilanguage site?
+ -Text file for page's title or How make __multilanguage site__?
+ -Exception message for "make bad on admin panel"
 
 
 

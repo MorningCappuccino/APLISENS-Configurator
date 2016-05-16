@@ -30,13 +30,19 @@ class Accuracy
     private $value;
 
     /**
-     * @ORM\ManyToMany(targetEntity="MeasurementRange")
+     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="accuracyClasses")
+     */
+    private $eqModes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="MeasurementRange", inversedBy="accuracyClasses")
      */
     private $measurementRanges;
 
     public function __construct()
     {
         $this->measurementRanges = new ArrayCollection();
+        $this->eqModes = new ArrayCollection();
     }
 
     public function __toString()
@@ -76,6 +82,11 @@ class Accuracy
     public function getValue()
     {
         return $this->value;
+    }
+
+    public function getEqModes()
+    {
+        return $this->eqModes;
     }
 
     public function getMeasurementRanges()

@@ -35,6 +35,11 @@ class SpecialVersion
      */
     private $descr;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="specialVersions")
+     */
+    private $eqModes;
+
     public function __toString()
     {
         return $this->name;
