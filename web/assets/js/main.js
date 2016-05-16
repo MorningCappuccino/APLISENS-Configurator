@@ -180,6 +180,7 @@ function reviveSpecialVersion(){
 					reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
+					$('#measurement_range button').text('нет данных');
 				}
 			}
 		});
@@ -224,13 +225,14 @@ function reviveMeasurementRange(){
 //Rollback Dropdownds
 $('.dropdown ul').on('click', function(){
 	var currListID = this.id,
-			nextListID = +currListID + 1;
+		nextListID = +currListID + 1;
 
 
-	//if next Dropwdown selected we reset all Dropdonws since next Dropdonw
+	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
 	if ($('button#' + nextListID).text() != ''){
 		for (var i = nextListID; i<=9; i++){
 			// console.log($('.dropdown button#' + i));
+			$('.dropdown button#' + i).attr('disabled','');
 			$('.dropdown button#' + i).text('');
 			$('.dropdown button#' + i + ' + ul').empty();
 		}
@@ -260,7 +262,7 @@ function blink(dropDownID, color){
 /*
 	Temprary
  */
-$('button').removeAttr('disabled');
+//$('button').removeAttr('disabled');
 
 
 // })();
