@@ -20,10 +20,10 @@ foreach ($data as $row) :
     }
 endforeach;
 
-echo '<li class="header disabled">мПа</li>';
+echo '<li class="header disabled">МПа</li>';
 foreach ($data as $row) :
     if ($row['unit'] == 'МПа'){
-        echo '<li value="' . $row[0] . '">'. $row[1] .'</li>';
+        echo '<li value="' . $row['id'] . '">'. $row['theRange'] .'</li>';
     }
 endforeach;
 ?>

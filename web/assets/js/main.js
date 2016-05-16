@@ -188,7 +188,7 @@ function reviveSpecialVersion(){
 }
 
 function reviveMeasurementRange(){
-	$('#measurement_range ul').on('click', 'li', function(){
+	$('#measurement_range ul li').on('click', function(){
 
 		var measurementRangeID = this.value,
 				measurementRangeTitle = this.innerText,
@@ -202,8 +202,7 @@ function reviveMeasurementRange(){
 			url: Core.ajaxUrl,
 			method: 'post',
 			data: {
-				controller_name: 'ConfigureAjax',
-				action_name: 'getMeasurementRangesByEqModeIDAndAccuracyID',
+				action_name: '',
 				eq_mode_id: Core.eqModeID,
 				special_version_id: Core.specialVersionID
 			},
@@ -216,6 +215,7 @@ function reviveMeasurementRange(){
 					// reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
+					$('#body_type button').text('нет данных');
 				}
 			}
 		});
