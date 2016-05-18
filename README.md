@@ -19,7 +19,7 @@ This is configurator for Aplisens.
  -Exception message for "make bad on admin panel"
  -Make AJAX Search in "EqMode"
 
-
+ta
 
 
 

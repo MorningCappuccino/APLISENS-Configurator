@@ -12,7 +12,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AjaxController extends Controller
 {
-
+    /**
+     * @Route(name="ajaxSearch")
+     */
+    public function liveSearch(Request $request)
+    {
+        $searchText = $request->get('searchText');
+        $eq_modes = $this->getDoctrine()->getRepository('AppBundle:EqMode')
+            ->findByLetters($searchText);
+//       return new Response('I\'m live search'.' '.$searchText);
+        return $this->render('eqmode/table.html.twig', array('eqModes' => $eq_modes));
+    }
 
     /**
      * @Route("/", name="ajax")
