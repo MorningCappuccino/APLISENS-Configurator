@@ -35,7 +35,30 @@
         </tbody>
     </table>
 
+<script>
+    function liveSearch(){
+        var searchInput = $('.search');
+        var searchText;
+        searchText = searchInput.val();
 
+        console.log(searchText);
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ path('ajaxSearch') }}',
+            data: {searchText: searchText},
+            success: function(response)
+            {
+                $('tbody').html(response);
+            }
+        })
+    }
+
+    $(document).ready(function(){
+        liveSearch();
+    });
+    $('.search').on('keyup', function(){liveSearch()});
+</script>
 
 
 {% endblock %}
