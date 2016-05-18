@@ -118,25 +118,54 @@
 
                 </ul>
             </div>
-            <!-- process connection -->
+        {#choice 1 from 2 or noting#}
+            <!-- (?1)pulse pipe -->
             <span>/</span>
-            <select class="select-picker" title="Длина капилляра или импульсной трубки">
-                <option>1000m</option>
-                <option>2000m</option>
-                <option>3000m</option>
-            </select>
+            <div id="pulse_pipe" class="dropdown dd-mod" title="Длина капилляра или импульсной трубки">
+                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
+                    <!-- Dropdown -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="7" id="7">
+                    <li>0,5</li>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>15</li>
+                </ul>
+            </div>
+            <!-- (?2)cable -->
             <span>/</span>
-            <select class="select-picker" title="Комплект монтажных частей">
-                <option>wtf</option>
-                <option>...</option>
-                <option>:)</option>
-            </select>
+            <div id="cable" class="dropdown dd-mod" title="Длина кабеля">
+                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="7,5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
+                    <!-- Dropdown -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="7,5" id="7,5">
+
+                </ul>
+            </div>
+        {#/endchoice 1 from 2 or noting#}
+            <!-- mounting_parts -->
             <span>/</span>
-            <select class="select-picker" title="Код страны потребителя">
-                <option>BY</option>
-                <option>RU</option>
-                <option>CH</option>
-            </select>
+            <div id="mounting_parts" class="dropdown dd-mod" title="Комплект монтажных частей">
+                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
+                    <!-- Dropdown -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="8" id="8">
+
+                </ul>
+            </div>
+            <!-- country_code -->
+            <span>/</span>
+            <div id="country_code" class="dropdown dd-mod" title="Код гос-ва потрибителя">
+                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
+                    <!-- Dropdown -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="9" id="9">
+
+                </ul>
+            </div>
         </div>
         <div class="clearfix"></div>
         <button class="btn btn-primary btn-configurate">Сконфигурировать</button>

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ProcessConnection list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Descr</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for processConnection in processConnections %}
+            <tr>
+                <td><a href="{{ path('processconnection_show', { 'id': processConnection.id }) }}">{{ processConnection.id }}</a></td>
+                <td>{{ processConnection.name }}</td>
+                <td>{{ processConnection.descr }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('processconnection_edit', { 'id': processConnection.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('processconnection_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

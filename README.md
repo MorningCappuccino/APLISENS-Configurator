@@ -17,6 +17,7 @@ This is configurator for Aplisens.
  -Admin panel with login. Do you want?
  -Text file for page's title or How make __multilanguage site__?
  -Exception message for "make bad on admin panel"
+ -Make AJAX Search in "EqMode"
 
 
 

@@ -92,7 +92,7 @@ class SpecialVersionController extends Controller
             $em->persist($specialVersion);
             $em->flush();
 
-            return $this->redirectToRoute('specialversion_edit', array('id' => $specialVersion->getId()));
+            return $this->redirectToRoute('specialversion_index');
         }
 
         return $this->render('specialversion/edit.html.twig', array(

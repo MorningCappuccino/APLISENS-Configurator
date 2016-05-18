@@ -29,7 +29,22 @@ endforeach;
 ?>
 
 <script>
-    $(".dropdown-menu li.disabled").click(function() {
+    //======Early it WORKS oO======\\
+//    $(".dropdown-menu li.disabled").click(function() {
+//        console.log(0);
+//        return false;
+//    });
+
+    $('.dropdown-menu li.disabled').bind('click', function(e){
+        e.preventDefault();
         return false;
     });
+//arrrr
+
+
+//$(".dropdown-menu li.disabled").load(function() {
+//    console.log(1);
+//    $('.dropdown-menu li.disabled').off('click')
+//});
+
 </script>

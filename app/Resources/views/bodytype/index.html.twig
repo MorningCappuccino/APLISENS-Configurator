@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>BodyType list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Descr</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bodyType in bodyTypes %}
+            <tr>
+                <td><a href="{{ path('bodytype_show', { 'id': bodyType.id }) }}">{{ bodyType.id }}</a></td>
+                <td>{{ bodyType.name }}</td>
+                <td>{{ bodyType.descr }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('bodytype_edit', { 'id': bodyType.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('bodytype_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

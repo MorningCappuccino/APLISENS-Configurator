@@ -50,7 +50,9 @@ class EqModeController extends Controller
             $em->persist($eqMode);
             $em->flush();
 
-            return $this->redirectToRoute('eqmode_index', array('id' => $eqMode->getId()));
+            $this->addFlash('notice', 'Sensor was saved!');
+
+            return $this->redirectToRoute('eqmode_index');
         }
 
         return $this->render('eqmode/new.html.twig', array(
@@ -92,7 +94,9 @@ class EqModeController extends Controller
             $em->persist($eqMode);
             $em->flush();
 
-            return $this->redirectToRoute('eqmode_edit', array('id' => $eqMode->getId()));
+            $this->addFlash('notice', 'Your changes were saved!^)');
+
+            return $this->redirectToRoute('eqmode_index');
         }
 
         return $this->render('eqmode/edit.html.twig', array(

@@ -194,6 +194,7 @@ function reviveMeasurementRange(){
 				measurementRangeTitle = this.innerText,
 				nextBtn = $('#body_type button'),
 				nextParam = +nextBtn.attr('id');
+		Core.measurementRangeID = measurementRangeID;
 
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle);
@@ -202,20 +203,55 @@ function reviveMeasurementRange(){
 			url: Core.ajaxUrl,
 			method: 'post',
 			data: {
-				action_name: '',
+				action_name: 'getBodyTypesByEqModeIDAndSpecialVersionID',
 				eq_mode_id: Core.eqModeID,
-				special_version_id: Core.specialVersionID
+				special_version_id: Core.SpecialVersionID
 			},
 			success: function(data){
 				if (data != 'no data'){
 					blink(nextParam, '#ABFCB2')
-					thisBtn.removeAttr('disabled');
-					$('#body_type ul').html(data); //append
+					nextBtn.removeAttr('disabled');
+					$('#body_type ul').html(data);
                     $('.jumbotron').html(data);
-					// reviveNextParam(nextParam);
+					 reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
 					$('#body_type button').text('нет данных');
+				}
+			}
+		});
+	});
+}
+
+function reviveBodyType(){
+	$('#body_type ul li').on('click', function(){
+
+		var bodyTypeID = this.value,
+				bodyTypeTitle = this.innerText,
+				nextBtn = $('#process_connection button'),
+				nextParam = +nextBtn.attr('id');
+		Core.bodyTypeID = bodyTypeID;
+
+		$('#body_type button').text(bodyTypeTitle);
+
+		$.ajax({
+			url: Core.ajaxUrl,
+			method: 'post',
+			data: {
+				action_name: 'getProcessConnectionByEqModeIDAndSpecialVersionID',
+				eq_mode_id: Core.eqModeID,
+				special_version_id: Core.SpecialVersionID
+			},
+			success: function(data){
+				if (data != 'no data'){
+					blink(nextParam, '#ABFCB2')
+					nextBtn.removeAttr('disabled');
+					$('#process_connection ul').html(data);
+					$('.jumbotron').html(data);
+					//reviveNextParam(nextParam);
+				} else {
+					blink(nextParam, '#FFA0A0');
+					$('#process_connection button').text('нет данных');
 				}
 			}
 		});
@@ -264,5 +300,6 @@ function blink(dropDownID, color){
  */
 //$('button').removeAttr('disabled');
 
+$('#pulse_pipe').fadeOut(2000);
 
 // })();

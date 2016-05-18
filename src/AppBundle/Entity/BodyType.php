@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SpecialVersion
+ * BodyType
  *
- * @ORM\Table(name="special_version")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SpecialVersionRepository")
+ * @ORM\Table(name="body_type")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BodyTypeRepository")
  */
-class SpecialVersion
+class BodyType
 {
     /**
      * @var int
@@ -24,7 +24,7 @@ class SpecialVersion
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=30, unique=true)
+     * @ORM\Column(name="name", type="string", length=15, unique=true)
      */
     private $name;
 
@@ -36,24 +36,14 @@ class SpecialVersion
     private $descr;
 
     /**
-     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="specialVersions")
+     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="bodyTypes")
      */
     private $eqModes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="BodyType", inversedBy="specialVersions")
+     * @ORM\ManyToMany(targetEntity="SpecialVersion", mappedBy="bodyTypes")
      */
-    private $bodyTypes;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="ProcessConnection", inversedBy="specialVersions")
-     */
-    private $processConnections;
-
-    public function __toString()
-    {
-        return $this->name;
-    }
+    private $specialVersions;
 
 
     /**
@@ -71,7 +61,7 @@ class SpecialVersion
      *
      * @param string $name
      *
-     * @return SpecialVersion
+     * @return BodyType
      */
     public function setName($name)
     {
@@ -95,7 +85,7 @@ class SpecialVersion
      *
      * @param string $descr
      *
-     * @return SpecialVersion
+     * @return BodyType
      */
     public function setDescr($descr)
     {
@@ -117,20 +107,44 @@ class SpecialVersion
     /**
      * @return mixed
      */
-    public function getBodyTypes()
+    public function getSpecialVersions()
     {
-        return $this->bodyTypes;
+        return $this->specialVersions;
     }
 
     /**
      * @return mixed
      */
-    public function getProcessConnections()
+    public function getEqModes()
     {
-        return $this->processConnections;
+        return $this->eqModes;
     }
 
-
-
+//    /**
+//     * Add EqModes
+//     *
+//     * @param EqMode $eq_mode
+//     * @return BodyType
+//     */
+//    public function addEqMode(\AppBundle\Entity\EqMode $eq_mode)
+//    {
+//        $this->eqModes[] = $eq_mode;
+//
+//        return $this;
+//    }
+//
+//
+//    /**
+//     * Add EqModes
+//     *
+//     * @param SpecialVersion $special_version
+//     * @return BodyType
+//     */
+//    public function addSpecialVersion(\AppBundle\Entity\SpecialVersion $special_version)
+//    {
+//        $this->eqModes[] = $special_version;
+//
+//        return $this;
+//    }
 }
 
