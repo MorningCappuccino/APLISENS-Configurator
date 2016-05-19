@@ -20,12 +20,12 @@ class BodyTypeType extends AbstractType
         $builder
             ->add('name')
             ->add('descr')
-//            ->add('eqModes', EntityType::class, array(
-//                'class' => 'AppBundle:EqMode',
-//                'choice_label' => 'name',
-//                'expanded' => true,
-//                'multiple' => true
-//            ))
+            ->add('eqModes', EntityType::class, array(
+                'class' => 'AppBundle:EqMode',
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true
+            ))
 //            ->add('eqModes')
 //            ->add('specialVersions', null, array(
 //                'expanded' => true,

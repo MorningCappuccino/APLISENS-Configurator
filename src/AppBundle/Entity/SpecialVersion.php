@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,6 +50,12 @@ class SpecialVersion
      * @ORM\ManyToMany(targetEntity="ProcessConnection", inversedBy="specialVersions")
      */
     private $processConnections;
+
+    public function __construct()
+    {
+        $this->bodyTypes = new ArrayCollection();
+        $this->processConnections = new ArrayCollection();
+    }
 
     public function __toString()
     {

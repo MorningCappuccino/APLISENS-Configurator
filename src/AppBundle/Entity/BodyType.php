@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +46,10 @@ class BodyType
      */
     private $specialVersions;
 
+    public function __construct()
+    {
+        $this->eqModes = new ArrayCollection();
+    }
 
     /**
      * Get id
