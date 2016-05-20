@@ -1,8 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+
     <h1 class="h2">EquipmentMode list</h1>
 
+    <input class="search" type="search">
 
     <a class="btn btn-success pull-right" href="{{ path('eqmode_new') }}">Create a new entry</a>
 
@@ -32,5 +35,31 @@
         </tbody>
     </table>
 
+<script>
+    function liveSearch(){
+        var searchInput = $('.search');
+        var searchText;
+        searchText = searchInput.val();
+
+        console.log(searchText);
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ path('ajaxSearch') }}',
+            data: {searchText: searchText},
+            success: function(response)
+            {
+                $('tbody').html(response);
+            }
+        })
+    }
+
+    $(document).ready(function(){
+        liveSearch();
+    });
+    $('.search').on('keyup', function(){liveSearch()});
+</script>
+
 
 {% endblock %}
+

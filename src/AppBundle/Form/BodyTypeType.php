@@ -2,12 +2,14 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\EqMode;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SpecialVersionType extends AbstractType
+class BodyTypeType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,18 +20,18 @@ class SpecialVersionType extends AbstractType
         $builder
             ->add('name')
             ->add('descr')
-            ->add('bodyTypes', EntityType::class, array(
-                'class' => 'AppBundle\Entity\BodyType',
+            ->add('eqModes', EntityType::class, array(
+                'class' => 'AppBundle:EqMode',
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true
             ))
-            ->add('processConnections', EntityType::class, array(
-                'class' => 'AppBundle\Entity\ProcessConnection',
-                'choice_label' => 'name',
-                'expanded' => true,
-                'multiple' => true
-            ))
+//            ->add('eqModes')
+//            ->add('specialVersions', null, array(
+//                'expanded' => true,
+//                'multiple' => true
+//            ))
+//            ->add('specialVersions')
         ;
     }
     
@@ -39,7 +41,12 @@ class SpecialVersionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\SpecialVersion'
+            'data_class' => 'AppBundle\Entity\BodyType'
         ));
     }
+
+//    public function getName()
+//    {
+//        return 'EqMode'; // this is the name of your type, you can use it instead 'entity' in your add method
+//    }
 }

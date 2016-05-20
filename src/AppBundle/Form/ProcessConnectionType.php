@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SpecialVersionType extends AbstractType
+class ProcessConnectionType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,18 +18,12 @@ class SpecialVersionType extends AbstractType
         $builder
             ->add('name')
             ->add('descr')
-            ->add('bodyTypes', EntityType::class, array(
-                'class' => 'AppBundle\Entity\BodyType',
-                'choice_label' => 'name',
+            ->add('eqModes', EntityType::class, array(
+                'class' => 'AppBundle:EqMode',
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
             ))
-            ->add('processConnections', EntityType::class, array(
-                'class' => 'AppBundle\Entity\ProcessConnection',
-                'choice_label' => 'name',
-                'expanded' => true,
-                'multiple' => true
-            ))
+            ->add('specialVersions')
         ;
     }
     
@@ -39,7 +33,7 @@ class SpecialVersionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\SpecialVersion'
+            'data_class' => 'AppBundle\Entity\ProcessConnection'
         ));
     }
 }

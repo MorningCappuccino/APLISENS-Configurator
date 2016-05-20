@@ -20,16 +20,31 @@ foreach ($data as $row) :
     }
 endforeach;
 
-echo '<li class="header disabled">мПа</li>';
+echo '<li class="header disabled">МПа</li>';
 foreach ($data as $row) :
     if ($row['unit'] == 'МПа'){
-        echo '<li value="' . $row[0] . '">'. $row[1] .'</li>';
+        echo '<li value="' . $row['id'] . '">'. $row['theRange'] .'</li>';
     }
 endforeach;
 ?>
 
 <script>
-    $(".dropdown-menu li.disabled").click(function() {
+    //======Early it WORKS oO======\\
+//    $(".dropdown-menu li.disabled").click(function() {
+//        console.log(0);
+//        return false;
+//    });
+
+    $('.dropdown-menu li.disabled').bind('click', function(e){
+        e.preventDefault();
         return false;
     });
+//arrrr
+
+
+//$(".dropdown-menu li.disabled").load(function() {
+//    console.log(1);
+//    $('.dropdown-menu li.disabled').off('click')
+//});
+
 </script>

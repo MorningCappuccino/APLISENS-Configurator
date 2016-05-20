@@ -7,17 +7,38 @@
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
 
-    <ul>
+    <ul class="nav nav-pills">
         <li>
             <a href="{{ path('accuracy_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <input type="submit" value="Edit" />
+            {{ form_end(edit_form) }}
         </li>
         <li>
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
+        <li>
+            <button onclick="checkBox('checked')">checkedAll</button>
+            <button onclick="checkBox('unchecked')">uncheckedAll</button>
+        </li>
     </ul>
+    <script>
+        function checkBox(flag){
+            var arrCheckBoxes;
+            arrCheckBoxes = $('.checkbox input');
+            if (flag == 'checked'){
+                for (var i = 0; i < arrCheckBoxes.length; i++){
+                    $(arrCheckBoxes[i]).prop('checked', 'checked');
+                }
+            } else {
+                for (var i = 0; i < arrCheckBoxes.length; i++){
+                    $(arrCheckBoxes[i]).prop('checked', '');
+                }
+            }
+        }
+    </script>
 {% endblock %}

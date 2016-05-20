@@ -47,8 +47,19 @@ reviveFirstDropdown();
  */
 
 var Core = {
+	ajaxUrl: 'http://rainbow2/ajax/',
 	eqModeID: null,
-	ajaxUrl: 'http://rainbow2/ajax/'
+	eqModeTitle: '',
+	accuracyID: null,
+	specialVersionID: null,
+	measurementRangeID: null,
+	bodyTypeID: null,
+	bodyTypeTitle: '',
+	processConnectionID: null,
+	//modal field
+	pulsePipeLength: null,
+	cableLength: null,
+	//end modal field
 }
 
 function reviveNextParam(nextParam){
@@ -58,6 +69,7 @@ function reviveNextParam(nextParam){
 		case 3: reviveSpecialVersion(); break;
 		case 4: reviveMeasurementRange(); break;
 		case 5: reviveBodyType(); break;
+		case 6: reviveProcessConnection(); break;
 	}
 	// secondDropDown();
 }
@@ -71,8 +83,10 @@ function reviveNextParam(nextParam){
 function reviveItself(){
 
 	$('#eq_mode ul').on('click', 'li', function(value, caption){
-		var eqModeID = this.value;
+		var eqModeID = this.value,
+				eqModeTitle = this.innerText;
 		Core.eqModeID = eqModeID;
+		Core.eqModeTitle = eqModeTitle;
 
 		var eqModeTitle = this.innerText;
 		var dropdownTitle = $('#eq_mode button').text(eqModeTitle);
@@ -157,7 +171,7 @@ function reviveSpecialVersion(){
 				specialVersionTitle = this.innerText,
 				thisBtn = $('#measurement_range button'),
 				nextParam = +thisBtn.attr('id');
-		Core.SpecialVersionID = specialVersionID;
+		Core.specialVersionID = specialVersionID;
 
 
 		//set Title to Dropdown
@@ -188,12 +202,13 @@ function reviveSpecialVersion(){
 }
 
 function reviveMeasurementRange(){
-	$('#measurement_range ul').on('click', 'li', function(){
+	$('#measurement_range ul li').on('click', function(){
 
 		var measurementRangeID = this.value,
 				measurementRangeTitle = this.innerText,
 				nextBtn = $('#body_type button'),
 				nextParam = +nextBtn.attr('id');
+		Core.measurementRangeID = measurementRangeID;
 
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle);
@@ -202,23 +217,110 @@ function reviveMeasurementRange(){
 			url: Core.ajaxUrl,
 			method: 'post',
 			data: {
-				controller_name: 'ConfigureAjax',
-				action_name: 'getMeasurementRangesByEqModeIDAndAccuracyID',
+				action_name: 'getBodyTypesByEqModeIDAndSpecialVersionID',
 				eq_mode_id: Core.eqModeID,
 				special_version_id: Core.specialVersionID
 			},
 			success: function(data){
 				if (data != 'no data'){
 					blink(nextParam, '#ABFCB2')
-					thisBtn.removeAttr('disabled');
-					$('#body_type ul').html(data); //append
+					nextBtn.removeAttr('disabled');
+					$('#body_type ul').html(data);
                     $('.jumbotron').html(data);
-					// reviveNextParam(nextParam);
+					 reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
+					$('#body_type button').text('нет данных');
 				}
 			}
 		});
+	});
+}
+
+function reviveBodyType(){
+	$('#body_type ul li').on('click', function(){
+
+		var bodyTypeID = this.value,
+				bodyTypeTitle = this.innerText,
+				nextBtn = $('#process_connection button'),
+				nextParam = +nextBtn.attr('id');
+		Core.bodyTypeID = bodyTypeID;
+		Core.bodyTypeTitle = bodyTypeTitle;
+
+		$('#body_type button').text(bodyTypeTitle);
+
+		$.ajax({
+			url: Core.ajaxUrl,
+			method: 'post',
+			data: {
+				action_name: 'getProcessConnectionByEqModeIDAndSpecialVersionID',
+				eq_mode_id: Core.eqModeID,
+				special_version_id: Core.specialVersionID
+			},
+			success: function(data){
+				if (data != 'no data'){
+					blink(nextParam, '#ABFCB2')
+					nextBtn.removeAttr('disabled');
+					$('#process_connection ul').html(data);
+					$('.jumbotron').html(data);
+					reviveNextParam(nextParam);
+				} else {
+					blink(nextParam, '#FFA0A0');
+					$('#process_connection button').text('нет данных');
+				}
+			}
+		});
+	});
+}
+
+function reviveProcessConnection(){
+	$('#process_connection ul li').on('click', function(){
+
+		var processConnectionID = this.value,
+				processConnectionTitle = this.innerText,
+				nextBtn = $('#mounting_parts button'),
+				nextParam = +nextBtn.attr('id');
+		Core.processConnectionID = processConnectionID;
+
+		$('#process_connection button').text(processConnectionTitle);
+
+		console.log(typeof processConnectionTitle)
+		var check;
+		//
+		if ( (check = /K$/i.test(processConnectionTitle)) && (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
+			//call modalCable
+			$('#modalCable').on('shown.bs.modal', function () {
+				$('#cableLength').focus();
+			});
+			$('#modalCable').modal();
+		} else if (check){
+			$('#modalPulsePipe').modal();
+			//call modal pulise pipe
+		} else {
+			//call function to mounting_parts
+		}
+
+/*		$.ajax({
+			url: Core.ajaxUrl,
+			method: 'post',
+			data: {
+				action_name: 'getProcessConnectionByEqModeIDAndSpecialVersionID',
+				eq_mode_id: Core.eqModeID,
+				special_version_id: Core.SpecialVersionID
+			},
+			success: function(data){
+				if (data != 'no data'){
+					blink(nextParam, '#ABFCB2')
+					nextBtn.removeAttr('disabled');
+					$('#process_connection ul').html(data);
+					$('.jumbotron').html(data);
+					//reviveNextParam(nextParam);
+				} else {
+					blink(nextParam, '#FFA0A0');
+					$('#process_connection button').text('нет данных');
+				}
+			}
+		});*/
 	});
 }
 
@@ -239,6 +341,20 @@ $('.dropdown ul').on('click', function(){
 	}
 
 });
+
+//Pulse pipe or cable modal
+function getFromModal(form){
+	var input = $(form).find('input').val();
+	if (form.id == 'Cable'){
+		Core.cableLength = input;
+	} else if (form.id == 'PulsePipe'){
+		Core.pulsePipeLength = input;
+	}
+	$('#modal' + form.id).modal('hide');
+	console.log(Core);
+	//console.log(typeof input);
+}
+
 
 /*
 	helpers API
@@ -264,5 +380,6 @@ function blink(dropDownID, color){
  */
 //$('button').removeAttr('disabled');
 
+//$('#pulse_pipe').fadeOut(2000);
 
 // })();

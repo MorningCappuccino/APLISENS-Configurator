@@ -52,6 +52,18 @@ class EqModeType extends AbstractType
                         ->addOrderBy('m.theRange');
                 }
             ))
+            ->add('bodyTypes', EntityType::class, array(
+                'class' => 'AppBundle\Entity\BodyType',
+                'choice_label' => 'getName',
+                'expanded' => true,
+                'multiple' => true
+            ))
+            ->add('processConnections', EntityType::class, array(
+                'class' => 'AppBundle\Entity\ProcessConnection',
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true
+            ))
         ;
     }
     
