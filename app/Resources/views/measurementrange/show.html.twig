@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>MeasurementRange</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ measurementRange.id }}</td>
+            </tr>
+            <tr>
+                <th>Therange</th>
+                <td>{{ measurementRange.theRange }}</td>
+            </tr>
+            <tr>
+                <th>Unit</th>
+                <td>{{ measurementRange.unit }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('measurementrange_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('measurementrange_edit', { 'id': measurementRange.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

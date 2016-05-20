@@ -52,20 +52,43 @@ class EqMode
     private $img;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Accuracy")
+     * @ORM\ManyToMany(targetEntity="Accuracy", inversedBy="eqModes")
      *
      */
     private $accuracyClasses;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SpecialVersion")
+     * @ORM\ManyToMany(targetEntity="SpecialVersion", inversedBy="eqModes")
      */
     private $specialVersions;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="MeasurementRange", inversedBy="eqModes")
+     */
+    private $measurementRanges;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="BodyType", inversedBy="eqModes")
+     */
+    private $bodyTypes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="ProcessConnection", inversedBy="eqModes")
+     */
+    private $processConnections;
 
     public function __construct()
     {
         $this->accuracyClasses = new ArrayCollection();
         $this->specialVersions = new ArrayCollection();
+        $this->measurementRanges = new ArrayCollection();
+        $this->bodyTypes = new ArrayCollection();
+        $this->processConnections = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     /**
@@ -188,6 +211,30 @@ class EqMode
     public function getSpecialVersions()
     {
         return $this->specialVersions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hasMeasurementRanges()
+    {
+        return $this->measurementRanges;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBodyTypes()
+    {
+        return $this->bodyTypes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProcessConnections()
+    {
+        return $this->processConnections;
     }
 
 

@@ -1,3 +1,16 @@
+app_process_connection:
+    resource: "@AppBundle/Controller/ProcessConnectionController.php"
+    type:     annotation
+
+app_body_type:
+    resource: "@AppBundle/Controller/BodyTypeController.php"
+    type:     annotation
+
+front:
+    resource: "@FrontBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

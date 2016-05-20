@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,27 @@ class SpecialVersion
      * @ORM\Column(name="descr", type="text", nullable=true)
      */
     private $descr;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="specialVersions")
+     */
+    private $eqModes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="BodyType", inversedBy="specialVersions")
+     */
+    private $bodyTypes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="ProcessConnection", inversedBy="specialVersions")
+     */
+    private $processConnections;
+
+    public function __construct()
+    {
+        $this->bodyTypes = new ArrayCollection();
+        $this->processConnections = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -98,5 +120,24 @@ class SpecialVersion
     {
         return $this->descr;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBodyTypes()
+    {
+        return $this->bodyTypes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProcessConnections()
+    {
+        return $this->processConnections;
+    }
+
+
+
 }
 

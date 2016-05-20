@@ -6,7 +6,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                {#<th>Id</th>#}
                 <th>Value</th>
                 <th>Actions</th>
             </tr>
@@ -14,13 +14,10 @@
         <tbody>
         {% for accuracy in accuracies %}
             <tr>
-                <td><a href="{{ path('accuracy_show', { 'id': accuracy.id }) }}">{{ accuracy.id }}</a></td>
+                {#<td><a href="{{ path('accuracy_show', { 'id': accuracy.id }) }}">{{ accuracy.id }}</a></td>#}
                 <td>{{ accuracy.value + 0}}</td>
                 <td>
                     <ul>
-                        <li>
-                            <a href="{{ path('accuracy_show', { 'id': accuracy.id }) }}">show</a>
-                        </li>
                         <li>
                             <a href="{{ path('accuracy_edit', { 'id': accuracy.id }) }}">edit</a>
                         </li>

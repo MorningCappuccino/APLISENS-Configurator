@@ -12,7 +12,7 @@ use AppBundle\Form\EqTypeType;
 /**
  * EqType controller.
  *
- * @Route("/eqtype")
+ * @Route("admin/eqtype")
  */
 class EqTypeController extends Controller
 {

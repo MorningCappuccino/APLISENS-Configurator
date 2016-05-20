@@ -2,6 +2,9 @@
 
 namespace AppBundle\Form;
 
+
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,12 +22,47 @@ class EqModeType extends AbstractType
             ->add('descr')
             ->add('img')
             ->add('eqType')
-            ->add('accuracyClasses', null, array(
+            ->add('accuracyClasses', null, array( //works: CollectionType
                 'expanded' => true,
+                'choice_label' => 'getDisplayName'
             ))
-            ->add('specialVersions', null, array(
-                'expanded' => true
+            ->add('specialVersions', EntityType::class, array(
+                'class' => 'AppBundle:SpecialVersion',
+//                'choice_label' => 'id', //if no __toString method
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(EntityRepository $er){
+                    return $er->createQueryBuilder('s')
+//                        ->select('s.name')
+                        ->orderBy('s.name', 'ASC');
+                }
 
+            ))
+            ->add('measurementRanges', EntityType::class, array(
+                'class' => 'AppBundle:MeasurementRange',
+//                'choice_label' => function($measurementRanges){
+//                    return $measurementRanges->getDisplayName();
+//                },
+                'choice_label' => 'DisplayName',
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(EntityRepository $er){
+                    return $er->createQueryBuilder('m')
+                        ->orderBy('m.unit')
+                        ->addOrderBy('m.theRange');
+                }
+            ))
+            ->add('bodyTypes', EntityType::class, array(
+                'class' => 'AppBundle\Entity\BodyType',
+                'choice_label' => 'getName',
+                'expanded' => true,
+                'multiple' => true
+            ))
+            ->add('processConnections', EntityType::class, array(
+                'class' => 'AppBundle\Entity\ProcessConnection',
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true
             ))
         ;
     }

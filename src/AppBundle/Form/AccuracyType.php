@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +17,15 @@ class AccuracyType extends AbstractType
     {
         $builder
             ->add('value')
+            ->add('measurementRanges', null, array(
+                'expanded' => true,
+                'choice_label' => 'getDisplayName',
+                'query_builder' => function (EntityRepository $er){
+                    return $er->createQueryBuilder('m')
+                        ->orderBy('m.unit')
+                        ->addOrderBy('m.theRange');
+                }
+            ))
         ;
     }
     

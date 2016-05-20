@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,11 +29,26 @@ class Accuracy
      */
     private $value;
 
-    public function __toString()
+    /**
+     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="accuracyClasses")
+     */
+    private $eqModes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="MeasurementRange", inversedBy="accuracyClasses")
+     */
+    private $measurementRanges;
+
+    public function __construct()
     {
-        return $this->value;
+        $this->measurementRanges = new ArrayCollection();
+        $this->eqModes = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getValue();
+    }
 
     /**
      * Get id
@@ -61,11 +77,25 @@ class Accuracy
     /**
      * Get value
      *
-     * @return string
+     * @return int
      */
     public function getValue()
     {
         return $this->value;
+    }
+
+    public function getEqModes()
+    {
+        return $this->eqModes;
+    }
+
+    public function getMeasurementRanges()
+    {
+        return $this->measurementRanges;
+    }
+
+    public function getDisplayName(){
+        return $this->getValue() + 0;
     }
 }
 
