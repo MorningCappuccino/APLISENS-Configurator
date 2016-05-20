@@ -26,7 +26,7 @@ class EqModeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $eqModes = $em->getRepository('AppBundle:EqMode')->findAll();
+        $eqModes = $em->getRepository('AppBundle:EqMode')->findBy(array(),array('name' => 'ASC'));
 
         return $this->render('eqmode/index.html.twig', array(
             'eqModes' => $eqModes,

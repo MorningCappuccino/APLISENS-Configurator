@@ -100,7 +100,7 @@ class AjaxController extends Controller
                         ->join('m.accuracyClasses', 'a')
                         ->join('m.unit', 'u')
                         ->where('e.id = :eq_mode_id')
-                        ->orWhere('a.id = :accuracy_id') //in prod need "andWhere"
+                        ->andWhere('a.id = :accuracy_id') //in prod need "andWhere"
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':accuracy_id' => $accuracy_id])
 //                  ->setParameter(':eq_mode_id', $eq_mode_id)
                 ->getQuery();

@@ -120,7 +120,7 @@
             </div>
         {#choice 1 from 2 or noting#}
             <!-- (?1)pulse pipe -->
-            <span>/</span>
+{#            <span>/</span>
             <div id="pulse_pipe" class="dropdown dd-mod" title="Длина капилляра или импульсной трубки">
                 <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
                     <!-- Dropdown -->
@@ -134,9 +134,9 @@
                     <li>5</li>
                     <li>15</li>
                 </ul>
-            </div>
+            </div>#}
             <!-- (?2)cable -->
-            <span>/</span>
+{#            <span>/</span>
             <div id="cable" class="dropdown dd-mod" title="Длина кабеля">
                 <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="7,5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
                     <!-- Dropdown -->
@@ -144,7 +144,7 @@
                 <ul class="dropdown-menu" aria-labelledby="7,5" id="7,5">
 
                 </ul>
-            </div>
+            </div>#}
         {#/endchoice 1 from 2 or noting#}
             <!-- mounting_parts -->
             <span>/</span>
@@ -188,6 +188,52 @@
     <footer class="footer">&copy; <?= date("Y") ?> {company_name} Inc.</footer>
 </div><!-- /container -->
 
+
+{# Modal Cable#}
+<div class="modal fade" id="modalCable" tabindex="-1" role="dialog" aria-labelledby="modalCableLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Длина кабеля</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Впишите длину кабеля <span class="text-danger">(в метрах)</span>:</p>
+                <div class="alert alert-warning">Ограничение от 3 - 5000</div>
+                <form method="POST" action="javascript:void(null);" id="Cable" onsubmit="getFromModal(this)">
+                    <input min="3" max="5000" class="form-control" type="number" id="cableLength" required placeholder="Пример: 666">
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input form="Cable" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# Modal Pulse Pipe#}
+<div class="modal fade" id="modalPulsePipe" tabindex="-1" role="dialog" aria-labelledby="modalPulsePipeLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Длина капилляра</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Впишите длину капилляра <span class="text-danger">(в метрах)</span>:</p>
+                <div class="alert alert-warning">Ограничение от 1 - 15</div>
+                <form method="POST" action="javascript:void(null);" id="PulsePipe" onsubmit="getFromModal(this)">
+                    <input min="1" max="15" class="form-control" type="number" id="cableLength" required placeholder="Пример: 666">
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input form="PulsePipe" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 {% block javascripts %}
     <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
