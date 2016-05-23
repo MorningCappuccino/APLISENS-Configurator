@@ -344,11 +344,14 @@ $('.dropdown ul').on('click', function(){
 
 //Pulse pipe or cable modal
 function getFromModal(form){
-	var input = $(form).find('input').val();
+	var input = $(form).find('input').val(),
+		targetBtn = $('button#6');
 	if (form.id == 'Cable'){
 		Core.cableLength = input;
+		targetBtn.append('/K=' + Core.cableLength);
 	} else if (form.id == 'PulsePipe'){
 		Core.pulsePipeLength = input;
+		targetBtn.append('/K=' + Core.pulsePipeLength);
 	}
 	$('#modal' + form.id).modal('hide');
 	console.log(Core);
