@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ValveUnit list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Descr</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for valveUnit in valveUnits %}
+            <tr>
+                <td><a href="{{ path('valveunit_show', { 'id': valveUnit.id }) }}">{{ valveUnit.id }}</a></td>
+                <td>{{ valveUnit.name }}</td>
+                <td>{{ valveUnit.descr }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('valveunit_edit', { 'id': valveUnit.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('valveunit_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

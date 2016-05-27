@@ -11,6 +11,10 @@ This is configurator for Aplisens.
 [+]make relationship ManyToMany + better with Doctrine Collection
 [+]make label for "MeasurementRanges" like "range + unit"
 [+]make label for "Accuracy" with Round()
+[-]disable choice "kPa, MPa" in measurement range 
+[-]on select measurement range add prefix 'kPa, MPa ...'
+[-]make some animation on ajax 'processing'. [exmp](http://stackoverflow.com/questions/2008507/jquery-ajax-request-wait-for-latest-request-to-finish)
+[-]if MR type (kPa, MPA), not found - hide him. 
 
 
 ###May be on future

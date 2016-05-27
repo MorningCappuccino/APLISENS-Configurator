@@ -141,4 +141,64 @@ class AjaxController extends Controller
         $processConnections = $query->getResult(2);
         return $this->render('FrontBundle::list.html.php', array('data' => $processConnections));
     }
+
+    public function getValveUnitByProcessConnectionID($request)
+    {
+        $process_connection_id = $request->get('process_connection_id');
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository('AppBundle:ValveUnit')
+                        ->createQueryBuilder('v')
+                        ->join('v.processConnections', 'p')
+                        ->where('p.id = :process_connection_id')
+                ->setParameter(':process_connection_id', $process_connection_id)
+                ->getQuery();
+        $valveUnits = $query->getResult(2);
+        return $this->render('FrontBundle::valveUnitList.html.php', array('data' => $valveUnits));
+    }
+
+    public function getWeldedElementByEqModeProcessConnectionValveUnitID($request)
+    {
+        $eq_mode_id = $request->get('eq_mode_id');
+        $process_connection_id = $request->get('process_connection_id');
+        $valve_unit_id = $request->get('valve_unit_id');
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository('AppBundle:WeldedElement')
+                        ->createQueryBuilder('w')
+                        ->distinct(true)
+                        ->join('w.processConnections', 'p')
+                        ->join('w.valveUnits', 'v')
+                        ->join('w.eqModes', 'e')
+                        ->where('p.id = :process_connection_id')
+                        ->andWhere('v.id = :valve_unit_id')
+                        ->orWhere('e.id = :eq_mode_id')
+                ->setParameters([':process_connection_id' => $process_connection_id,
+                             ':valve_unit_id' => $valve_unit_id,
+                             ':eq_mode_id' => $eq_mode_id])
+//                ->setParameter(':process_connection_id', $process_connection_id)
+                ->getQuery();
+        $weldedElements = $query->getResult(2);
+        return $this->render('FrontBundle::weldedElementsList.html.php', array('data' => $weldedElements));
+    }
+
+    public function getBracingByProcessConnectionBodyTypeEqMode($request)
+    {
+        $eq_mode_id = $request->get('eq_mode_id');
+        $process_connection_id = $request->get('process_connection_id');
+        $body_type_id = $request->get('body_type_id');
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository('AppBundle:Brace')
+                        ->createQueryBuilder('b')
+                        ->join('b.processConnections', 'p')
+                        ->join('b.bodyTypes', 'bo')
+                        ->join('b.eqModes', 'e')
+                        ->where('p.id = :process_connection_id')
+                        ->andWhere('bo.id = :body_type_id')
+                        ->andWhere('e.id = :eq_mode_id')
+                    ->setParameters([':process_connection_id' => $process_connection_id,
+                                     ':body_type_id' => $body_type_id,
+                                     ':eq_mode_id' => $eq_mode_id])
+                    ->getQuery();
+        $braces = $query->getResult(2);
+        return $this->render('FrontBundle::BraceList.html.php', array('data' => $braces));
+    }
 }

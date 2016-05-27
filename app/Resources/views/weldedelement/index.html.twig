@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>WeldedElement list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Descr</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for weldedElement in weldedElements %}
+            <tr>
+                <td>{{ weldedElement.name }}</td>
+                <td>{{ weldedElement.descr }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('weldedelement_edit', { 'id': weldedElement.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('weldedelement_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
