@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>CountryCode list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for countryCode in countryCodes %}
+            <tr>
+                <td>{{ countryCode.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('countrycode_edit', { 'id': countryCode.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('countrycode_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -8,11 +8,13 @@
 
     {% block stylesheets %}
 
+        {#"assets/css/animate.css"#}
         {% stylesheets filter="scssphp" output="css/app.css"
         "assets/vendor/bootstrap/dist/css/bootstrap.min.css"
         "assets/scss/front.scss"
         %}
         <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset("assets/vendor/font-awesome/css/font-awesome.min.css") }}">
         {% endstylesheets %}
 
     {% endblock %}
@@ -159,12 +161,14 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <button class="btn btn-primary btn-configurate">Сконфигурировать</button>
+        <button onclick="generate()" class="btn btn-primary btn-configurate">Сконфигурировать</button>
     </div>
 
     <div class="jumbotron">
-        <h3>Здесь будут тех. хар-ки</h3>
-        <p>...</p>
+        <div id="gen">
+            <h3>Здесь будут тех. хар-ки</h3>
+            <p>...</p>
+        </div>
     </div>
 
     <div class="row">

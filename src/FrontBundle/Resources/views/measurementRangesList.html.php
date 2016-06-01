@@ -4,7 +4,7 @@ if (empty($data)) exit('no data');
 
 // "Pa" range exist?
 foreach ($data as $row) :
-    if ($row['unit'] == 'Па') { echo '<li class="header">Па</li>'; break; }
+    if ($row['unit'] == 'Па') { echo '<li class="header"><a href="#">Па</a></li>'; break; }
 endforeach;
 
 foreach ($data as $row) :
@@ -13,14 +13,14 @@ foreach ($data as $row) :
     }
 endforeach;
 
-echo '<li class="header disabled">кПа</li>';
+echo '<li class="header"><a href="#">кПа</a></li>';
 foreach ($data as $row) :
     if ($row['unit'] == 'кПа'){
         echo '<li value="' . $row['id'] . '">'. $row['theRange'] .'</li>';
     }
 endforeach;
 
-echo '<li class="header disabled">МПа</li>';
+echo '<li class="header"><a href="#">МПа</a></li>';
 foreach ($data as $row) :
     if ($row['unit'] == 'МПа'){
         echo '<li value="' . $row['id'] . '">'. $row['theRange'] .'</li>';

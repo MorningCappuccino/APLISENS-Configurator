@@ -1,3 +1,7 @@
+app_country_code:
+    resource: "@AppBundle/Controller/CountryCodeController.php"
+    type:     annotation
+
 app_brace:
     resource: "@AppBundle/Controller/BraceController.php"
     type:     annotation

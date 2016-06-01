@@ -201,4 +201,52 @@ class AjaxController extends Controller
         $braces = $query->getResult(2);
         return $this->render('FrontBundle::BraceList.html.php', array('data' => $braces));
     }
+
+    public function getAllCountryCodes(){
+        $em = $this->getDoctrine()->getManager();
+        $countryCodes = $em->getRepository('AppBundle:CountryCode')
+                            ->createQueryBuilder('c')
+                            ->getQuery()
+                            ->getResult(2);
+        return $this->render('FrontBundle::list.html.php', array('data' => $countryCodes));
+    }
+
+    public function generate($request)
+    {
+        $params = $request->get('params');
+        $eq_mode_id = $params['eqModeID'];
+        $accuracy_id = $params['accuracyID'];
+        $special_version_id = $params['specialVersionID'];
+        $measurement_range_id = $params['measurementRangeID'];
+        $body_type_id = $params['bodyTypeID'];
+        $process_connection_id = $params['processConnectionID'];
+        $valve_unit_id = $params['valveUnitID'];
+        $welded_element_id = $params['weldedElementID'];
+        $brace_id = $params['braceID'];
+        $country_code_id = $params['countryCodeID'];
+
+        $em = $this->getDoctrine()->getManager();
+        $eqMode = $em->getRepository('AppBundle:EqMode')->findOneBy(['id' => $eq_mode_id]);
+        $accuracy = $em->getRepository('AppBundle:Accuracy')->findOneBy(['id' => $accuracy_id]);
+        $specialVersion = $em->getRepository('AppBundle:SpecialVersion')->findOneBy(['id' => $special_version_id]);
+        $measurementRange = $em->getRepository('AppBundle:MeasurementRange')->findOneBy(['id' => $measurement_range_id]);
+        $bodyType = $em->getRepository('AppBundle:BodyType')->findOneBy(['id' => $body_type_id]);
+        $processConnection = $em->getRepository('AppBundle:ProcessConnection')->findOneBy(['id' => $process_connection_id]);
+        $valveUnit = $em->getRepository('AppBundle:ValveUnit')->findOneBy(['id' => $valve_unit_id]);
+        $weldedElement = $em->getRepository('AppBundle:WeldedElement')->findOneBy(['id' => $welded_element_id]);
+        $brace = $em->getRepository('AppBundle:Brace')->findOneBy(['id' => $brace_id]);
+        $countryCode = $em->getRepository('AppBundle:CountryCode')->findOneBy(['id' => $country_code_id]);
+        return $this->render('FrontBundle::jumbotron.html.twig', array(
+            'eqMode' => $eqMode,
+            'accuracy' => $accuracy,
+            'specialVersion' => $specialVersion,
+            'measurementRange' => $measurementRange,
+            'bodyType' => $bodyType,
+            'processConnection' => $processConnection,
+            'valveUnit' => $valveUnit,
+            'weldedElement' => $weldedElement,
+            'brace' => $brace,
+            'countryCode' => $countryCode
+        ));
+    }
 }
