@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% use 'bootstrap_3_layout.html.twig' %}
+{% form_theme form _self %}
+
+{% block body %}
+    <h1>CountryCode creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+    <ul class="nav nav-pills">
+        <li>
+            <input class="btn btn-success" type="submit" value="Create" />
+            {{ form_end(form) }}
+        </li>
+        <li>
+            <a class="btn btn-default" href="{{ path('countrycode_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
