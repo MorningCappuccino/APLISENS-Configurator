@@ -26,6 +26,6 @@ This is configurator for Aplisens.
 
 ta
 
-realise 2
+Start of release branch for v.0.1.12
 
 A Symfony project created on April 20, 2016, 1:31 pm.
