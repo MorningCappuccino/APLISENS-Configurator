@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProcessConnectionType extends AbstractType
+class ValveUnitType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,18 +18,12 @@ class ProcessConnectionType extends AbstractType
         $builder
             ->add('name')
             ->add('descr')
-//            ->add('eqModes', EntityType::class, array(
-//                'class' => 'AppBundle:EqMode',
-//                'expanded' => true,
-//                'multiple' => true,
-//            ))
-//            ->add('specialVersions')
-//            ->add('valveUnits', EntityType::class, array(
-//                'class' => 'AppBundle:ValveUnit',
-//                'choice_label' => 'name',
-//                'expanded' => true,
-//                'multiple' => true
-//            ))
+            ->add('processConnections', EntityType::class, array(
+                'class' => 'AppBundle:ProcessConnection',
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true
+            ))
         ;
     }
     
@@ -39,7 +33,7 @@ class ProcessConnectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ProcessConnection'
+            'data_class' => 'AppBundle\Entity\ValveUnit'
         ));
     }
 }

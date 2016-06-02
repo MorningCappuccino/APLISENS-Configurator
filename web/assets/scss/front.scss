@@ -1,16 +1,19 @@
-
 @import "bootstrap/_variables.scss";
 
-//main page
+//choice buttons
 #config-param {
   label {
     display: block;
   }
   .dd-mod {
     display: inline-block;
+    //static button's width
     .btn-conf {
       width: 115px;
       height: 33px;
+      &#b10 {
+        width: 220px !important;
+      }
     }
     ul {
       max-height: 160px;
@@ -18,10 +21,13 @@
       overflow-y: scroll;
       li {
         &.header {
-          color: $brand-danger;
+          padding: 0;
+          a {
+            color: $brand-danger;
+          }
         }
         padding: 5px 10px;
-        &:hover{
+        &:hover {
           cursor: pointer;
           color: #262626;
           background-color: #f5f5f5;
@@ -35,38 +41,109 @@
   }
 }
 
-$title-color: #7a8288;
-$white: #fff;
-//admin panel
+//-----------Modal Mounting Parts----------//
+#modalMountingParts {
+  .mp-param {
+    display: inline-block;
 
-.page-header {
-  .glyphicon-share {
-    font-size: .8em;
-    color: $title-color;
-    transform: translateY(25%);
-    transition: color .3s;
-    &:hover {
-      color: $white;
+    &:nth-child(3) .dd-mod {
+      margin-right: 0;
+    }
+    label#label_valve_unit {
+      text-indent: 15px
+    }
+    label#label_mounting {
+      text-indent: 40px
     }
   }
-}
-
-.main {
-  a {
-    display: block;
-    margin: 10px auto;
-    width: 250px;
+  .modal-body {
+    padding: 30px 15px 150px 15px;
   }
-  .btn-default{
-    &:hover{
-      background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
-      color: none;
-      background-color: none;
+  .dd-mod {
+    //display: inline-block;
+    margin-right: 30px;
+
+    //&:nth-child(3){
+    //  margin-right: 0;
+    //}
+    .btn {
+      padding: 6px 6px;
+    }
+    .btn-conf {
+      width: 155px;
+      height: 35px;
+    }
+    ul {
+      max-height: 160px;
+      min-width: 170px;
+      overflow-y: scroll;
+      li {
+        padding: 5px 10px;
+        &:hover {
+          cursor: pointer;
+          color: #262626;
+          background-color: #f5f5f5;
+        }
+      }
     }
   }
 }
 
 //-----------text----------//
+h3 {
+  text-align: center;
+}
+
 .primary-text {
   font-size: 1.3em;
+}
+
+.generated p {
+  font-size: 15px;
+}
+
+table.transcript {
+  thead {
+    font-size: 17px;
+  }
+  tbody {
+    font-size: 15px;
+  }
+}
+
+//----------Modal----------//
+#notFilled {
+  display: none;
+}
+
+//-----------jumbotron----------//
+.jumbotron {
+  position: relative;
+  #loader {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+  }
+
+}
+
+#generated {
+  display: none;
+  opacity: 0;
+  img.sensor {
+    float: right;
+    // width: 100%;
+    max-width: 250px;
+  }
+  table.transcript {
+    max-width: 720px;
+  }
+  .code-again {
+    span {
+      font-size: 17px;
+    }
+    p {
+      font-size: 1.3em;
+    }
+  }
 }

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% use 'bootstrap_3_layout.html.twig' %}
+{% form_theme edit_form _self %}
+
+{% block body %}
+    <h1>CountryCode edit</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+
+    <ul class="nav nav-pills">
+        <li>
+            <a class="btn btn-default" href="{{ path('countrycode_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <input class="btn btn-warning" type="submit" value="Edit" />
+            {{ form_end(edit_form) }}
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input class="btn btn-danger" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -8,11 +8,13 @@
 
     {% block stylesheets %}
 
+        {#"assets/css/animate.css"#}
         {% stylesheets filter="scssphp" output="css/app.css"
         "assets/vendor/bootstrap/dist/css/bootstrap.min.css"
         "assets/scss/front.scss"
         %}
         <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset("assets/vendor/font-awesome/css/font-awesome.min.css") }}">
         {% endstylesheets %}
 
     {% endblock %}
@@ -94,7 +96,7 @@
             <span>/</span>
             <!-- measurement range -->
             <div id="measurement_range" class="dropdown dd-mod" title="Измерительный диапазон">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
                 <ul class="dropdown-menu" aria-labelledby="4" id="4">
 
                 </ul>
@@ -103,7 +105,7 @@
             <span>/</span>
             <!-- body type -->
             <div id="body_type" class="dropdown dd-mod" title="Исполнение корпуса">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
                 <ul class="dropdown-menu" aria-labelledby="5" id="5">
 
                 </ul>
@@ -111,9 +113,7 @@
             <!-- process connection -->
             <span>/</span>
             <div id="process_connection" class="dropdown dd-mod" title="Тип штуцера или разделителя сред">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
-                    <!-- Dropdown -->
-                </button>
+                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
                 <ul class="dropdown-menu" aria-labelledby="6" id="6">
 
                 </ul>
@@ -149,31 +149,26 @@
             <!-- mounting_parts -->
             <span>/</span>
             <div id="mounting_parts" class="dropdown dd-mod" title="Комплект монтажных частей">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
-                    <!-- Dropdown -->
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="8" id="8">
-
-                </ul>
+                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="b10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
             </div>
             <!-- country_code -->
             <span>/</span>
             <div id="country_code" class="dropdown dd-mod" title="Код гос-ва потрибителя">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
-                    <!-- Dropdown -->
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="9" id="9">
+                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                <ul class="dropdown-menu" aria-labelledby="11" id="11">
 
                 </ul>
             </div>
         </div>
         <div class="clearfix"></div>
-        <button class="btn btn-primary btn-configurate">Сконфигурировать</button>
+        <button onclick="generate()" class="btn btn-primary btn-configurate">Сконфигурировать</button>
     </div>
 
     <div class="jumbotron">
-        <h3>Здесь будут тех. хар-ки</h3>
-        <p>...</p>
+        <div id="gen">
+            <h3>Здесь будут тех. хар-ки</h3>
+            <p>...</p>
+        </div>
     </div>
 
     <div class="row">
@@ -230,6 +225,57 @@
             <div class="modal-footer">
                 {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
                 <input form="PulsePipe" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# Modal Mounting Parts #}
+<div class="modal fade" id="modalMountingParts" tabindex="-1" role="dialog" aria-labelledby="modalMountingPartsLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Комплект монтажных частей</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-offset-0 col-sm-12">
+
+                    <div id="mounting-parts">
+                    <div class="mp-param">
+                        <label id="label_valve_unit">Вентильный блок</label>
+                        <div id="valve_unit" class="dropdown dd-mod" >
+                            <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                            <ul class="dropdown-menu" aria-labelledby="8.1" id="8.1">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mp-param">
+                        <label id="label_welded_element">Монтажные элементы</label>
+                        <div id="welded_element" class="dropdown dd-mod">
+                            <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                            <ul class="dropdown-menu" aria-labelledby="8.2" id="8.2">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mp-param">
+                        <label id="label_mounting">Крепления</label>
+                        <div id="brace" class="dropdown dd-mod">
+                            <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ></button>
+                            <ul class="dropdown-menu" aria-labelledby="8.3" id="8.3">
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input onclick="getFromMountingPartsModal()" type="button" class="btn btn-primary" value="ok">
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

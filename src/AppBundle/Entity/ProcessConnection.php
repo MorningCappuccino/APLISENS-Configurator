@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,7 +45,22 @@ class ProcessConnection
      * @ORM\ManyToMany(targetEntity="SpecialVersion", mappedBy="processConnections")
      */
     private $specialVersions;
-    
+
+    /**
+     * @ORM\ManyToMany(targetEntity="ValveUnit", mappedBy="processConnections")
+     */
+    private $valveUnits;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="WeldedElement", mappedBy="processConnections")
+     */
+    private $weldedElements;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Brace", mappedBy="processConnections")
+     */
+    private $bracing;
+
     /**
      * Constructor
      */
@@ -52,7 +68,14 @@ class ProcessConnection
     {
         $this->eqModes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->specialVersions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->valveUnits = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    function __toString()
+    {
+        return $this->getName();
+    }
+
 
     /**
      * Get id
@@ -179,4 +202,14 @@ class ProcessConnection
     {
         return $this->specialVersions;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getValveUnits()
+    {
+        return $this->valveUnits;
+    }
+
+
 }

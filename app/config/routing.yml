@@ -1,3 +1,19 @@
+app_country_code:
+    resource: "@AppBundle/Controller/CountryCodeController.php"
+    type:     annotation
+
+app_brace:
+    resource: "@AppBundle/Controller/BraceController.php"
+    type:     annotation
+
+app_welded_element:
+    resource: "@AppBundle/Controller/WeldedElementController.php"
+    type:     annotation
+
+app_valve_unit:
+    resource: "@AppBundle/Controller/ValveUnitController.php"
+    type:     annotation
+
 app_process_connection:
     resource: "@AppBundle/Controller/ProcessConnectionController.php"
     type:     annotation

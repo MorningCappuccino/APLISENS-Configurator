@@ -1,0 +1,78 @@
+<div id="generated">
+    <h3>Технические характеристики: </h3>
+    <img class="sensor" src="{{ asset("assets/img/no-image.png") }}">
+    <table class="table transcript">
+        <thead>
+        <tr>
+            <td>Код</td>
+            <td>Расшифровка</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{  eqMode.getName() }}</td>
+            <td>{{ eqMode.descr }}</td>
+        </tr>
+        <tr>
+            <td>{{ accuracy.value }} </td>
+            <td>Основная приведённая погрешность</td>
+        </tr>
+        <tr>
+            <td>{{ specialVersion.name }} </td>
+            <td>{{ specialVersion.descr }}</td>
+        </tr>
+        <tr>
+            <td>{{ measurementRange.displayName() }} </td>
+            <td>Диапазон измерения</td>
+        </tr>
+        <tr>
+            <td>{{ bodyType.name }}</td>
+            <td>{{ bodyType.descr }}</td>
+        </tr>
+        <tr>
+            <td>{{ processConnection.name }} </td>
+            <td>{{ processConnection.descr }}</td>
+        </tr>
+        {% if valveUnit %}
+            {% set valveUnitName = valveUnit.name ~ ' /'%}
+        <tr>
+            <td>{{ valveUnit.name }} </td>
+            <td>{{ valveUnit.descr }}</td>
+        </tr>
+        {% endif %}
+        {% if weldedElement %}
+            {% set weldedElementName = weldedElement.name ~ ' /'%}
+        <tr>
+            <td>{{ weldedElement.name }}</td>
+            <td>{{ weldedElement.descr }}</td>
+        </tr>
+        {% endif %}
+        {% if brace %}
+            {% set braceName = brace.name ~ ' /'%}
+        <tr>
+            <td>{{ brace.name }}</td>
+            <td>{{ brace.descr }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>{{ countryCode.name }}</td>
+            <td>Страна потребителя</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="code-again">
+        <p><span>Преобразователь давления измерительный</span>
+            {{ eqMode.getName() }} /
+            {{ accuracy.value }} /
+            {{ specialVersion.name }} /
+            {{ measurementRange.displayName() }} /
+            {{ bodyType.name }} /
+            {{ processConnection.name }} /
+            {{ valveUnitName|default('') }}
+            {{ weldedElementName|default('') }}
+            {{ braceName|default('') }}
+            {{ countryCode.name }}
+        </p>
+    </div>
+    <div class="clearfix"></div>
+</div>

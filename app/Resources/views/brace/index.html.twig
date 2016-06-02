@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Brace list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Descr</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for brace in braces %}
+            <tr>
+                <td>{{ brace.name }}</td>
+                <td>{{ brace.descr }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('brace_edit', { 'id': brace.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('brace_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

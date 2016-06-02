@@ -20,7 +20,7 @@
 	});
 // $('#eq_mode').on('load', function(event, value, caption) {
 
-function reviveFirstDropdown(){
+function getAllEqModes(){
 	var whoAmI = $('#eq_mode > button').attr('id');
 
 		$.ajax({
@@ -30,16 +30,16 @@ function reviveFirstDropdown(){
 				action_name: 'getAllEqMode'
 		},
 		success: function(data){
-			$('.jumbotron').html(data);
+			$('.jumbotron #gen').html(data);
 			$('#eq_mode ul').html(data);
-			reviveItself();
+			reviveEqMode();
 		}
 	});
 
 }
 // });
 
-reviveFirstDropdown();
+getAllEqModes();
 
 
 /*
@@ -60,16 +60,29 @@ var Core = {
 	pulsePipeLength: null,
 	cableLength: null,
 	//end modal field
+	valveUnitID: null,
+	valveUnitTitle: null,
+	weldedElementID: null,
+	weldedElementTitle: null,
+	braceID: null,
+	braceTitle: null,
+	countryCodeID: null,
+	countryCodeTitle: null
 }
 
 function reviveNextParam(nextParam){
 
 	switch(nextParam){
+		//1 - getAllEqModes
 		case 2: reviveAccuracy(); break;
 		case 3: reviveSpecialVersion(); break;
 		case 4: reviveMeasurementRange(); break;
 		case 5: reviveBodyType(); break;
 		case 6: reviveProcessConnection(); break;
+		//7 -> getValveUnits
+		case 8: reviveValveUnit(); break;
+		case 9: reviveWeldedElements(); break;
+		case 10: reviveBracing(); break;
 	}
 	// secondDropDown();
 }
@@ -80,7 +93,7 @@ function reviveNextParam(nextParam){
 // 	}
 // }
 
-function reviveItself(){
+function reviveEqMode(){
 
 	$('#eq_mode ul').on('click', 'li', function(value, caption){
 		var eqModeID = this.value,
@@ -109,7 +122,7 @@ function reviveItself(){
 			if (data != "no data") {
 				blink(2, '#ABFCB2');
 				accuracyBtn.removeAttr('disabled');
-				$('.jumbotron').html(data);
+				$('.jumbotron #gen').html(data);
 				$('#accuracy ul').html(data);
 				reviveNextParam(nextParam);
 			} else {
@@ -151,7 +164,7 @@ function reviveAccuracy(){
 					blink(nextParam, '#ABFCB2')
 					thisBtn.removeAttr('disabled');
 					$('#special_version ul').html(data); //append
-					$('.jumbotrone').html(data);
+					$('.jumbotrone #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
@@ -190,7 +203,9 @@ function reviveSpecialVersion(){
 					blink(nextParam, '#ABFCB2')
 					thisBtn.removeAttr('disabled');
 					$('#measurement_range ul').html(data); //append
-					$('.jumbotron').html(data);
+					//disable header li
+					$('li.header a').on('click', function(){ return false });
+					$('.jumbotron #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
@@ -206,12 +221,14 @@ function reviveMeasurementRange(){
 
 		var measurementRangeID = this.value,
 				measurementRangeTitle = this.innerText,
+				unit = $(this).prevAll('.header').first().find('a').text(),
 				nextBtn = $('#body_type button'),
 				nextParam = +nextBtn.attr('id');
 		Core.measurementRangeID = measurementRangeID;
 
+
 		//set Title to Dropdown
-		$('#measurement_range button').text(measurementRangeTitle);
+		$('#measurement_range button').text(measurementRangeTitle +' '+ unit);
 
 		$.ajax({
 			url: Core.ajaxUrl,
@@ -226,7 +243,7 @@ function reviveMeasurementRange(){
 					blink(nextParam, '#ABFCB2')
 					nextBtn.removeAttr('disabled');
 					$('#body_type ul').html(data);
-                    $('.jumbotron').html(data);
+                    $('.jumbotron #gen').html(data);
 					 reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
@@ -262,7 +279,7 @@ function reviveBodyType(){
 					blink(nextParam, '#ABFCB2')
 					nextBtn.removeAttr('disabled');
 					$('#process_connection ul').html(data);
-					$('.jumbotron').html(data);
+					$('.jumbotron #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
@@ -278,13 +295,13 @@ function reviveProcessConnection(){
 
 		var processConnectionID = this.value,
 				processConnectionTitle = this.innerText,
-				nextBtn = $('#mounting_parts button'),
+				nextBtn = $('#valve_unit button'),
 				nextParam = +nextBtn.attr('id');
 		Core.processConnectionID = processConnectionID;
+		Core.processConnectionTitle = processConnectionTitle;
 
 		$('#process_connection button').text(processConnectionTitle);
 
-		console.log(typeof processConnectionTitle)
 		var check;
 		//
 		if ( (check = /K$/i.test(processConnectionTitle)) && (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
@@ -298,30 +315,185 @@ function reviveProcessConnection(){
 			//call modal pulise pipe
 		} else {
 			//call function to mounting_parts
+			getValveUnits(nextBtn, nextParam);
 		}
 
+
+	});
+}
+
+function getValveUnits(thisBtn, thisParam){
+
+	var nextParam = 8,
+		thisBtn = $('#valve_unit button'),
+		nextBtn = $('#welded_element button');
+
+			$.ajax({
+			url: Core.ajaxUrl,
+			method: 'post',
+			data: {
+				action_name: 'getValveUnitByProcessConnectionID',
+				process_connection_id: Core.processConnectionID
+			},
+			success: function(data){
+				if (data != 'no data'){
+					blink(7, '#ABFCB2')
+					thisBtn.removeAttr('disabled');
+					$('#valve_unit ul').html(data);
+					$('.jumbotron #gen').html(data);
+					reviveNextParam(nextParam);
+				} else {
+					//blink(nextParam, '#FFA0A0');
+					$('#valve_unit button').text('без. вент. блока');
+					$('#valve_unit button').attr('disabled', 'disabled');
+					//reviveNextParam(nextParam);
+					getWeldedElements($('button#8'), 8);
+
+				}
+			}
+		});
+
+	$('#modalMountingParts').modal();
+}
+
+function reviveValveUnit(){
+	$('#valve_unit ul li').on('click', function(){
+		var valveUnitID = this.value,
+			valveUnitTitle = this.innerText,
+			nextBtn = $('#welded_element button'),
+			nextParam = +nextBtn.attr('id');
+		Core.valveUnitID = valveUnitID;
+		Core.valveUnitTitle = valveUnitTitle;
+
+		$('#valve_unit button').text(valveUnitTitle);
+
+		getWeldedElements(nextBtn, nextParam);
 /*		$.ajax({
 			url: Core.ajaxUrl,
 			method: 'post',
 			data: {
-				action_name: 'getProcessConnectionByEqModeIDAndSpecialVersionID',
+				action_name: 'getWeldedElementByEqModeProcessConnectionValveUnitID',
 				eq_mode_id: Core.eqModeID,
-				special_version_id: Core.SpecialVersionID
+				process_connection_id: Core.processConnectionID,
+				valve_unit_id: Core.valveUnitID
 			},
 			success: function(data){
 				if (data != 'no data'){
 					blink(nextParam, '#ABFCB2')
 					nextBtn.removeAttr('disabled');
-					$('#process_connection ul').html(data);
+					$('#welded_element ul').append(data);
 					$('.jumbotron').html(data);
 					//reviveNextParam(nextParam);
 				} else {
 					blink(nextParam, '#FFA0A0');
-					$('#process_connection button').text('нет данных');
+					$('#welded_element button').text('нет данных');
 				}
 			}
 		});*/
+
 	});
+}
+
+function getWeldedElements(thisBtn, thisParam){
+
+	var nextParam = 9,
+		nextBtn = $('#brace button');
+	//Manual Exception №1
+	if ( /^CH{0,1}$/.test(Core.processConnectionTitle) && Core.valveUnitTitle == 'без вент. блока'){
+
+		var html = "<li value=\"0\">без монтаж. эл-ов</li>";
+			html += "<li value=\"-1\">2 ниппельных вывода 1/4 NPT</li>";
+
+		blink(thisParam, '#ABFCB2')
+		thisBtn.removeAttr('disabled');
+		$('#welded_element ul').html(html);
+
+	} else {
+	//end Manual Exception №1
+		$.ajax({
+			url: Core.ajaxUrl,
+			method: 'post',
+			data: {
+				action_name: 'getWeldedElementByEqModeProcessConnectionValveUnitID',
+				eq_mode_id: Core.eqModeID,
+				process_connection_id: Core.processConnectionID,
+				valve_unit_id: Core.valveUnitID
+			},
+			success: function (data) {
+				if (data != 'no data') {
+					blink(thisParam, '#ABFCB2')
+					thisBtn.removeAttr('disabled');
+					thisBtn.text('');
+					$('#welded_element ul').html(data);
+					$('.jumbotron #gen').html(data);
+					reviveNextParam(nextParam);
+				} else {
+					blink(thisParam, '#FFA0A0');
+					$('#welded_element button').text('нет данных');
+					$('#welded_element button').attr('disabled', 'disabled');
+
+				}
+			}
+		});
+	}
+}
+
+function reviveWeldedElements(){
+	$('#welded_element ul li').on('click', function(){
+		var weldedElementID = this.value,
+				weldedElementTitle = this.innerText;
+		Core.weldedElementID = weldedElementID;
+		Core.weldedElementTitle = weldedElementTitle;
+
+		$('#welded_element button').text(weldedElementTitle);
+
+		getBracing();
+	});
+}
+
+function getBracing(){
+	var thisBtn = $('#brace button'),
+		thisParam = +thisBtn.attr('id'),
+		nextParam = thisParam + 1;
+
+	$.ajax({
+		url: Core.ajaxUrl,
+		method: 'post',
+		data: {
+			action_name: 'getBracingByProcessConnectionBodyTypeEqMode',
+			process_connection_id: Core.processConnectionID,
+			body_type_id: Core.bodyTypeID,
+			eq_mode_id: Core.eqModeID,
+		},
+		success: function (data) {
+			if (data != 'no data') {
+				blink(thisParam, '#ABFCB2')
+				thisBtn.removeAttr('disabled');
+				thisBtn.text('');
+				$('#brace ul').html(data);
+				$('.jumbotron #gen').html(data);
+				reviveNextParam(nextParam);
+			} else {
+				blink(thisParam, '#FFA0A0');
+				$('#brace button').text('нет данных');
+				$('#brace button').attr('disabled', 'disabled');
+
+			}
+		}
+	});
+}
+
+function reviveBracing(){
+    $('#brace ul li').on('click', function(){
+        var braceID = this.value,
+            braceTitle = this.innerText;
+        Core.braceID = braceID;
+        Core.braceTitle = braceTitle;
+
+        $('#brace button').text(braceTitle);
+
+        //getBracing();
+    });
 }
 
 //Rollback Dropdownds
@@ -329,32 +501,151 @@ $('.dropdown ul').on('click', function(){
 	var currListID = this.id,
 		nextListID = +currListID + 1;
 
-
 	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
 	if ($('button#' + nextListID).text() != ''){
+		var dis = '';
 		for (var i = nextListID; i<=9; i++){
 			// console.log($('.dropdown button#' + i));
 			$('.dropdown button#' + i).attr('disabled','');
 			$('.dropdown button#' + i).text('');
 			$('.dropdown button#' + i + ' + ul').empty();
+			dis += ' ' + i;
+			//console.log('Button ' + i + ' disabled');
 		}
+	console.log('Disabled Btns: ' + dis);
 	}
 
 });
 
 //Pulse pipe or cable modal
 function getFromModal(form){
-	var input = $(form).find('input').val();
+	var input = $(form).find('input').val(),
+		targetBtn = $('button#6');
 	if (form.id == 'Cable'){
 		Core.cableLength = input;
+		targetBtn.append('/K=' + Core.cableLength);
+		getValveUnits();
 	} else if (form.id == 'PulsePipe'){
 		Core.pulsePipeLength = input;
+		targetBtn.append('/K=' + Core.pulsePipeLength);
+		getValveUnits();
 	}
 	$('#modal' + form.id).modal('hide');
-	console.log(Core);
+	//console.log(Core);
 	//console.log(typeof input);
 }
 
+//Mounting Parts modal
+function getFromMountingPartsModal(){
+	var flag = true,
+		buttons = $.makeArray( $('#mounting-parts button') );
+	buttons.forEach(function(item, i, arr){
+		if (item.innerText == '') flag = false;
+	})
+
+	if (flag == false){
+		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не все поля заполнены</p></div>';
+			$(msg).insertBefore( $('#mounting-parts') );
+			msg = $('#notFilled');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+	} else {
+		$('#modalMountingParts').modal('hide');
+		//Add mountin parts to Button and revive County Code
+		var v = ((Core.valveUnitTitle == undefined) || (Core.valveUnitTitle == 'без вент. блока')) ? '- ' : Core.valveUnitTitle
+		var w = ((Core.weldedElementTitle == undefined)  || (Core.weldedElementTitle == 'без монтаж. эл-ов')) ? ' - ' : Core.weldedElementTitle
+		var b = ((Core.braceTitle == undefined) || (Core.braceTitle == 'без крепления')) ? ' -' : Core.braceTitle
+		$('#mounting_parts button').text( v + '/' + w + '/' + b ).removeAttr('disabled');
+
+		getCountryCodes();
+	}
+}
+
+function getCountryCodes(){
+	var thisBtn = $('#country_code button'),
+			thisParam = +thisBtn.attr('id');
+
+	$.ajax({
+		url: Core.ajaxUrl,
+		method: 'post',
+		data: {
+			action_name: 'getAllCountryCodes'
+		},
+		success: function (data) {
+			if (data != 'no data') {
+				blink(thisParam, '#ABFCB2')
+				thisBtn.removeAttr('disabled');
+				thisBtn.text('');
+				$('#country_code ul').html(data);
+				$('.jumbotron #gen').html(data);
+
+				(function reviveCountryCode(){
+					$('#country_code ul li').on('click', function(){
+						var countryCodeID = this.value,
+								countryCodeTitle = this.innerText;
+						Core.countryCodeID = countryCodeID;
+						Core.countryCodeTitle = countryCodeTitle;
+
+						thisBtn.text(countryCodeTitle);
+					});
+				})();
+			} else {
+				blink(thisParam, '#FFA0A0');
+				thisBtn.text('нет данных');
+				thisBtn.attr('disabled', 'disabled');
+
+			}
+		}
+	});
+}
+
+var requestInProgress = false;
+function generate(){
+	var flag = true,
+			buttons = $.makeArray( $('#config-param button') );
+	buttons.forEach(function(item, i, arr){
+		if (item.innerText == '') flag = false;
+	})
+
+	if (flag == false){ //!!!!! for test change on '!='
+		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не хватает параметров для конфигурации</p></div>';
+		$(msg).insertBefore( $('#config-param') );
+		msg = $('#notFilled');
+		msg.slideDown();
+		setTimeout(function(){ msg.slideUp() }, 2000);
+	} else {
+
+		requestInProgress = true;
+		//Back-End generate
+		$.ajax({
+			url: Core.ajaxUrl,
+			method: 'post',
+			data: {
+				action_name: 'generate',
+				//dataType: 'json',
+				//params: JSON.stringify(Core),
+				params: Core
+			},
+			success: function(data) {
+				requestInProgress = false;
+				if (data != 'no data'){
+					$('.jumbotron #gen').html(data).promise().done( function(){
+						$('#generated').animate({
+							opacity: 1,
+							height: 'show',
+						}, 1000)
+					} );
+					//$('.jumbotron #gen').html(data);
+				} else {
+					$('.jumbotron #gen').text('data not found');
+				}
+			}
+		});
+
+		//Front-End generate
+
+	}
+}
 
 /*
 	helpers API
@@ -373,6 +664,40 @@ function blink(dropDownID, color){
 			btn.animate({backgroundColor: '#fff'}, 200)
 		}
 	});
+}
+
+/* ----------
+	Loader
+ ---------- */
+var loaderView = "<div style='display:none' id='loader' class='fa fa-spinner fa-3x fa-pulse'></div>";
+
+var il; //id InitLoader Listener
+var cl; //id KillLoader Listener
+
+//init loader
+listenerInit();
+
+//API Loader
+function initLoader(){
+	clearInterval(il);
+	$('.jumbotron').append(loaderView);
+	$('#loader').fadeIn(500);
+
+	cl = setInterval(function(){
+		if (requestInProgress == false)	killLoader(listenerInit);
+	}, 200);
+}
+
+function killLoader(callback){
+	clearInterval(cl);
+	$('#loader').fadeOut(500, function(){ $(this).remove() });
+	callback();
+}
+
+function listenerInit(){
+	il = setInterval(function(){
+		if (requestInProgress == true) initLoader();
+	}, 200)
 }
 
 /*

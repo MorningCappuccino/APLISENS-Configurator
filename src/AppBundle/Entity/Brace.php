@@ -6,12 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * BodyType
+ * Brace
  *
- * @ORM\Table(name="body_type")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BodyTypeRepository")
+ * @ORM\Table(name="brace")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BraceRepository")
  */
-class BodyType
+class Brace
 {
     /**
      * @var int
@@ -25,7 +25,7 @@ class BodyType
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=15, unique=true)
+     * @ORM\Column(name="name", type="string", length=20, unique=true)
      */
     private $name;
 
@@ -37,29 +37,27 @@ class BodyType
     private $descr;
 
     /**
-     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="bodyTypes")
+     * @ORM\ManyToMany(targetEntity="ProcessConnection", inversedBy="bracing")
+     */
+    private $processConnections;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="BodyType", inversedBy="bracing")
+     */
+    private $bodyTypes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="EqMode", inversedBy="bracing")
      */
     private $eqModes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="SpecialVersion", mappedBy="bodyTypes")
-     */
-    private $specialVersions;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Brace", mappedBy="bodyTypes")
-     */
-    private $bracing;
-
     public function __construct()
     {
+        $this->processConnections = new ArrayCollection();
+        $this->bodyTypes = new ArrayCollection();
         $this->eqModes = new ArrayCollection();
     }
 
-    public function __Tostring()
-    {
-        return $this->getName();
-    }
 
     /**
      * Get id
@@ -76,7 +74,7 @@ class BodyType
      *
      * @param string $name
      *
-     * @return BodyType
+     * @return Brace
      */
     public function setName($name)
     {
@@ -100,7 +98,7 @@ class BodyType
      *
      * @param string $descr
      *
-     * @return BodyType
+     * @return Brace
      */
     public function setDescr($descr)
     {
@@ -122,9 +120,17 @@ class BodyType
     /**
      * @return mixed
      */
-    public function getSpecialVersions()
+    public function getProcessConnections()
     {
-        return $this->specialVersions;
+        return $this->processConnections;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBodyTypes()
+    {
+        return $this->bodyTypes;
     }
 
     /**
@@ -135,31 +141,6 @@ class BodyType
         return $this->eqModes;
     }
 
-//    /**
-//     * Add EqModes
-//     *
-//     * @param EqMode $eq_mode
-//     * @return BodyType
-//     */
-//    public function addEqMode(\AppBundle\Entity\EqMode $eq_mode)
-//    {
-//        $this->eqModes[] = $eq_mode;
-//
-//        return $this;
-//    }
-//
-//
-//    /**
-//     * Add EqModes
-//     *
-//     * @param SpecialVersion $special_version
-//     * @return BodyType
-//     */
-//    public function addSpecialVersion(\AppBundle\Entity\SpecialVersion $special_version)
-//    {
-//        $this->eqModes[] = $special_version;
-//
-//        return $this;
-//    }
+
 }
 

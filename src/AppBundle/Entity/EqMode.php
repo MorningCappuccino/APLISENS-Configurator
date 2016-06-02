@@ -77,6 +77,16 @@ class EqMode
      */
     private $processConnections;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="WeldedElement", mappedBy="eqModes")
+     */
+    private $weldedElements;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Brace", mappedBy="eqModes")
+     */
+    private $bracing;
+
     public function __construct()
     {
         $this->accuracyClasses = new ArrayCollection();

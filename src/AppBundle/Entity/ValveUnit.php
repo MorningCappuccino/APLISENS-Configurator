@@ -6,12 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * BodyType
+ * ValveUnit
  *
- * @ORM\Table(name="body_type")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BodyTypeRepository")
+ * @ORM\Table(name="valve_unit")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ValveUnitRepository")
  */
-class BodyType
+class ValveUnit
 {
     /**
      * @var int
@@ -37,26 +37,22 @@ class BodyType
     private $descr;
 
     /**
-     * @ORM\ManyToMany(targetEntity="EqMode", mappedBy="bodyTypes")
+     * @ORM\ManyToMany (targetEntity="ProcessConnection", inversedBy="valveUnits")
      */
-    private $eqModes;
+    private $processConnections;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SpecialVersion", mappedBy="bodyTypes")
+     * @ORM\ManyToMany(targetEntity="WeldedElement", mappedBy="valveUnits")
+     *
      */
-    private $specialVersions;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Brace", mappedBy="bodyTypes")
-     */
-    private $bracing;
+    private $weldedElements;
 
     public function __construct()
     {
-        $this->eqModes = new ArrayCollection();
+        $this->processConnections = new ArrayCollection();
     }
 
-    public function __Tostring()
+    public function __toString()
     {
         return $this->getName();
     }
@@ -76,7 +72,7 @@ class BodyType
      *
      * @param string $name
      *
-     * @return BodyType
+     * @return ValveUnit
      */
     public function setName($name)
     {
@@ -100,7 +96,7 @@ class BodyType
      *
      * @param string $descr
      *
-     * @return BodyType
+     * @return ValveUnit
      */
     public function setDescr($descr)
     {
@@ -122,44 +118,9 @@ class BodyType
     /**
      * @return mixed
      */
-    public function getSpecialVersions()
+    public function getProcessConnections()
     {
-        return $this->specialVersions;
+        return $this->processConnections;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEqModes()
-    {
-        return $this->eqModes;
-    }
-
-//    /**
-//     * Add EqModes
-//     *
-//     * @param EqMode $eq_mode
-//     * @return BodyType
-//     */
-//    public function addEqMode(\AppBundle\Entity\EqMode $eq_mode)
-//    {
-//        $this->eqModes[] = $eq_mode;
-//
-//        return $this;
-//    }
-//
-//
-//    /**
-//     * Add EqModes
-//     *
-//     * @param SpecialVersion $special_version
-//     * @return BodyType
-//     */
-//    public function addSpecialVersion(\AppBundle\Entity\SpecialVersion $special_version)
-//    {
-//        $this->eqModes[] = $special_version;
-//
-//        return $this;
-//    }
 }
-
