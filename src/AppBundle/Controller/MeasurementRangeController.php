@@ -47,10 +47,28 @@ class MeasurementRangeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            //check unique measurement range
+            $range = $measurementRange->getTheRange();
+            $unit = $measurementRange->getUnit()->getName();
+            $query = $em->getRepository('AppBundle:MeasurementRange')
+                        ->createQueryBuilder('m')
+                        ->join('m.unit', 'u')
+                        ->where('m.theRange = :range')
+                        ->andWhere('u.name = :unit')
+                    ->setParameters([':range' => $range, ':unit' => $unit])
+                    ->setMaxResults(1)
+                    ->getQuery();
+            $is_exist_range = $query->getResult();
+            if (!empty($is_exist_range)) {
+               $msg = 'Eah! The range "'. $range .' '. $unit .'" already exist!';
+               $this->addFlash('warning', $msg);
+
+                return $this->redirectToRoute('measurementrange_new');
+            }
             $em->persist($measurementRange);
             $em->flush();
 
-            return $this->redirectToRoute('measurementrange_index', array('id' => $measurementRange->getId()));
+            return $this->redirectToRoute('measurementrange_index');
         }
 
         return $this->render('measurementrange/new.html.twig', array(
@@ -92,7 +110,7 @@ class MeasurementRangeController extends Controller
             $em->persist($measurementRange);
             $em->flush();
 
-            return $this->redirectToRoute('measurementrange_edit', array('id' => $measurementRange->getId()));
+            return $this->redirectToRoute('measurementrange_index');
         }
 
         return $this->render('measurementrange/edit.html.twig', array(

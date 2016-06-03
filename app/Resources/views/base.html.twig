@@ -77,7 +77,7 @@
                 <li><a href="#">Export</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li class=""><a href="{{ path('eqtype_index') }}">Equipment type</a></li>
+                <li class="disabled"><a href="{{ path('eqtype_index') }}">Equipment type</a></li>
                 <li><a href="{{ path('eqmode_index') }}">Equipment mode</a></li>
                 <li><a href="{{ path('accuracy_index') }}">Accuracy class</a></li>
                 <li><a href="{{ path('specialversion_index') }}">Special version</a></li>
@@ -104,6 +104,12 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             {% for flash_message in app.session.flashBag.get('notice') %}
                 <div class="alert alert-success">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+
+            {% for flash_message in app.session.flashBag.get('warning') %}
+                <div class="alert alert-danger">
                     {{ flash_message }}
                 </div>
             {% endfor %}
