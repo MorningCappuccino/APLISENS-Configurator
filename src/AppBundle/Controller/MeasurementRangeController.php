@@ -68,7 +68,11 @@ class MeasurementRangeController extends Controller
             $em->persist($measurementRange);
             $em->flush();
 
-            return $this->redirectToRoute('measurementrange_index');
+            $nextAction = $form->get('saveAndAdd')->isClicked()
+                ? 'measurementrange_new'
+                : 'measurementrange_index';
+
+            return $this->redirectToRoute($nextAction);
         }
 
         return $this->render('measurementrange/new.html.twig', array(

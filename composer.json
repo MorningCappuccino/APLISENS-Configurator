@@ -29,7 +29,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^1.1",
         "symfony/assetic-bundle": "^2.8",
-        "leafo/scssphp": "^0.6.3"
+        "leafo/scssphp": "^0.6.3",
+        "vich/uploader-bundle": "^1.1"
 
     },
     "require-dev": {
