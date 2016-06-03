@@ -1,6 +1,10 @@
 <div id="generated">
     <h3>Технические характеристики: </h3>
+    {% if eqMode.imageName != '' %}
+    <img class="sensor" src="{{ asset("assets/img/products/") }}{{ eqMode.imageName }}">
+    {% else %}
     <img class="sensor" src="{{ asset("assets/img/no-image.png") }}">
+    {% endif %}
     <table class="table transcript">
         <thead>
         <tr>

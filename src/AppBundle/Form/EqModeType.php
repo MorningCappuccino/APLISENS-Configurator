@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class EqModeType extends AbstractType
 {
@@ -20,7 +21,11 @@ class EqModeType extends AbstractType
         $builder
             ->add('name')
             ->add('descr')
-            ->add('img')
+            ->add('imageFile', VichImageType::class, array(
+                'required'      => false,
+                'allow_delete'  => true, // not mandatory, default is true
+                'download_link' => false,// not mandatory, default is true
+            ))
             ->add('eqType')
             ->add('accuracyClasses', null, array( //works: CollectionType
                 'expanded' => true,
