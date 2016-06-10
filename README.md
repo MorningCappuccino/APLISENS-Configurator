@@ -20,7 +20,9 @@ This is configurator for Aplisens.
 - [x] disable choice "kPa, MPa" in measurement range
 - [x] on select measurement range add prefix 'kPa, MPa ...'
 - [x] make some animation on ajax 'processing'. [exmp](http://stackoverflow.com/questions/2008507/jquery-ajax-request-wait-for-latest-request-to-finish)
-- [ ] if MR type (kPa, MPA), not found - hide him.
+- [ ] ~~if MR type (kPa, MPA), not found - hide him.~~
+- [ ] Backend for "Other SpecVersions"
+
 
 
 ###May be on future

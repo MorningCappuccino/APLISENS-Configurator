@@ -85,7 +85,7 @@ class AjaxController extends Controller
                     ->setParameter(':eq_mode_id', $eq_mode_id)
                     ->getQuery();
         $specialVersions = $query->getResult(2);
-        return $this->render('@Front/list.html.twig', array('data' => $specialVersions));
+        return $this->render('FrontBundle::SpecialVersionList.html.php', array('data' => $specialVersions));
     }
 
     public function getMeasurementRangesByEqModeIDAndAccuracyID($request)
@@ -115,10 +115,11 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository('AppBundle:BodyType')
                         ->createQueryBuilder('b')
+                        ->distinct(true) //in PROD may without distinct
                         ->join('b.eqModes', 'e')
                         ->join('b.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
-                        ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->orWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $bodyTypes = $query->getResult(2);
@@ -132,10 +133,11 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository('AppBundle:ProcessConnection')
                         ->createQueryBuilder('p')
+                        ->distinct(true) //in PROD may without distinct
                         ->join('p.eqModes', 'e')
                         ->join('p.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
-                        ->andWhere('s.id = :special_version_id')
+                        ->orWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $processConnections = $query->getResult(2);
@@ -213,10 +215,18 @@ class AjaxController extends Controller
 
     public function generate($request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $params = $request->get('params');
         $eq_mode_id = $params['eqModeID'];
         $accuracy_id = $params['accuracyID'];
         $special_version_id = $params['specialVersionID'];
+        if (isset($params['ContOtherSpecVers']['ids'])){
+            $otherSpecialVersions_ids = $params['ContOtherSpecVers']['ids'];
+            $otherSpecialVersions = $em->getRepository('AppBundle:SpecialVersion')->findBy(['id' => $otherSpecialVersions_ids]);
+        } else {
+            $otherSpecialVersions = null;
+        }
         $measurement_range_id = $params['measurementRangeID'];
         $body_type_id = $params['bodyTypeID'];
         $process_connection_id = $params['processConnectionID'];
@@ -225,7 +235,6 @@ class AjaxController extends Controller
         $brace_id = $params['braceID'];
         $country_code_id = $params['countryCodeID'];
 
-        $em = $this->getDoctrine()->getManager();
         $eqMode = $em->getRepository('AppBundle:EqMode')->findOneBy(['id' => $eq_mode_id]);
         $accuracy = $em->getRepository('AppBundle:Accuracy')->findOneBy(['id' => $accuracy_id]);
         $specialVersion = $em->getRepository('AppBundle:SpecialVersion')->findOneBy(['id' => $special_version_id]);
@@ -240,6 +249,7 @@ class AjaxController extends Controller
             'eqMode' => $eqMode,
             'accuracy' => $accuracy,
             'specialVersion' => $specialVersion,
+            'otherSpecialVersions' => $otherSpecialVersions,
             'measurementRange' => $measurementRange,
             'bodyType' => $bodyType,
             'processConnection' => $processConnection,

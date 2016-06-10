@@ -18,13 +18,24 @@
             <td>{{ eqMode.descr }}</td>
         </tr>
         <tr>
-            <td>{{ accuracy.value }} </td>
+            <td>{{ accuracy.value + 0 }} </td>
             <td>Основная приведённая погрешность</td>
         </tr>
+        {% if specialVersion %}
+            {% set specialVersionName = specialVersion.name ~ ' /'%}
         <tr>
             <td>{{ specialVersion.name }} </td>
             <td>{{ specialVersion.descr }}</td>
         </tr>
+            {% if otherSpecialVersions %}
+                {% for item in otherSpecialVersions %}
+                <tr>
+                    <td>{{ item.name }} </td>
+                    <td>{{ item.descr }}</td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
         <tr>
             <td>{{ measurementRange.displayName() }} </td>
             <td>Диапазон измерения</td>
@@ -66,9 +77,20 @@
     </table>
     <div class="code-again">
         <p><span>Преобразователь давления измерительный</span>
+            <br>
             {{ eqMode.getName() }} /
-            {{ accuracy.value }} /
-            {{ specialVersion.name }} /
+            {{ accuracy.value + 0 }} /
+
+            {#Special Versions#}
+            {% if specialVersionName %}
+                {{ specialVersionName }}
+                {% if otherSpecialVersions %}
+                    {% for item in otherSpecialVersions %}
+                            <td>{{ item.name }} / </td>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+
             {{ measurementRange.displayName() }} /
             {{ bodyType.name }} /
             {{ processConnection.name }} /
@@ -76,6 +98,8 @@
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
+
+        <span class="ty">ТУ РБ 390171150.001-2004</span>
         </p>
     </div>
     <div class="clearfix"></div>

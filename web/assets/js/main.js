@@ -7,7 +7,7 @@
 * #Main API
 *   -Rollback Dropdown
 * #Helpders API
-* #Temprary
+* #Temporarily
 */
 
 
@@ -67,7 +67,26 @@ var Core = {
 	braceID: null,
 	braceTitle: null,
 	countryCodeID: null,
-	countryCodeTitle: null
+	countryCodeTitle: null,
+	//more stuff
+	ContOtherSpecVers: {
+		currID: '',
+		currTitle: '',
+		arr: {},
+		ids: []
+	}
+}
+
+var Helpers = {
+	Colors: {
+		danger: '#FFA0A0',
+		success: '#ABFCB2'
+	},
+	Alerts: {
+		danger: '<div class="alert alert-danger">' +
+		'<p></p>' +
+		'</div>'
+	}
 }
 
 function reviveNextParam(nextParam){
@@ -109,7 +128,10 @@ function reviveEqMode(){
 		//clear accuracy label
 		// accuracyBtn.text('');
 
-
+		//#more Special Version
+		$('.more-spec-ver').hide();
+		//and clear
+		destroyOtherSpecialVersions();
 
 		$.ajax({
 			url: Core.ajaxUrl,
@@ -149,6 +171,11 @@ function reviveAccuracy(){
 				nextParam = +thisBtn.attr('id');
 		Core.accuracyID = accuracyID;
 
+		//#more Special Version
+		$('.more-spec-ver').hide();
+		//and clear
+		destroyOtherSpecialVersions();
+
 		//set Title to Dropdown
 		$('#accuracy button').text(accuracyTitle);
 
@@ -186,6 +213,10 @@ function reviveSpecialVersion(){
 				nextParam = +thisBtn.attr('id');
 		Core.specialVersionID = specialVersionID;
 
+		//more spec version
+		if (specialVersionTitle != 'без спец. исп.'){
+			initOtherSpecVers();
+		} else { $('.more-spec-ver').hide(); }
 
 		//set Title to Dropdown
 		$('#special_version button').text(specialVersionTitle);
@@ -646,6 +677,115 @@ function generate(){
 
 	}
 }
+
+
+/*
+	More Special Version Modal
+ */
+$('.more-spec-ver').click(function(){
+	$('#modalMoreSpecialVersions').modal();
+});
+
+function getFromMoreSpecialVersionsModal(){
+	$('#modalMoreSpecialVersions').modal('hide');
+}
+
+function initOtherSpecVers(){
+	var currSpecialVersions = [],
+		cont = $('#modalMoreSpecialVersions').find('#many-spec-ver');
+
+	//insert Clear Dropdown in container
+	cont.html('<div id="" class="dropdown dd-mod dd-mod-spec-ver">'+
+			'<button id="btn-more-spec-ver" class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
+			'<ul class="dropdown-menu">'+
+			'</ul>'+
+			'</div>'+
+			'<i onclick="addSpecVer()" class="fa fa-plus-circle fa-2x add-spec-ver"></i>');
+	//assigned him ID
+	$( cont ).find('.dropdown').attr('id','spec_ver_'+2);
+	currSpecialVersions = $.parseHTML($('button#3 + ul').html());
+	//delete first li with "без спец. исп."
+	currSpecialVersions.splice(0,1);
+	$('#spec_ver_'+ 2 + ' ul').html( currSpecialVersions );
+	reviveNewSpecVer(2);
+
+	$('.more-spec-ver').fadeIn();
+}
+
+function reviveNewSpecVer(id){
+	$('#spec_ver_'+ id + ' ul li').on('click', function(){
+		Core.ContOtherSpecVers.currID = this.value,
+		Core.ContOtherSpecVers.currTitle = this.innerText;
+		var btn = ('#spec_ver_'+ id + ' button');
+		$( btn ).text(this.innerText);
+		//Core.ContOtherSpecVers.arr[this.value] = this.innerText;
+	})
+}
+
+function addSpecVer(){
+	var SV = Core.ContOtherSpecVers,
+		currTag, flag = true;
+
+	//TOD: check duplicate with DEFAULT entity
+	if (SV.currTitle == $('#special_version button').text()){
+		flag = false;
+		var msg = $.parseHTML(Helpers.Alerts.danger);
+		$( msg ).find('p').text('Такое спец. исполнение уже было выбрано ранее');
+		$('#modalMoreSpecialVersions .primary-text').before(msg);
+		$( msg ).slideDown(500);
+		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
+	}
+
+	$.each(SV.arr, function(index, value){
+		if (index == SV.currID) flag = false;
+	});
+
+	if (flag == true){
+        SV.arr[SV.currID] = SV.currTitle;
+		//for BackEndj
+		SV.ids.push(SV.currID);
+
+        currTag = $.parseHTML('<div class="spec-ver-tag">' +
+				'<span></span><i onclick="delSpecVer(this)" class="fa fa-close"></i>' +
+				'</div>');
+        $(currTag).attr('val', SV.currID);
+        $(currTag).find('span').text(SV.currTitle);
+        $('#tag-showcase').append( currTag );
+		//console.log(SV.arr);
+		//console.log(SV.ids);
+	} else {
+		//message about entity was exist
+		blink('btn-more-spec-ver', Helpers.Colors.danger);
+		var stareElem = $('.spec-ver-tag[val='+SV.currID+']');
+		stareElem.animate({
+			backgroundColor: Helpers.Colors.success
+		}, 300, 'swing', function(){
+			stareElem.animate({backgroundColor: '#fff'}, 200)
+		})
+	}
+
+}
+
+function delSpecVer(obj){
+	var SV = Core.ContOtherSpecVers;
+	//delete tag
+	var tarElem = $( obj ).parent();
+	var tagID = tarElem.attr('val');
+	tarElem.remove();
+	//delete elem from Object
+	delete SV.arr[tagID];
+	SV.ids.forEach(function(item, i, arr){
+		if (item == tagID) delete arr[i];
+	});
+	//console.log(SV.arr);
+	//console.log(SV.ids);
+}
+
+function destroyOtherSpecialVersions(){
+	$('#tag-showcase').empty();
+	Core.ContOtherSpecVers.arr = {}
+}
+
 
 /*
 	helpers API

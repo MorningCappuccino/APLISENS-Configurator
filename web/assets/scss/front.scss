@@ -1,7 +1,46 @@
 @import "bootstrap/_variables.scss";
 
+/*
+#Vars
+#Text
+#Manage Section
+  - Choice Buttons
+#Jumbotron
+  ##Generated
+#Modal
+*/
+
+//-----------Vars----------//
+$yellow: yellow;
+
+//-----------text----------//
+h3 {
+  text-align: center;
+}
+
+.primary-text {
+  font-size: 16px;
+}
+
+.generated p {
+  font-size: 15px;
+}
+
+table.transcript {
+  thead {
+    font-size: 17px;
+  }
+  tbody {
+    font-size: 15px;
+  }
+}
+
+.alert-danger {
+  display: none;
+}
+
 //choice buttons
-#config-param {
+#config-param, #many-spec-ver {
   label {
     display: block;
   }
@@ -40,6 +79,79 @@
     margin: 25px auto;
   }
 }
+
+#parameters {
+  margin-top: 35px;
+}
+
+//special version button
+#special_version {
+  position: relative;
+
+  .more-spec-ver {
+    display: none;
+    position: absolute;
+    top: -55px;
+    right: 0;
+    font-size: 1.5em;
+  }
+}
+
+//font-awesome style
+.more-spec-ver, .add-spec-ver, .fa-close {
+  cursor: pointer;
+  transition: color .2s;
+  &:hover {
+    color: $brand-primary;
+  }
+}
+
+
+//-----------jumbotron----------//
+.jumbotron {
+  position: relative;
+  #loader {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+  }
+
+
+}
+
+//-----------Generated----------//
+#generated {
+  display: none;
+  opacity: 0;
+  img.sensor {
+    float: right;
+    // width: 100%;
+    max-width: 250px;
+  }
+  table.transcript {
+    max-width: 720px;
+  }
+  .code-again {
+    background-color: rgba(255,211,0, .7);
+    padding: 6px 18px;
+    border-radius: 10px;
+    span {
+      font-size: 17px;
+    }
+    span.ty {
+      opacity: .3;
+    }
+    p {
+      font-size: 1.3em;
+      margin-bottom: 0;
+    }
+  }
+}
+
+/********************************
+                Modal----------//
+********************************/
+
 
 //-----------Modal Mounting Parts----------//
 #modalMountingParts {
@@ -89,25 +201,42 @@
   }
 }
 
-//-----------text----------//
-h3 {
-  text-align: center;
+//----------Modal More Special Version----------//
+.modal-450 {
+  width: 450px;
 }
 
-.primary-text {
-  font-size: 1.3em;
+.dd-mod-spec-ver {
+  margin: 0 auto;
+  width: 115px;
+  //display: block !important;
+  margin-left: 120px;
 }
 
-.generated p {
-  font-size: 15px;
+.add-spec-ver {
+  vertical-align: middle;
+  margin-left: 10px;
 }
 
-table.transcript {
-  thead {
-    font-size: 17px;
-  }
-  tbody {
-    font-size: 15px;
+#tag-showcase {
+  min-height: 69px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #eee;
+  padding: 10px;
+  font-size: 16px;
+
+
+  .spec-ver-tag {
+    display: inline-block;
+    margin-right: 20px;
+
+    padding: 2px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    span {
+      margin-right: 5px;
+    }
   }
 }
 
@@ -116,34 +245,6 @@ table.transcript {
   display: none;
 }
 
-//-----------jumbotron----------//
-.jumbotron {
-  position: relative;
-  #loader {
-    position: absolute;
-    top: 50%;
-    right: 50%;
-  }
 
-}
 
-#generated {
-  display: none;
-  opacity: 0;
-  img.sensor {
-    float: right;
-    // width: 100%;
-    max-width: 250px;
-  }
-  table.transcript {
-    max-width: 720px;
-  }
-  .code-again {
-    span {
-      font-size: 17px;
-    }
-    p {
-      font-size: 1.3em;
-    }
-  }
-}
+
