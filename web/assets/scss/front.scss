@@ -3,6 +3,7 @@
 /*
 #Vars
 #Text
+#Rewrite
 #Manage Section
   - Choice Buttons
 #Jumbotron
@@ -11,9 +12,16 @@
 */
 
 //-----------Vars----------//
-$yellow: yellow;
-
+$mainColor: #ffd300;
+$btnTextColor: #2e2e2e;
+$btnBorderColor: #ebc300;
+$btnHoverColor: #ffbf00;
+$btnHoverBorderColor: #eba100;
 //-----------text----------//
+h1 {
+  color: $mainColor;
+}
+
 h3 {
   text-align: center;
 }
@@ -37,6 +45,29 @@ table.transcript {
 
 .alert-danger {
   display: none;
+}
+
+//rewrite
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+  color: $btnTextColor;
+  background-color: $mainColor;
+  border-color: $mainColor;
+}
+
+.btn {
+  transition: all .1s;
+}
+
+.btn-primary {
+  color: $btnTextColor;
+  background-color: $mainColor;
+  border-color: $btnBorderColor;
+}
+
+.btn-primary:hover {
+  color: $btnTextColor;
+  background-color: $btnHoverColor;
+  border-color: $btnHoverBorderColor;
 }
 
 //choice buttons
@@ -106,7 +137,6 @@ table.transcript {
   }
 }
 
-
 //-----------jumbotron----------//
 .jumbotron {
   position: relative;
@@ -115,7 +145,6 @@ table.transcript {
     top: 50%;
     right: 50%;
   }
-
 
 }
 
@@ -132,7 +161,7 @@ table.transcript {
     max-width: 720px;
   }
   .code-again {
-    background-color: rgba(255,211,0, .7);
+    background-color: rgba(255, 211, 0, .7);
     padding: 6px 18px;
     border-radius: 10px;
     span {
@@ -151,7 +180,6 @@ table.transcript {
 /********************************
                 Modal----------//
 ********************************/
-
 
 //-----------Modal Mounting Parts----------//
 #modalMountingParts {
@@ -226,7 +254,6 @@ table.transcript {
   padding: 10px;
   font-size: 16px;
 
-
   .spec-ver-tag {
     display: inline-block;
     margin-right: 20px;
@@ -245,6 +272,37 @@ table.transcript {
   display: none;
 }
 
+//----------Styling----------//
+#styling {
+  position: fixed;
+  top: 85%;
+  background-color: #dfdfdf;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+
+  .switch {
+
+    i {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      margin: 3px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+    }
+    &:nth-child(1) i {
+      background-color: $mainColor;
+      border: 1px solid $btnBorderColor;
+    }
+    &:nth-child(2) i {
+      background-color: #337ab7;
+    }
+  }
+}
 
 
 
