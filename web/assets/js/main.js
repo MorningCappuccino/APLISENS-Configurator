@@ -535,7 +535,7 @@ $('.dropdown ul').on('click', function(){
 	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
 	if ($('button#' + nextListID).text() != ''){
 		var dis = '';
-		for (var i = nextListID; i<=9; i++){
+		for (var i = nextListID; i<=11; i++){
 			// console.log($('.dropdown button#' + i));
 			$('.dropdown button#' + i).attr('disabled','');
 			$('.dropdown button#' + i).text('');
@@ -670,7 +670,12 @@ function generate(){
 				} else {
 					$('.jumbotron #gen').text('data not found');
 				}
+			},
+			error: function(jqXHR, textStatus, errorThrow){
+				killLoader(listenerInit);
+				$('.jumbotron #gen').text('К сожалению, что-то пошло не так. Запрос не удался :(');
 			}
+
 		});
 
 		//Front-End generate
@@ -707,6 +712,14 @@ function initOtherSpecVers(){
 	//delete first li with "без спец. исп."
 	currSpecialVersions.splice(0,1);
 	$('#spec_ver_'+ 2 + ' ul').html( currSpecialVersions );
+
+	//Add first SpecialVersion to CurrID and to Caption
+	Core.ContOtherSpecVers.currID = currSpecialVersions[0].value;
+	Core.ContOtherSpecVers.currTitle = currSpecialVersions[0].innerText;
+	var btn = ('#spec_ver_2 button');
+	$( btn ).text(Core.ContOtherSpecVers.currTitle);
+	//
+
 	reviveNewSpecVer(2);
 
 	$('.more-spec-ver').fadeIn();
@@ -736,6 +749,7 @@ function addSpecVer(){
 		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
 	}
 
+	//Tag exist in SV.Array?
 	$.each(SV.arr, function(index, value){
 		if (index == SV.currID) flag = false;
 	});
@@ -799,9 +813,9 @@ function blink(dropDownID, color){
 		// opacity: 1
 	},
 	{
-		duration: 200,
+		duration: 400,
 		complete: function(){
-			btn.animate({backgroundColor: '#fff'}, 200)
+			btn.animate({backgroundColor: '#fff'}, 200);
 		}
 	});
 }

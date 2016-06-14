@@ -81,7 +81,7 @@ table.transcript {
     .btn-conf {
       width: 115px;
       height: 33px;
-      &#b10 {
+      &.btn-long {
         width: 220px !important;
       }
     }

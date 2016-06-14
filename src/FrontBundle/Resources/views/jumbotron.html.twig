@@ -82,7 +82,7 @@
             {{ accuracy.value + 0 }} /
 
             {#Special Versions#}
-            {% if specialVersionName %}
+            {% if specialVersionName is defined %}
                 {{ specialVersionName }}
                 {% if otherSpecialVersions %}
                     {% for item in otherSpecialVersions %}
