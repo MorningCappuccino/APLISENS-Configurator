@@ -5,16 +5,23 @@
 /*
 * #On load init
 * #Main API
-*   -Rollback Dropdown
+*   - Rollback Dropdown
+* #Modal Windows
+* 	- Mounting Parts
+* 	- Pulse pipe or cable
+* 	- More Special Version
+* #Generator
+* 	- UI Loader
 * #Helpders API
 * #Temporarily
 */
 
 
 
-/*
-		On load init
-*/
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+		      On load init
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
 	$('.dropdown').tooltip({
 		container: 'body'
 	});
@@ -42,9 +49,9 @@ function getAllEqModes(){
 getAllEqModes();
 
 
-/*
-	main API
- */
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+ 				main API
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 var Core = {
 	ajaxUrl: 'http://rainbow2/ajax/',
@@ -356,7 +363,6 @@ function reviveProcessConnection(){
 function getValveUnits(thisBtn, thisParam){
 
 	var nextParam = 8,
-		thisBtn = $('#valve_unit button'),
 		nextBtn = $('#welded_element button');
 
 			$.ajax({
@@ -527,71 +533,6 @@ function reviveBracing(){
     });
 }
 
-//Rollback Dropdownds
-$('.dropdown ul').on('click', function(){
-	var currListID = this.id,
-		nextListID = +currListID + 1;
-
-	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
-	if ($('button#' + nextListID).text() != ''){
-		var dis = '';
-		for (var i = nextListID; i<=11; i++){
-			// console.log($('.dropdown button#' + i));
-			$('.dropdown button#' + i).attr('disabled','');
-			$('.dropdown button#' + i).text('');
-			$('.dropdown button#' + i + ' + ul').empty();
-			dis += ' ' + i;
-			//console.log('Button ' + i + ' disabled');
-		}
-	console.log('Disabled Btns: ' + dis);
-	}
-
-});
-
-//Pulse pipe or cable modal
-function getFromModal(form){
-	var input = $(form).find('input').val(),
-		targetBtn = $('button#6');
-	if (form.id == 'Cable'){
-		Core.cableLength = input;
-		targetBtn.append('/K=' + Core.cableLength);
-		getValveUnits();
-	} else if (form.id == 'PulsePipe'){
-		Core.pulsePipeLength = input;
-		targetBtn.append('/K=' + Core.pulsePipeLength);
-		getValveUnits();
-	}
-	$('#modal' + form.id).modal('hide');
-	//console.log(Core);
-	//console.log(typeof input);
-}
-
-//Mounting Parts modal
-function getFromMountingPartsModal(){
-	var flag = true,
-		buttons = $.makeArray( $('#mounting-parts button') );
-	buttons.forEach(function(item, i, arr){
-		if (item.innerText == '') flag = false;
-	})
-
-	if (flag == false){
-		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не все поля заполнены</p></div>';
-			$(msg).insertBefore( $('#mounting-parts') );
-			msg = $('#notFilled');
-			msg.slideDown();
-			setTimeout(function(){ msg.slideUp() }, 2000);
-	} else {
-		$('#modalMountingParts').modal('hide');
-		//Add mountin parts to Button and revive County Code
-		var v = ((Core.valveUnitTitle == undefined) || (Core.valveUnitTitle == 'без вент. блока')) ? '- ' : Core.valveUnitTitle
-		var w = ((Core.weldedElementTitle == undefined)  || (Core.weldedElementTitle == 'без монтаж. эл-ов')) ? ' - ' : Core.weldedElementTitle
-		var b = ((Core.braceTitle == undefined) || (Core.braceTitle == 'без крепления')) ? ' -' : Core.braceTitle
-		$('#mounting_parts button').text( v + '/' + w + '/' + b ).removeAttr('disabled');
-
-		getCountryCodes();
-	}
-}
-
 function getCountryCodes(){
 	var thisBtn = $('#country_code button'),
 			thisParam = +thisBtn.attr('id');
@@ -629,6 +570,204 @@ function getCountryCodes(){
 		}
 	});
 }
+
+/*>>>>>>>>>>>
+	--------------> Rollback Dropdownds
+ */
+$('.dropdown ul').on('click', function(){
+	var currListID = this.id,
+		nextListID = +currListID + 1;
+
+	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
+	if ($('button#' + nextListID).text() != ''){
+		var dis = '';
+		for (var i = nextListID; i<=11; i++){
+			// console.log($('.dropdown button#' + i));
+			$('.dropdown button#' + i).attr('disabled','');
+			$('.dropdown button#' + i).text('');
+			$('.dropdown button#' + i + ' + ul').empty();
+			dis += ' ' + i;
+			//console.log('Button ' + i + ' disabled');
+		}
+	console.log('Disabled Btns: ' + dis);
+	}
+
+});
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+ 				Modal Windows
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+/*
+	Pulse pipe or cable modal
+*/
+function getFromModal(form){
+	var input = $(form).find('input').val(),
+		targetBtn = $('button#6');
+	if (form.id == 'Cable'){
+		Core.cableLength = input;
+		targetBtn.append('/K=' + Core.cableLength);
+		getValveUnits();
+	} else if (form.id == 'PulsePipe'){
+		Core.pulsePipeLength = input;
+		targetBtn.append('/K=' + Core.pulsePipeLength);
+		getValveUnits();
+	}
+	$('#modal' + form.id).modal('hide');
+	//console.log(Core);
+	//console.log(typeof input);
+}
+
+/*
+	Mounting Parts modal
+*/
+function getFromMountingPartsModal(){
+	var flag = true,
+		buttons = $.makeArray( $('#mounting-parts button') );
+	buttons.forEach(function(item, i, arr){
+		if (item.innerText == '') flag = false;
+	})
+
+	if (flag == false){
+		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не все поля заполнены</p></div>';
+			$(msg).insertBefore( $('#mounting-parts') );
+			msg = $('#notFilled');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+	} else {
+		$('#modalMountingParts').modal('hide');
+		//Add mountin parts to Button and revive County Code
+		var v = ((Core.valveUnitTitle == undefined) || (Core.valveUnitTitle == 'без вент. блока')) ? '- ' : Core.valveUnitTitle
+		var w = ((Core.weldedElementTitle == undefined)  || (Core.weldedElementTitle == 'без монтаж. эл-ов')) ? ' - ' : Core.weldedElementTitle
+		var b = ((Core.braceTitle == undefined) || (Core.braceTitle == 'без крепления')) ? ' -' : Core.braceTitle
+		$('#mounting_parts button').text( v + '/' + w + '/' + b ).removeAttr('disabled');
+
+		getCountryCodes();
+	}
+}
+
+/*
+	More Special Version Modal
+ */
+$('.more-spec-ver').click(function(){
+	$('#modalMoreSpecialVersions').modal();
+});
+
+function getFromMoreSpecialVersionsModal(){
+	$('#modalMoreSpecialVersions').modal('hide');
+}
+
+function initOtherSpecVers(){
+	var currSpecialVersions = [],
+			cont = $('#modalMoreSpecialVersions').find('#many-spec-ver');
+
+	//insert Clear Dropdown in container
+	cont.html('<div id="" class="dropdown dd-mod dd-mod-spec-ver">'+
+			'<button id="btn-more-spec-ver" class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
+			'<ul class="dropdown-menu">'+
+			'</ul>'+
+			'</div>'+
+			'<i onclick="addSpecVer()" class="fa fa-plus-circle fa-2x add-spec-ver"></i>');
+	//assigned him ID
+	$( cont ).find('.dropdown').attr('id','spec_ver_'+2);
+	currSpecialVersions = $.parseHTML($('button#3 + ul').html());
+	//delete first li with "без спец. исп."
+	currSpecialVersions.splice(0,1);
+	$('#spec_ver_'+ 2 + ' ul').html( currSpecialVersions );
+
+	//Add first SpecialVersion to CurrID and to Caption
+	Core.ContOtherSpecVers.currID = currSpecialVersions[0].value;
+	Core.ContOtherSpecVers.currTitle = currSpecialVersions[0].innerText;
+	var btn = ('#spec_ver_2 button');
+	$( btn ).text(Core.ContOtherSpecVers.currTitle);
+	//
+
+	reviveNewSpecVer(2);
+
+	$('.more-spec-ver').fadeIn();
+}
+
+function reviveNewSpecVer(id){
+	$('#spec_ver_'+ id + ' ul li').on('click', function(){
+		Core.ContOtherSpecVers.currID = this.value,
+				Core.ContOtherSpecVers.currTitle = this.innerText;
+		var btn = ('#spec_ver_'+ id + ' button');
+		$( btn ).text(this.innerText);
+		//Core.ContOtherSpecVers.arr[this.value] = this.innerText;
+	})
+}
+
+function addSpecVer(){
+	var SV = Core.ContOtherSpecVers,
+			currTag, flag = true;
+
+	//TOD: check duplicate with DEFAULT entity
+	if (SV.currTitle == $('#special_version button').text()){
+		flag = false;
+		var msg = $.parseHTML(Helpers.Alerts.danger);
+		$( msg ).find('p').text('Такое спец. исполнение уже было выбрано ранее');
+		$('#modalMoreSpecialVersions .primary-text').before(msg);
+		$( msg ).slideDown(500);
+		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
+	}
+
+	//Tag exist in SV.Array?
+	$.each(SV.arr, function(index, value){
+		if (index == SV.currID) flag = false;
+	});
+
+	if (flag == true){
+		SV.arr[SV.currID] = SV.currTitle;
+		//for BackEndj
+		SV.ids.push(SV.currID);
+
+		currTag = $.parseHTML('<div class="spec-ver-tag">' +
+				'<span></span><i onclick="delSpecVer(this)" class="fa fa-close"></i>' +
+				'</div>');
+		$(currTag).attr('val', SV.currID);
+		$(currTag).find('span').text(SV.currTitle);
+		$('#tag-showcase').append( currTag );
+		//console.log(SV.arr);
+		//console.log(SV.ids);
+	} else {
+		//message about entity was exist
+		blink('btn-more-spec-ver', Helpers.Colors.danger);
+		var stareElem = $('.spec-ver-tag[val='+SV.currID+']');
+		stareElem.animate({
+			backgroundColor: Helpers.Colors.success
+		}, 300, 'swing', function(){
+			stareElem.animate({backgroundColor: '#fff'}, 200)
+		})
+	}
+
+}
+
+function delSpecVer(obj){
+	var SV = Core.ContOtherSpecVers;
+	//delete tag
+	var tarElem = $( obj ).parent();
+	var tagID = tarElem.attr('val');
+	tarElem.remove();
+	//delete elem from Object
+	delete SV.arr[tagID];
+	SV.ids.forEach(function(item, i, arr){
+		if (item == tagID) delete arr[i];
+	});
+	//console.log(SV.arr);
+	//console.log(SV.ids);
+}
+
+function destroyOtherSpecialVersions(){
+	$('#tag-showcase').empty();
+	Core.ContOtherSpecVers.arr = {}
+}
+
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+   			 Generator
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 var requestInProgress = false;
 function generate(){
@@ -683,146 +822,9 @@ function generate(){
 	}
 }
 
-
-/*
-	More Special Version Modal
- */
-$('.more-spec-ver').click(function(){
-	$('#modalMoreSpecialVersions').modal();
-});
-
-function getFromMoreSpecialVersionsModal(){
-	$('#modalMoreSpecialVersions').modal('hide');
-}
-
-function initOtherSpecVers(){
-	var currSpecialVersions = [],
-		cont = $('#modalMoreSpecialVersions').find('#many-spec-ver');
-
-	//insert Clear Dropdown in container
-	cont.html('<div id="" class="dropdown dd-mod dd-mod-spec-ver">'+
-			'<button id="btn-more-spec-ver" class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
-			'<ul class="dropdown-menu">'+
-			'</ul>'+
-			'</div>'+
-			'<i onclick="addSpecVer()" class="fa fa-plus-circle fa-2x add-spec-ver"></i>');
-	//assigned him ID
-	$( cont ).find('.dropdown').attr('id','spec_ver_'+2);
-	currSpecialVersions = $.parseHTML($('button#3 + ul').html());
-	//delete first li with "без спец. исп."
-	currSpecialVersions.splice(0,1);
-	$('#spec_ver_'+ 2 + ' ul').html( currSpecialVersions );
-
-	//Add first SpecialVersion to CurrID and to Caption
-	Core.ContOtherSpecVers.currID = currSpecialVersions[0].value;
-	Core.ContOtherSpecVers.currTitle = currSpecialVersions[0].innerText;
-	var btn = ('#spec_ver_2 button');
-	$( btn ).text(Core.ContOtherSpecVers.currTitle);
-	//
-
-	reviveNewSpecVer(2);
-
-	$('.more-spec-ver').fadeIn();
-}
-
-function reviveNewSpecVer(id){
-	$('#spec_ver_'+ id + ' ul li').on('click', function(){
-		Core.ContOtherSpecVers.currID = this.value,
-		Core.ContOtherSpecVers.currTitle = this.innerText;
-		var btn = ('#spec_ver_'+ id + ' button');
-		$( btn ).text(this.innerText);
-		//Core.ContOtherSpecVers.arr[this.value] = this.innerText;
-	})
-}
-
-function addSpecVer(){
-	var SV = Core.ContOtherSpecVers,
-		currTag, flag = true;
-
-	//TOD: check duplicate with DEFAULT entity
-	if (SV.currTitle == $('#special_version button').text()){
-		flag = false;
-		var msg = $.parseHTML(Helpers.Alerts.danger);
-		$( msg ).find('p').text('Такое спец. исполнение уже было выбрано ранее');
-		$('#modalMoreSpecialVersions .primary-text').before(msg);
-		$( msg ).slideDown(500);
-		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
-	}
-
-	//Tag exist in SV.Array?
-	$.each(SV.arr, function(index, value){
-		if (index == SV.currID) flag = false;
-	});
-
-	if (flag == true){
-        SV.arr[SV.currID] = SV.currTitle;
-		//for BackEndj
-		SV.ids.push(SV.currID);
-
-        currTag = $.parseHTML('<div class="spec-ver-tag">' +
-				'<span></span><i onclick="delSpecVer(this)" class="fa fa-close"></i>' +
-				'</div>');
-        $(currTag).attr('val', SV.currID);
-        $(currTag).find('span').text(SV.currTitle);
-        $('#tag-showcase').append( currTag );
-		//console.log(SV.arr);
-		//console.log(SV.ids);
-	} else {
-		//message about entity was exist
-		blink('btn-more-spec-ver', Helpers.Colors.danger);
-		var stareElem = $('.spec-ver-tag[val='+SV.currID+']');
-		stareElem.animate({
-			backgroundColor: Helpers.Colors.success
-		}, 300, 'swing', function(){
-			stareElem.animate({backgroundColor: '#fff'}, 200)
-		})
-	}
-
-}
-
-function delSpecVer(obj){
-	var SV = Core.ContOtherSpecVers;
-	//delete tag
-	var tarElem = $( obj ).parent();
-	var tagID = tarElem.attr('val');
-	tarElem.remove();
-	//delete elem from Object
-	delete SV.arr[tagID];
-	SV.ids.forEach(function(item, i, arr){
-		if (item == tagID) delete arr[i];
-	});
-	//console.log(SV.arr);
-	//console.log(SV.ids);
-}
-
-function destroyOtherSpecialVersions(){
-	$('#tag-showcase').empty();
-	Core.ContOtherSpecVers.arr = {}
-}
-
-
-/*
-	helpers API
- */
-
-function blink(dropDownID, color){
-	var btn = $('button#' + dropDownID);
-	btn.animate(
-	{
-		backgroundColor: color,
-		// opacity: 1
-	},
-	{
-		duration: 400,
-		complete: function(){
-			btn.animate({backgroundColor: '#fff'}, 200);
-		}
-	});
-}
-
-/* ----------
-	Loader
- ---------- */
+/*>>>>>>>>>>>
+	   ------------> UI Loader
+*/
 var loaderView = "<div style='display:none' id='loader' class='fa fa-spinner fa-3x fa-pulse'></div>";
 
 var il; //id InitLoader Listener
@@ -853,6 +855,27 @@ function listenerInit(){
 		if (requestInProgress == true) initLoader();
 	}, 200)
 }
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+ 			Helpers API
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+function blink(dropDownID, color){
+	var btn = $('button#' + dropDownID);
+	btn.animate(
+	{
+		backgroundColor: color,
+		// opacity: 1
+	},
+	{
+		duration: 400,
+		complete: function(){
+			btn.animate({backgroundColor: '#fff'}, 200);
+		}
+	});
+}
+
+
 
 /*
 	Temprary

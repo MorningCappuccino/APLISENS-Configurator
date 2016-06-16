@@ -47,7 +47,7 @@ table.transcript {
   display: none;
 }
 
-//rewrite
+//rewrite original
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
   color: $btnTextColor;
   background-color: $mainColor;
@@ -64,7 +64,13 @@ table.transcript {
   border-color: $btnBorderColor;
 }
 
-.btn-primary:hover {
+.form-control:focus {
+  border-color: #ffe369;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(243, 217, 24, 0.57);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active,
+.btn-primary:active:focus {
   color: $btnTextColor;
   background-color: $btnHoverColor;
   border-color: $btnHoverBorderColor;
@@ -133,7 +139,7 @@ table.transcript {
   cursor: pointer;
   transition: color .2s;
   &:hover {
-    color: $brand-primary;
+    color: $mainColor;
   }
 }
 
