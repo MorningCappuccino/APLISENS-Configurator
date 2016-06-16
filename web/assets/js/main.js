@@ -66,6 +66,7 @@ var Core = {
 	//modal field
 	pulsePipeLength: null,
 	cableLength: null,
+	tubeLength: null,
 	//end modal field
 	valveUnitID: null,
 	valveUnitTitle: null,
@@ -304,6 +305,11 @@ function reviveBodyType(){
 
 		$('#body_type button').text(bodyTypeTitle);
 
+		//Type Tube Length
+		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50'){
+			$('#modalTube').modal();
+		}
+
 		$.ajax({
 			url: Core.ajaxUrl,
 			method: 'post',
@@ -341,7 +347,7 @@ function reviveProcessConnection(){
 		$('#process_connection button').text(processConnectionTitle);
 
 		var check;
-		//
+		//if ProcessConnection finish on "K" / "PC-SG-*" / PK
 		if ( (check = /K$/i.test(processConnectionTitle)) && (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
 			//call modalCable
 			$('#modalCable').on('shown.bs.modal', function () {
@@ -603,15 +609,19 @@ $('.dropdown ul').on('click', function(){
 	Pulse pipe or cable modal
 */
 function getFromModal(form){
-	var input = $(form).find('input').val(),
+	var inputVal = $(form).find('input').val(),
 		targetBtn = $('button#6');
 	if (form.id == 'Cable'){
-		Core.cableLength = input;
+		Core.cableLength = inputVal;
 		targetBtn.append('/K=' + Core.cableLength);
 		getValveUnits();
 	} else if (form.id == 'PulsePipe'){
-		Core.pulsePipeLength = input;
+		Core.pulsePipeLength = inputVal;
 		targetBtn.append('/K=' + Core.pulsePipeLength);
+		getValveUnits();
+	} else if (form.id == 'Tube'){
+		Core.tubeLength = inputVal;
+		targetBtn.append('/L=' + Core.tubeLength);
 		getValveUnits();
 	}
 	$('#modal' + form.id).modal('hide');

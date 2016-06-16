@@ -256,6 +256,33 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+{# Modal Tube Length#}
+<div class="modal fade" id="modalTube" tabindex="-1" role="dialog" aria-labelledby="modalTubeLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Длина трубы</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Впишите длину трубы <span class="text-danger">(в миллиметрах)</span>:
+                </p>
+
+                <div class="alert alert-warning">Ограничение от 250 - 1800</div>
+                <form method="POST" action="javascript:void(null);" id="Tube" onsubmit="getFromModal(this)">
+                    <input min="250" max="1800" class="form-control" type="number" id="tubeLength" required
+                           placeholder="Пример: 700">
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input form="Tube" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 {# Modal Mounting Parts #}
 <div class="modal fade" id="modalMountingParts" tabindex="-1" role="dialog" aria-labelledby="modalMountingPartsLabel">
     <div class="modal-dialog" role="document">

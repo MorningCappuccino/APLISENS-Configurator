@@ -94,6 +94,12 @@
             {{ measurementRange.displayName() }} /
             {{ bodyType.name }} /
             {{ processConnection.name }} /
+
+            {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
+            {% if tubeLength %}
+							L={{ tubeLength }} /
+						{% endif %}
+
             {{ valveUnitName|default('') }}
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}

@@ -229,6 +229,7 @@ class AjaxController extends Controller
         }
         $measurement_range_id = $params['measurementRangeID'];
         $body_type_id = $params['bodyTypeID'];
+				$tube_length = $params['tubeLength'];
         $process_connection_id = $params['processConnectionID'];
         $valve_unit_id = $params['valveUnitID'];
         $welded_element_id = $params['weldedElementID'];
@@ -252,6 +253,7 @@ class AjaxController extends Controller
             'otherSpecialVersions' => $otherSpecialVersions,
             'measurementRange' => $measurementRange,
             'bodyType' => $bodyType,
+            'tubeLength' => $tube_length,
             'processConnection' => $processConnection,
             'valveUnit' => $valveUnit,
             'weldedElement' => $weldedElement,
