@@ -269,6 +269,7 @@ function reviveMeasurementRange(){
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle +' '+ unit);
 
+
 		$.ajax({
 			url: Core.ajaxUrl,
 			method: 'post',
@@ -640,11 +641,18 @@ function getFromMountingPartsModal(){
 	})
 
 	if (flag == false){
-		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не все поля заполнены</p></div>';
+		//Msg exist ? create one and show : show old msg
+		if ( !document.getElementById('nfMountingParts') ){
+			var msg = '<div id="nfMountingParts" class="alert alert-danger not-filled"><p>Не все поля заполнены</p></div>';
 			$(msg).insertBefore( $('#mounting-parts') );
-			msg = $('#notFilled');
+			msg = $('#nfMountingParts');
 			msg.slideDown();
 			setTimeout(function(){ msg.slideUp() }, 2000);
+		} else {
+			msg = $('#nfMountingParts');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		}
 	} else {
 		$('#modalMountingParts').modal('hide');
 		//Add mountin parts to Button and revive County Code
@@ -717,8 +725,11 @@ function addSpecVer(){
 		flag = false;
 		var msg = $.parseHTML(Helpers.Alerts.danger);
 		$( msg ).find('p').text('Такое спец. исполнение уже было выбрано ранее');
-		$('#modalMoreSpecialVersions .primary-text').before(msg);
-		$( msg ).slideDown(500);
+		//bad check, but minimalistic: msg NOT exist ? insert before : show old msg
+		if ( $('#modalMoreSpecialVersions .alert-danger')[0] == undefined ){
+			$('#modalMoreSpecialVersions .primary-text').before(msg);
+		}
+		$( '#modalMoreSpecialVersions .alert-danger' ).slideDown(500);
 		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
 	}
 
@@ -788,11 +799,18 @@ function generate(){
 	})
 
 	if (flag == false){ //!!!!! for test change on '!='
-		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не хватает параметров для конфигурации</p></div>';
-		$(msg).insertBefore( $('#config-param') );
-		msg = $('#notFilled');
-		msg.slideDown();
-		setTimeout(function(){ msg.slideUp() }, 2000);
+		//Msg Exist ? create one and show : show old message
+		if ( !document.getElementById('nfGenerator') ){
+			var msg = '<div id="nfGenerator" class="alert alert-danger not-filled"><p>Не хватает параметров для конфигурации</p></div>';
+			$(msg).insertBefore( $('#config-param') );
+			msg = $('#nfGenerator');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		} else {
+			msg = $('#nfGenerator');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		}
 	} else {
 
 		requestInProgress = true;
