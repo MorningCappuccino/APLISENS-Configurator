@@ -67,6 +67,7 @@ var Core = {
 	pulsePipeLength: null,
 	cableLength: null,
 	tubeLength: null,
+	anotherMeasurementRange: null,
 	//end modal field
 	valveUnitID: null,
 	valveUnitTitle: null,
@@ -269,6 +270,19 @@ function reviveMeasurementRange(){
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle +' '+ unit);
 
+		//Choice Anoter Measurement Range
+		var t = Core.eqModeTitle;
+		if (/APC-+/.test(t) || /APR-+/.test(t) || /PC-SG-25S?.Smart/.test(t)){
+			initAnotherMeasurementRange();
+			$('#modalAnotherMeasurementRange').modal();
+		}
+				//Save Default range to Numbers
+				var res = measurementRangeTitle.match(Re.mr);
+				var arr = Re.filter(res[1], res[4]);
+				Re.DefaultRangeFrom = arr[0];
+				Re.DefaultRangeTo = arr[1];
+				//Save Unit of Default range
+				Re.DefaultRangeUnit = unit;
 
 		$.ajax({
 			url: Core.ajaxUrl,
@@ -784,7 +798,77 @@ function destroyOtherSpecialVersions(){
 	Core.ContOtherSpecVers.arr = {}
 }
 
+/*
+ Another Measurement Range Modal
+ */
+ var Re = {
+ 	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)/,
+ 	match: function(str){
+ 		var res = str.match(Re.mr);
+ 		if (res != null){
+ 			Re.p1 = res[1];
+ 			Re.p2 = res[4];
+ 			return true;
+ 		} else {
+ 			return false;
+ 		}
+ 	},
+ 	filter: function(p1, p2){
+ 		var re = /[()]/g;
+ 		var np1 = +p1.replace(re, '');
+ 		var np2 = +p2.replace(re, '');
+ 		return [np1, np2];
+ 	}
+ }
 
+function initAnotherMeasurementRange(){
+	var sel = $('#modalAnotherMeasurementRange');
+	sel.find('.alert-warning').text('В рамках '+ $('#measurement_range button').text());
+	$('#another_measurement_range').focus();
+}
+
+function getFromAnotherMeasurementRange(){
+	var range = $('#another_measurement_range').val();
+	//if user nothing Type
+	if (range != ''){
+		//Check text which user send
+		//his input is valid?
+		if (Re.match(range) == true){
+			//convert/filter Second range
+			var arr = Re.filter(Re.p1, Re.p2);
+			Re.SecondRangeFrom = arr[0];
+			Re.SecondRangeTo = arr[1];
+			//Number incoming in Default Range?
+			var minDef = Re.DefaultRangeFrom,
+			maxDef = Re.DefaultRangeTo,
+			minSec = Re.SecondRangeFrom,
+			maxSec = Re.SecondRangeTo;
+			//Deafault and Second range is the same?
+			if ((minDef != minSec) && (maxDef != maxSec)){
+				//First number must less then Second
+				if (minSec < maxSec){
+					if (( (maxDef > minSec) && (minSec > minDef) ) && ( (maxDef > maxSec) && (maxSec > minDef) )){
+						//write true values to Core
+						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.DefaultRangeUnit;
+						$('#modalAnotherMeasurementRange').modal('hide');
+						// alert('ALL CORRECTO');
+					} else {
+						alert('Out of range');
+					}
+				} else {
+					alert('First number must less then Second');
+				}
+			} else {
+				alert('Part value(or full) of Default and Secondary range is the same!');
+			}
+		} else {
+			alert('bad range');
+		}
+	} else {
+		Core.anotherMeasurementRange = '';
+		$('#modalAnotherMeasurementRange').modal('hide');
+	}
+}
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
    			 Generator

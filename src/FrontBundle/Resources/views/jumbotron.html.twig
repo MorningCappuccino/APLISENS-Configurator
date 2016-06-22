@@ -40,6 +40,13 @@
             <td>{{ measurementRange.displayName() }} </td>
             <td>Диапазон измерения</td>
         </tr>
+        {% if anotherMeasurementRange %}
+            {% set anotherMeasurementRangeName = anotherMeasurementRange ~ ' /' %}
+            <tr>
+                <td>{{ anotherMeasurementRange }} </td>
+                <td>Установленный диапазон измерения</td>
+            </tr>
+        {% endif %}
         <tr>
             <td>{{ bodyType.name }}</td>
             <td>{{ bodyType.descr }}</td>
@@ -92,6 +99,7 @@
             {% endif %}
 
             {{ measurementRange.displayName() }} /
+            {{ anotherMeasurementRangeName|default('') }}
             {{ bodyType.name }} /
             {{ processConnection.name }} /
 

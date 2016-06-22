@@ -228,6 +228,7 @@ class AjaxController extends Controller
             $otherSpecialVersions = null;
         }
         $measurement_range_id = $params['measurementRangeID'];
+        $another_measurement_range = $params['anotherMeasurementRange'];
         $body_type_id = $params['bodyTypeID'];
 				$tube_length = $params['tubeLength'];
         $process_connection_id = $params['processConnectionID'];
@@ -252,6 +253,7 @@ class AjaxController extends Controller
             'specialVersion' => $specialVersion,
             'otherSpecialVersions' => $otherSpecialVersions,
             'measurementRange' => $measurementRange,
+            'anotherMeasurementRange' => $another_measurement_range,
             'bodyType' => $bodyType,
             'tubeLength' => $tube_length,
             'processConnection' => $processConnection,
