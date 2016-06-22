@@ -275,6 +275,9 @@ function reviveMeasurementRange(){
 		if (/APC-+/.test(t) || /APR-+/.test(t) || /PC-SG-25S?.Smart/.test(t)){
 			initAnotherMeasurementRange();
 			$('#modalAnotherMeasurementRange').modal();
+			$('#modalAnotherMeasurementRange').on('shown.bs.modal', function () {
+				$('#another_measurement_range').focus();
+			});
 		}
 				//Save Default range to Numbers
 				var res = measurementRangeTitle.match(Re.mr);
@@ -824,7 +827,14 @@ function destroyOtherSpecialVersions(){
 function initAnotherMeasurementRange(){
 	var sel = $('#modalAnotherMeasurementRange');
 	sel.find('.alert-warning').text('В рамках '+ $('#measurement_range button').text());
-	$('#another_measurement_range').focus();
+
+	//Confirmation on Enter
+	$('#another_measurement_range').off('keypress');
+	$('#another_measurement_range').on('keypress', function(e){
+			if(e.which == 13){ //Enter key pressed
+					$('#btn-another-measurement-range').click(); //Trigger button click event
+			}
+	});
 }
 
 function getFromAnotherMeasurementRange(){
