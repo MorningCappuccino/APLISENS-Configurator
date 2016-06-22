@@ -844,10 +844,10 @@ function getFromAnotherMeasurementRange(){
 			minSec = Re.SecondRangeFrom,
 			maxSec = Re.SecondRangeTo;
 			//Deafault and Second range is the same?
-			if ((minDef != minSec) && (maxDef != maxSec)){
+			if ((minDef != minSec) || (maxDef != maxSec)){
 				//First number must less then Second
 				if (minSec < maxSec){
-					if (( (maxDef > minSec) && (minSec > minDef) ) && ( (maxDef > maxSec) && (maxSec > minDef) )){
+					if (( (maxDef > minSec) && (minSec >= minDef) ) && ( (maxDef >= maxSec) && (maxSec > minDef) )){
 						//write true values to Core
 						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.DefaultRangeUnit;
 						$('#modalAnotherMeasurementRange').modal('hide');
@@ -859,7 +859,7 @@ function getFromAnotherMeasurementRange(){
 					alert('First number must less then Second');
 				}
 			} else {
-				alert('Part value(or full) of Default and Secondary range is the same!');
+				alert('Default and Secondary range is the same!');
 			}
 		} else {
 			alert('bad range');
