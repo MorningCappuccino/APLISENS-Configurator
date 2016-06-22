@@ -95,6 +95,12 @@ var Helpers = {
 		danger: '<div class="alert alert-danger">' +
 		'<p></p>' +
 		'</div>'
+	},
+	showAlert: function(id, text){
+		var a = $('#' + id);
+		a.find('p').text(text);
+		a.slideDown(500);
+		setTimeout(function(){ a.slideUp(300) }, 4000);
 	}
 }
 
@@ -835,7 +841,16 @@ function initAnotherMeasurementRange(){
 					$('#btn-another-measurement-range').click(); //Trigger button click event
 			}
 	});
+
+	//Alerts
+	if ( !document.getElementById('alert-another-measurement-range') ){
+		var alert = $.parseHTML(Helpers.Alerts.danger);
+		$(alert).attr('id', 'alert-another-measurement-range');
+		sel.find('.text-primary').before( alert );
+	}
+
 }
+
 
 function getFromAnotherMeasurementRange(){
 	var range = $('#another_measurement_range').val();
@@ -863,16 +878,16 @@ function getFromAnotherMeasurementRange(){
 						$('#modalAnotherMeasurementRange').modal('hide');
 						// alert('ALL CORRECTO');
 					} else {
-						alert('Out of range');
+						Helpers.showAlert('alert-another-measurement-range', 'Выход за пределы диапазона');
 					}
 				} else {
-					alert('First number must less then Second');
+					Helpers.showAlert('alert-another-measurement-range', 'Начало диапазона должно быть меньше чем его верхнее значение');
 				}
 			} else {
-				alert('Default and Secondary range is the same!');
+				Helpers.showAlert('alert-another-measurement-range', 'В случае совпадения диапазонов - установленный диапазон не указывается');
 			}
 		} else {
-			alert('bad range');
+			Helpers.showAlert('alert-another-measurement-range', 'Некорректный диапазон');
 		}
 	} else {
 		Core.anotherMeasurementRange = '';
