@@ -119,7 +119,7 @@ class AjaxController extends Controller
                         ->join('b.eqModes', 'e')
                         ->join('b.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
-                        ->orWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $bodyTypes = $query->getResult(2);
@@ -137,7 +137,7 @@ class AjaxController extends Controller
                         ->join('p.eqModes', 'e')
                         ->join('p.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
-                        ->orWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $processConnections = $query->getResult(2);
@@ -172,7 +172,7 @@ class AjaxController extends Controller
                         ->join('w.eqModes', 'e')
                         ->where('p.id = :process_connection_id')
                         ->andWhere('v.id = :valve_unit_id')
-                        ->orWhere('e.id = :eq_mode_id')
+                        ->andWhere('e.id = :eq_mode_id')
                 ->setParameters([':process_connection_id' => $process_connection_id,
                              ':valve_unit_id' => $valve_unit_id,
                              ':eq_mode_id' => $eq_mode_id])
