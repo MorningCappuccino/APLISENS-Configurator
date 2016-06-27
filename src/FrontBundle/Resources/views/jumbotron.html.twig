@@ -40,6 +40,13 @@
             <td>{{ measurementRange.displayName() }} </td>
             <td>Диапазон измерения</td>
         </tr>
+        {% if anotherMeasurementRange %}
+            {% set anotherMeasurementRangeName = anotherMeasurementRange ~ ' /' %}
+            <tr>
+                <td>{{ anotherMeasurementRange }} </td>
+                <td>Установленный диапазон измерения</td>
+            </tr>
+        {% endif %}
         <tr>
             <td>{{ bodyType.name }}</td>
             <td>{{ bodyType.descr }}</td>
@@ -49,7 +56,7 @@
             <td>{{ processConnection.descr }}</td>
         </tr>
         {% if secondProcessConnection %}
-            {% set secondProcessConnectionName = secondProcessConnection.name ~ ' /' %}
+            {% set secondProcessConnectionName = '(-) ' ~ secondProcessConnection.name ~ ' /' %}
             <tr>
                 <td>{{ secondProcessConnection.name }} </td>
                 <td>{{ secondProcessConnection.descr }}</td>
@@ -99,8 +106,9 @@
             {% endif %}
 
             {{ measurementRange.displayName() }} /
+            {{ anotherMeasurementRangeName|default('') }}
             {{ bodyType.name }} /
-            {{ processConnection.name }} /
+        (+) {{ processConnection.name }} /
             {{ secondProcessConnectionName|default('') }}
 
             {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}

@@ -370,6 +370,27 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+{# Modal Add another MeasurementRange #}
+<div class="modal fade" id="modalAnotherMeasurementRange" tabindex="-1" role="dialog" aria-labelledby="modalAnotherMeasurementRangeLabel">
+    <div class="modal-dialog modal-450" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Добавление установленного диапазона:</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Добавте установленный измерительный диапазон(<span class="text-danger">необязательно</span>):</p>
+                <div class="alert alert-warning">В рамках </div>
+                    <input id="another_measurement_range" class="form-control" type="text" placeholder="Пример: (-52) - 25">
+            </div>
+            <div class="modal-footer">
+                <input id="btn-another-measurement-range" onclick="getFromAnotherMeasurementRange()" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div id="styling">
     <div class="switch"><i onclick="Dev.prodstyle()"></i></div>
     <div class="switch"><i onclick="Dev.devstyle()"></i></div>
