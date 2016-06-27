@@ -77,7 +77,7 @@ table.transcript {
 }
 
 //choice buttons
-#config-param, #many-spec-ver {
+#config-param, #many-spec-ver, #container-second-process-connection  {
   label {
     display: block;
   }
@@ -276,6 +276,21 @@ table.transcript {
 //----------Modal----------//
 .not-filled {
   display: none;
+}
+
+//Second process connection
+#second_process_connection {
+  margin-left: 190px;
+  margin-bottom: 35px;
+  margin-top: 35px;
+
+  button {
+    width: 185px !important;
+  }
+
+  ul {
+    min-width: 205px !important;
+  }
 }
 
 //----------Styling----------//

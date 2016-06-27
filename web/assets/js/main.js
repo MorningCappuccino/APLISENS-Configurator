@@ -67,6 +67,7 @@ var Core = {
 	pulsePipeLength: null,
 	cableLength: null,
 	tubeLength: null,
+	secondProcessConnection: null,
 	//end modal field
 	valveUnitID: null,
 	valveUnitTitle: null,
@@ -346,6 +347,12 @@ function reviveProcessConnection(){
 		Core.processConnectionTitle = processConnectionTitle;
 
 		$('#process_connection button').text(processConnectionTitle);
+
+		//for Second ProcessConnection
+		if (Core.eqModeTitle == 'APR-2200') {
+			initSecondProcessConnectionModal();
+			$('#modalSecondProcessConnection').modal();
+		}
 
 		var check;
 		//if ProcessConnection finish on "K" / "PC-SG-*" / PK
@@ -784,6 +791,50 @@ function destroyOtherSpecialVersions(){
 	Core.ContOtherSpecVers.arr = {}
 }
 
+/*
+	Second ProcessConnection Modal
+ */
+function initSecondProcessConnectionModal() {
+
+	//Add dropdown to DOM
+	//WHY: this hardcode for escape Listener called RollbackDropdown
+	var htmlDropdown = '<div id="second_process_connection" class="dropdown dd-mod">' +
+                     	'<button class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>' +
+                     	'<ul class="dropdown-menu" aria-labelledby="">' +
+                     	'</ul>'+
+                     '</div>';
+  $('#container-second-process-connection').html(htmlDropdown);
+
+  //Copy list items from ProcessConnection
+	var listElem = $('#process_connection ul').html(),
+			newDropdown = $('#second_process_connection');
+	$(newDropdown).find('ul').html(listElem);
+
+	//Add handler to new list
+	$(newDropdown).find('ul li').on('click', function() {
+		Core.secondProcessConnection = this.value;
+		$(newDropdown).find('button').text(this.innerText);
+	});
+
+}
+
+function getFromSecondProcessConnectionModal() {
+	if ( $('#second_process_connection button').text() != '' ) {
+		$('#modalSecondProcessConnection').modal('hide');
+	} else {
+
+		if ( !document.getElementById('alert-second-proccess-connection') ) {
+			var msg = '<div id="alert-second-proccess-connection" class="alert alert-danger"><p>Второе процессное соединение должно быть выбрано</p></div>';
+			$('#container-second-process-connection').prev().before(msg);
+			$('#alert-second-proccess-connection').slideDown(300);
+			setTimeout(function(){ $('#alert-second-proccess-connection').slideUp(400)}, 4000 );
+		} else {
+			$('#alert-second-proccess-connection').slideDown(300);
+			setTimeout(function(){ $('#alert-second-proccess-connection').slideUp(400)}, 4000 );
+		}
+
+	}
+}
 
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\

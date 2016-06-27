@@ -231,6 +231,7 @@ class AjaxController extends Controller
         $body_type_id = $params['bodyTypeID'];
 				$tube_length = $params['tubeLength'];
         $process_connection_id = $params['processConnectionID'];
+        $second_process_connection_id = $params['secondProcessConnection'];
         $valve_unit_id = $params['valveUnitID'];
         $welded_element_id = $params['weldedElementID'];
         $brace_id = $params['braceID'];
@@ -242,6 +243,7 @@ class AjaxController extends Controller
         $measurementRange = $em->getRepository('AppBundle:MeasurementRange')->findOneBy(['id' => $measurement_range_id]);
         $bodyType = $em->getRepository('AppBundle:BodyType')->findOneBy(['id' => $body_type_id]);
         $processConnection = $em->getRepository('AppBundle:ProcessConnection')->findOneBy(['id' => $process_connection_id]);
+        $secondProcessConnection = $em->getRepository('AppBundle:ProcessConnection')->findOneBy(['id' => $second_process_connection_id]);
         $valveUnit = $em->getRepository('AppBundle:ValveUnit')->findOneBy(['id' => $valve_unit_id]);
         $weldedElement = $em->getRepository('AppBundle:WeldedElement')->findOneBy(['id' => $welded_element_id]);
         $brace = $em->getRepository('AppBundle:Brace')->findOneBy(['id' => $brace_id]);
@@ -255,6 +257,7 @@ class AjaxController extends Controller
             'bodyType' => $bodyType,
             'tubeLength' => $tube_length,
             'processConnection' => $processConnection,
+            'secondProcessConnection' => $secondProcessConnection,
             'valveUnit' => $valveUnit,
             'weldedElement' => $weldedElement,
             'brace' => $brace,

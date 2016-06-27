@@ -48,6 +48,13 @@
             <td>{{ processConnection.name }} </td>
             <td>{{ processConnection.descr }}</td>
         </tr>
+        {% if secondProcessConnection %}
+            {% set secondProcessConnectionName = secondProcessConnection.name ~ ' /' %}
+            <tr>
+                <td>{{ secondProcessConnection.name }} </td>
+                <td>{{ secondProcessConnection.descr }}</td>
+            </tr>
+        {% endif %}
         {% if valveUnit %}
             {% set valveUnitName = valveUnit.name ~ ' /'%}
         <tr>
@@ -94,6 +101,7 @@
             {{ measurementRange.displayName() }} /
             {{ bodyType.name }} /
             {{ processConnection.name }} /
+            {{ secondProcessConnectionName|default('') }}
 
             {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
             {% if tubeLength %}
