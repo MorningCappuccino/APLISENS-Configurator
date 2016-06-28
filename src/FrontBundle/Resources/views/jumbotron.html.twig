@@ -22,7 +22,11 @@
             <td>Основная приведённая погрешность</td>
         </tr>
         {% if specialVersion %}
-            {% set specialVersionName = specialVersion.name ~ ' /'%}
+            {% if cablePTFELength %}
+                {% set specialVersionName = specialVersion.name ~ '=' ~ cablePTFELength ~ ' /'%}
+            {% else %}
+                {% set specialVersionName = specialVersion.name ~ ' /'%}
+            {% endif %}
         <tr>
             <td>{{ specialVersion.name }} </td>
             <td>{{ specialVersion.descr }}</td>

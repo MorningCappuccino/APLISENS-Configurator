@@ -221,6 +221,7 @@ class AjaxController extends Controller
         $eq_mode_id = $params['eqModeID'];
         $accuracy_id = $params['accuracyID'];
         $special_version_id = $params['specialVersionID'];
+            $cable_PTFE_length = $params['cablePTFELength'];
         if (isset($params['ContOtherSpecVers']['ids'])){
             $otherSpecialVersions_ids = $params['ContOtherSpecVers']['ids'];
             $otherSpecialVersions = $em->getRepository('AppBundle:SpecialVersion')->findBy(['id' => $otherSpecialVersions_ids]);
@@ -253,6 +254,7 @@ class AjaxController extends Controller
             'eqMode' => $eqMode,
             'accuracy' => $accuracy,
             'specialVersion' => $specialVersion,
+            'cablePTFELength' => $cable_PTFE_length,
             'otherSpecialVersions' => $otherSpecialVersions,
             'measurementRange' => $measurementRange,
             'anotherMeasurementRange' => $another_measurement_range,

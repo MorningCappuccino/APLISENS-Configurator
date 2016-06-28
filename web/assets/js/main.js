@@ -69,6 +69,7 @@ var Core = {
 	tubeLength: null,
 	anotherMeasurementRange: null,
 	secondProcessConnection: null,
+	cablePTFELength: null,
 	//end modal field
 	valveUnitID: null,
 	valveUnitTitle: null,
@@ -233,6 +234,11 @@ function reviveSpecialVersion(){
 		if (specialVersionTitle != 'без спец. исп.'){
 			initOtherSpecVers();
 		} else { $('.more-spec-ver').hide(); }
+
+		//Cable PTFE Modal
+		if (specialVersionTitle == 'L') {
+			$('#modalCablePTFE').modal();
+		}
 
 		//set Title to Dropdown
 		$('#special_version button').text(specialVersionTitle);
@@ -654,6 +660,9 @@ function getFromModal(form){
 		Core.tubeLength = inputVal;
 		targetBtn.append('/L=' + Core.tubeLength);
 		getValveUnits();
+	} else if (form.id == 'CablePTFE') {
+		Core.cablePTFELength = inputVal;
+		$('#special_version button').append('=' + Core.cablePTFELength);
 	}
 	$('#modal' + form.id).modal('hide');
 	//console.log(Core);
