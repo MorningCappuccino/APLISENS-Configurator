@@ -240,32 +240,59 @@ function reviveSpecialVersion(){
 			$('#modalCablePTFE').modal();
 		}
 
-		//set Title to Dropdown
-		$('#special_version button').text(specialVersionTitle);
 
-		$.ajax({
-			url: Core.ajaxUrl,
-			method: 'post',
-			data: {
-				action_name: 'getMeasurementRangesByEqModeIDAndAccuracyID',
-				eq_mode_id: Core.eqModeID,
-				accuracy_id: Core.accuracyID
-			},
-			success: function(data){
-				if (data != 'no data'){
-					blink(nextParam, '#ABFCB2')
-					thisBtn.removeAttr('disabled');
-					$('#measurement_range ul').html(data); //append
-					//disable header li
-					$('li.header a').on('click', function(){ return false });
-					$('.jumbotron #gen').html(data);
-					reviveNextParam(nextParam);
-				} else {
-					blink(nextParam, '#FFA0A0');
-					$('#measurement_range button').text('нет данных');
+
+		//Must '0,4 - 2 В' or '0 - 2 В' for P[CR]-28B
+		if ( /P[CR]-28B/.test(Core.eqModeTitle) ) {
+			if ( (specialVersionTitle != '0,4 - 2 В') && (specialVersionTitle != '0 - 2 В') ) {
+				//init alert-danger if not exist
+				if ( !document.getElementById('alert-require-special-version') ) {
+					var msg = $.parseHTML(Helpers.Alerts.danger);
+					$(msg).attr('id', 'alert-require-special-version');
+					$('#config-param').before(msg);
 				}
-			}
-		});
+
+				Helpers.showAlert('alert-require-special-version',
+				'Вы должны обязательно выбрать спец. исполнение "0,4 - 2 В" или "0 - 2 В" ');
+				//hide more Special Version
+				$('.more-spec-ver').hide();
+
+				} else {
+					getMeasurementRange();
+				}
+			} else {
+				getMeasurementRange();
+		}
+
+		function getMeasurementRange() {
+			//set Title to Dropdown
+			$('#special_version button').text(specialVersionTitle);
+
+			$.ajax({
+				url: Core.ajaxUrl,
+				method: 'post',
+				data: {
+					action_name: 'getMeasurementRangesByEqModeIDAndAccuracyID',
+					eq_mode_id: Core.eqModeID,
+					accuracy_id: Core.accuracyID
+				},
+				success: function(data) {
+					if (data != 'no data'){
+						blink(nextParam, '#ABFCB2')
+						thisBtn.removeAttr('disabled');
+						$('#measurement_range ul').html(data); //append
+						//disable header li
+						$('li.header a').on('click', function(){ return false; });
+						$('.jumbotron #gen').html(data);
+						reviveNextParam(nextParam);
+					} else {
+						blink(nextParam, '#FFA0A0');
+						$('#measurement_range button').text('нет данных');
+					}
+				}
+			});
+		}
+
 	});
 }
 
