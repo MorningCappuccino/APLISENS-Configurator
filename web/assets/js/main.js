@@ -509,8 +509,9 @@ function getWeldedElements(thisBtn, thisParam){
 					reviveNextParam(nextParam);
 				} else {
 					blink(thisParam, '#FFA0A0');
-					$('#welded_element button').text('нет данных');
+					$('#welded_element button').text('без монтаж. эл-ов');
 					$('#welded_element button').attr('disabled', 'disabled');
+					getBracing();
 
 				}
 			}
@@ -555,7 +556,7 @@ function getBracing(){
 				reviveNextParam(nextParam);
 			} else {
 				blink(thisParam, '#FFA0A0');
-				$('#brace button').text('нет данных');
+				$('#brace button').text('без крепления');
 				$('#brace button').attr('disabled', 'disabled');
 
 			}
