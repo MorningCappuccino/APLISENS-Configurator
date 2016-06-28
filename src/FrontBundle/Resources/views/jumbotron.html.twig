@@ -55,12 +55,15 @@
             <td>{{ bodyType.name }}</td>
             <td>{{ bodyType.descr }}</td>
         </tr>
+
+        {% set firstProcessConnectionName = processConnection.name ~ ' /' %}
         <tr>
             <td>{{ processConnection.name }} </td>
             <td>{{ processConnection.descr }}</td>
         </tr>
         {% if secondProcessConnection %}
             {% set secondProcessConnectionName = '(-) ' ~ secondProcessConnection.name ~ ' /' %}
+            {% set firstProcessConnectionName = '(+) ' ~ processConnection.name ~ ' /' %}
             <tr>
                 <td>{{ secondProcessConnection.name }} </td>
                 <td>{{ secondProcessConnection.descr }}</td>
@@ -112,7 +115,7 @@
             {{ measurementRange.displayName() }} /
             {{ anotherMeasurementRangeName|default('') }}
             {{ bodyType.name }} /
-        (+) {{ processConnection.name }} /
+            {{ firstProcessConnectionName|default('') }}
             {{ secondProcessConnectionName|default('') }}
 
             {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
