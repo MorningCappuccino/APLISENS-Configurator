@@ -857,6 +857,7 @@ function getFromSecondProcessConnectionModal() {
 		}
 
 	}
+}
 
 /*
  Another Measurement Range Modal
