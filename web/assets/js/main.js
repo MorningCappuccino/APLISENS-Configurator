@@ -396,9 +396,7 @@ function reviveProcessConnection(){
 	$('#process_connection ul li').on('click', function(){
 
 		var processConnectionID = this.value,
-				processConnectionTitle = this.innerText,
-				nextBtn = $('#valve_unit button'),
-				nextParam = +nextBtn.attr('id');
+				processConnectionTitle = this.innerText;
 		Core.processConnectionID = processConnectionID;
 		Core.processConnectionTitle = processConnectionTitle;
 
@@ -423,17 +421,18 @@ function reviveProcessConnection(){
 			//call modal pulise pipe
 		} else {
 			//call function to mounting_parts
-			getValveUnits(nextBtn, nextParam);
+			getValveUnits();
 		}
 
 
 	});
 }
 
-function getValveUnits(thisBtn, thisParam){
+function getValveUnits(thisBtn){
 
-	var nextParam = 8,
-		nextBtn = $('#welded_element button');
+	var thisBtn = $('#valve_unit button'),
+			nextParam = 8,
+			nextBtn = $('#welded_element button');
 
 			$.ajax({
 			url: Core.ajaxUrl,
