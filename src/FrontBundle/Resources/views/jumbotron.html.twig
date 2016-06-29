@@ -51,16 +51,22 @@
                 <td>Установленный диапазон измерения</td>
             </tr>
         {% endif %}
-        <tr>
-            <td>{{ bodyType.name }}</td>
-            <td>{{ bodyType.descr }}</td>
-        </tr>
 
-        {% set firstProcessConnectionName = processConnection.name ~ ' /' %}
-        <tr>
-            <td>{{ processConnection.name }} </td>
-            <td>{{ processConnection.descr }}</td>
-        </tr>
+        {% if bodyType %}
+            {% set bodyTypeName = bodyType.name ~ ' /' %}
+            <tr>
+                <td>{{ bodyType.name }}</td>
+                <td>{{ bodyType.descr }}</td>
+            </tr>
+        {% endif %}
+
+        {% if processConnection %}
+            {% set firstProcessConnectionName = processConnection.name ~ ' /' %}
+            <tr>
+                <td>{{ processConnection.name }} </td>
+                <td>{{ processConnection.descr }}</td>
+            </tr>
+        {% endif %}
         {% if secondProcessConnection %}
             {% set secondProcessConnectionName = '(-) ' ~ secondProcessConnection.name ~ ' /' %}
             {% set firstProcessConnectionName = '(+) ' ~ processConnection.name ~ ' /' %}
@@ -114,7 +120,7 @@
 
             {{ measurementRange.displayName() }} /
             {{ anotherMeasurementRangeName|default('') }}
-            {{ bodyType.name }} /
+            {{ bodyTypeName|default('') }}
             {{ firstProcessConnectionName|default('') }}
             {{ secondProcessConnectionName|default('') }}
 
