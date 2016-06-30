@@ -70,6 +70,7 @@ var Core = {
 	anotherMeasurementRange: null,
 	secondProcessConnection: null,
 	cablePTFELength: null,
+	PTFEenvelopeLength: null,
 	//end modal field
 	valveUnitID: null,
 	valveUnitTitle: null,
@@ -240,6 +241,10 @@ function reviveSpecialVersion(){
 			$('#modalCablePTFE').modal();
 		}
 
+		// PTFE envelope Modal
+		if (specialVersionTitle == 'Фт') {
+			$('#modalPTFEenvelope').modal();
+		}
 
 
 		//Must '0,4 - 2 В' or '0 - 2 В' for P[CR]-28B
@@ -690,10 +695,11 @@ function getFromModal(form){
 	} else if (form.id == 'CablePTFE') {
 		Core.cablePTFELength = inputVal;
 		$('#special_version button').append('=' + Core.cablePTFELength);
+	} else if (form.id == 'PTFEenvelope') {
+		Core.PTFEenvelopeLength = inputVal;
+		$('#special_version button').append('=' + Core.PTFEenvelopeLength);
 	}
 	$('#modal' + form.id).modal('hide');
-	//console.log(Core);
-	//console.log(typeof input);
 }
 
 /*

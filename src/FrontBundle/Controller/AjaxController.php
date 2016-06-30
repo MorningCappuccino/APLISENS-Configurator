@@ -222,6 +222,7 @@ class AjaxController extends Controller
         $accuracy_id = $params['accuracyID'];
         $special_version_id = $params['specialVersionID'];
             $cable_PTFE_length = $params['cablePTFELength'];
+            $PTFE_envelope_length = $params['PTFEenvelopeLength'];
         if (isset($params['ContOtherSpecVers']['ids'])){
             $otherSpecialVersions_ids = $params['ContOtherSpecVers']['ids'];
             $otherSpecialVersions = $em->getRepository('AppBundle:SpecialVersion')->findBy(['id' => $otherSpecialVersions_ids]);
@@ -255,6 +256,7 @@ class AjaxController extends Controller
             'accuracy' => $accuracy,
             'specialVersion' => $specialVersion,
             'cablePTFELength' => $cable_PTFE_length,
+            'PTFEenvelopeLength' => $PTFE_envelope_length,
             'otherSpecialVersions' => $otherSpecialVersions,
             'measurementRange' => $measurementRange,
             'anotherMeasurementRange' => $another_measurement_range,

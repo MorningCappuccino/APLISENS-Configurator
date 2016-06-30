@@ -40,6 +40,12 @@
                 {% endfor %}
             {% endif %}
         {% endif %}
+
+        {# PTFE envelope length #}
+        {% if PTFEenvelopeLength %}
+            {% set PTFEenvelopeName = '/ Кфт=' ~ PTFEenvelopeLength %}
+        {% endif %}
+
         <tr>
             <td>{{ measurementRange.displayName() }} </td>
             <td>Диапазон измерения</td>
@@ -133,6 +139,7 @@
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
+            {{ PTFEenvelopeName|default('') }}
 
         <span class="ty">ТУ РБ 390171150.001-2004</span>
         </p>
