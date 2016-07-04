@@ -19,7 +19,7 @@
 
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
-		      On load init
+					On load init
 \*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 	$('.dropdown').tooltip({
@@ -371,22 +371,24 @@ function reviveMeasurementRange(){
 	});
 }
 
-function reviveBodyType(){
-	$('#body_type ul li').on('click', function(){
+function reviveBodyType() {
+	$('#body_type ul li').on('click', function() {
 
 		var bodyTypeID = this.value,
-				bodyTypeTitle = this.innerText,
-				nextBtn = $('#process_connection button'),
-				nextParam = +nextBtn.attr('id');
+				bodyTypeTitle = this.innerText;
 		Core.bodyTypeID = bodyTypeID;
 		Core.bodyTypeTitle = bodyTypeTitle;
 
 		$('#body_type button').text(bodyTypeTitle);
 
 		//Type Tube Length
-		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50'){
+		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50') {
 			$('#modalTube').modal();
 		}
+
+		getProcessConnection();
+	});
+}
 
 //func for Manual Exception №2
 function reviveBodyTypeForPCSG() {
@@ -424,18 +426,17 @@ function getProcessConnection() {
 			},
 			success: function(data){
 				if (data != 'no data'){
-					blink(nextParam, '#ABFCB2')
-					nextBtn.removeAttr('disabled');
+					blink(thisParam, '#ABFCB2');
+					thisBtn.removeAttr('disabled');
 					$('#process_connection ul').html(data);
 					$('.jumbotron #gen').html(data);
-					reviveNextParam(nextParam);
+					reviveNextParam(thisParam);
 				} else {
-					blink(nextParam, '#FFA0A0');
+					blink(thisParam, '#FFA0A0');
 					$('#process_connection button').text('нет данных');
 				}
 			}
 		});
-	});
 }
 
 function reviveProcessConnection(){
@@ -637,16 +638,16 @@ function getBracing(){
 }
 
 function reviveBracing(){
-    $('#brace ul li').on('click', function(){
-        var braceID = this.value,
-            braceTitle = this.innerText;
-        Core.braceID = braceID;
-        Core.braceTitle = braceTitle;
+		$('#brace ul li').on('click', function(){
+				var braceID = this.value,
+						braceTitle = this.innerText;
+				Core.braceID = braceID;
+				Core.braceTitle = braceTitle;
 
-        $('#brace button').text(braceTitle);
+				$('#brace button').text(braceTitle);
 
-        //getBracing();
-    });
+				//getBracing();
+		});
 }
 
 function getCountryCodes(){
@@ -692,10 +693,11 @@ function getCountryCodes(){
  */
 $('.dropdown ul').on('click', function(){
 	var currListID = this.id,
-		nextListID = +currListID + 1;
+			nextListID = +currListID + 1,
+			nextBtn = $('button#' + nextListID);
 
 	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
-	if ($('button#' + nextListID).text() != ''){
+	if ( ($(nextBtn).text() != '') && ($(nextBtn).text() != ' - ') ){
 		var dis = '';
 		for (var i = nextListID; i<=11; i++){
 			// console.log($('.dropdown button#' + i));
@@ -905,13 +907,13 @@ function initSecondProcessConnectionModal() {
 	//Add dropdown to DOM
 	//WHY: this hardcode for escape Listener called RollbackDropdown
 	var htmlDropdown = '<div id="second_process_connection" class="dropdown dd-mod">' +
-                     	'<button class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>' +
-                     	'<ul class="dropdown-menu" aria-labelledby="">' +
-                     	'</ul>'+
-                     '</div>';
-  $('#container-second-process-connection').html(htmlDropdown);
+											'<button class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>' +
+											'<ul class="dropdown-menu" aria-labelledby="">' +
+											'</ul>'+
+										 '</div>';
+	$('#container-second-process-connection').html(htmlDropdown);
 
-  //Copy list items from ProcessConnection
+	//Copy list items from ProcessConnection
 	var listElem = $('#process_connection ul').html(),
 			newDropdown = $('#second_process_connection');
 	$(newDropdown).find('ul').html(listElem);
@@ -946,23 +948,23 @@ function getFromSecondProcessConnectionModal() {
  Another Measurement Range Modal
  */
  var Re = {
- 	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)/,
- 	match: function(str){
- 		var res = str.match(Re.mr);
- 		if (res != null){
- 			Re.p1 = res[1];
- 			Re.p2 = res[4];
- 			return true;
- 		} else {
- 			return false;
- 		}
- 	},
- 	filter: function(p1, p2){
- 		var re = /[()]/g;
- 		var np1 = +p1.replace(re, '');
- 		var np2 = +p2.replace(re, '');
- 		return [np1, np2];
- 	}
+	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)/,
+	match: function(str){
+		var res = str.match(Re.mr);
+		if (res != null){
+			Re.p1 = res[1];
+			Re.p2 = res[4];
+			return true;
+		} else {
+			return false;
+		}
+	},
+	filter: function(p1, p2){
+		var re = /[()]/g;
+		var np1 = +p1.replace(re, '');
+		var np2 = +p2.replace(re, '');
+		return [np1, np2];
+	}
  }
 
 function initAnotherMeasurementRange(){
@@ -1031,7 +1033,7 @@ function getFromAnotherMeasurementRange(){
 }
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
-   			 Generator
+				 Generator
 \*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 var requestInProgress = false;
@@ -1095,7 +1097,7 @@ function generate(){
 }
 
 /*>>>>>>>>>>>
-	   ------------> UI Loader
+		 ------------> UI Loader
 */
 var loaderView = "<div style='display:none' id='loader' class='fa fa-spinner fa-3x fa-pulse'></div>";
 
@@ -1130,7 +1132,7 @@ function listenerInit(){
 
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
- 			Helpers API
+			Helpers API
 \*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 function blink(dropDownID, color){
 	var btn = $('button#' + dropDownID);
