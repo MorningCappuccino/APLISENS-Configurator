@@ -255,7 +255,7 @@ function reviveSpecialVersion(){
 				}
 
 				Helpers.showAlert('alert-require-special-version',
-				'Вы должны обязательно выбрать спец. исполнение "0,4 - 2 В" или "0 - 2 В" ');
+				'Вы обязательно должны выбрать специальное исполнение с указанием выходного сигнала "0,4 - 2 В" или "0 - 2 В"');
 				//hide more Special Version
 				$('#modalMoreSpecialVersions').modal('hide');
 
@@ -921,7 +921,7 @@ function getFromSecondProcessConnectionModal() {
 	} else {
 
 		if ( !document.getElementById('alert-second-proccess-connection') ) {
-			var msg = '<div id="alert-second-proccess-connection" class="alert alert-danger"><p>Второе процессное соединение должно быть выбрано</p></div>';
+			var msg = '<div id="alert-second-proccess-connection" class="alert alert-danger"><p>Должно быть выбрано второе процессное соединение</p></div>';
 			$('#container-second-process-connection').prev().before(msg);
 			$('#alert-second-proccess-connection').slideDown(300);
 			setTimeout(function(){ $('#alert-second-proccess-connection').slideUp(400)}, 4000 );
@@ -1004,10 +1004,10 @@ function getFromAnotherMeasurementRange(){
 						$('#modalAnotherMeasurementRange').modal('hide');
 						// alert('ALL CORRECTO');
 					} else {
-						Helpers.showAlert('alert-another-measurement-range', 'Выход за пределы диапазона');
+						Helpers.showAlert('alert-another-measurement-range', 'Превышены границы основного диапазона измерения');
 					}
 				} else {
-					Helpers.showAlert('alert-another-measurement-range', 'Начало диапазона должно быть меньше чем его верхнее значение');
+					Helpers.showAlert('alert-another-measurement-range', 'Начало диапазона должно быть меньше, чем его верхнее значение');
 				}
 			} else {
 				Helpers.showAlert('alert-another-measurement-range', 'В случае совпадения диапазонов - установленный диапазон не указывается');
@@ -1036,7 +1036,7 @@ function generate(){
 	if (flag == false){ //!!!!! for test change on '!='
 		//Msg Exist ? create one and show : show old message
 		if ( !document.getElementById('nfGenerator') ){
-			var msg = '<div id="nfGenerator" class="alert alert-danger not-filled"><p>Не хватает параметров для конфигурации</p></div>';
+			var msg = '<div id="nfGenerator" class="alert alert-danger not-filled"><p>Необходимо заполнить все поля</p></div>';
 			$(msg).insertBefore( $('#config-param') );
 			msg = $('#nfGenerator');
 			msg.slideDown();
@@ -1075,7 +1075,7 @@ function generate(){
 			},
 			error: function(jqXHR, textStatus, errorThrow){
 				killLoader(listenerInit);
-				$('.jumbotron #gen').text('К сожалению, что-то пошло не так. Запрос не удался :(');
+				$('.jumbotron #gen').text('К сожалению, что-то пошло не так. Запрос не удался. Сконфигурируйте заново.');
 			}
 
 		});

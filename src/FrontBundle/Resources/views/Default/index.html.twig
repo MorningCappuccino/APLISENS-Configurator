@@ -182,9 +182,7 @@
 
     <div class="jumbotron">
         <div id="gen">
-            <h3>Здесь будут тех. хар-ки</h3>
-
-            <p>...</p>
+            <h3>Здесь будут технические характеристики</h3>
         </div>
     </div>
 
@@ -211,13 +209,13 @@
                 <h4 class="modal-title">Длина кабеля</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину кабеля <span class="text-danger">(в метрах)</span>:
+                <p class="text-primary primary-text">Выберите длину кабеля <span class="text-danger">(в метрах)</span>:
                 </p>
 
                 <div class="alert alert-warning">Ограничение от 3 - 5000</div>
                 <form method="POST" action="javascript:void(null);" id="Cable" onsubmit="getFromModal(this)">
                     <input min="3" max="5000" class="form-control" type="number" id="cableLength" required
-                           placeholder="Пример: 666">
+                           placeholder="Пример: 10">
                 </form>
             </div>
             <div class="modal-footer">
@@ -238,13 +236,13 @@
                 <h4 class="modal-title">Длина капилляра</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину капилляра <span class="text-danger">(в метрах)</span>:
+                <p class="text-primary primary-text">Выберите длину капилляра <span class="text-danger">(в метрах)</span>:
                 </p>
 
                 <div class="alert alert-warning">Ограничение от 1 - 15</div>
                 <form method="POST" action="javascript:void(null);" id="PulsePipe" onsubmit="getFromModal(this)">
                     <input min="1" max="15" class="form-control" type="number" id="cableLength" required
-                           placeholder="Пример: 666">
+                           placeholder="Пример: 5">
                 </form>
             </div>
             <div class="modal-footer">
@@ -265,7 +263,7 @@
                 <h4 class="modal-title">Длина трубы</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину трубы <span class="text-danger">(в миллиметрах)</span>:
+                <p class="text-primary primary-text">Выберите длину трубы <span class="text-danger">(в миллиметрах)</span>:
                 </p>
 
                 <div class="alert alert-warning">Ограничение от 250 - 1800</div>
@@ -349,7 +347,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Добавление спец. исполнений:</h4>
+                <h4 class="modal-title">Добавление специальных исполнений:</h4>
             </div>
             <div class="modal-body">
                 <p class="text-primary primary-text">Здесь Вы можите выбрать больше спец. исполнений</p>
@@ -381,7 +379,7 @@
             <div class="modal-body">
                 <p class="text-primary primary-text">Добавте установленный измерительный диапазон(<span class="text-danger">необязательно</span>):</p>
                 <div class="alert alert-warning">В рамках </div>
-                    <input id="another_measurement_range" class="form-control" type="text" placeholder="Пример: (-52) - 25">
+                    <input id="another_measurement_range" class="form-control" type="text" placeholder="Пример: (-40) - 100">
             </div>
             <div class="modal-footer">
                 <input id="btn-another-measurement-range" onclick="getFromAnotherMeasurementRange()" type="submit" class="btn btn-primary" value="ok">
@@ -425,10 +423,10 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Длина кабеля (PTFE)</h4>
+                <h4 class="modal-title">Длина кабеля</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину кабеля <span class="text-danger">(в метрах)</span>:
+                <p class="text-primary primary-text">Выберите длину кабеля <span class="text-danger">(в метрах)</span>:
                 </p>
 
                 <div class="alert alert-warning">Ограничение от 1 - 25</div>
@@ -455,7 +453,7 @@
                 <h4 class="modal-title">Длина фторопластовой оболочки</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину фторопластовой оболочки<span class="text-danger">(в метрах)</span>:
+                <p class="text-primary primary-text">Выберите длину фторопластовой оболочки <span class="text-danger">(в метрах)</span>:
                 </p>
 
                 <div class="alert alert-warning">Ограничение от 1 - 15</div>
