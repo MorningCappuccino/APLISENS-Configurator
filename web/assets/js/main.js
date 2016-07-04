@@ -345,11 +345,26 @@ function reviveMeasurementRange(){
 					blink(nextParam, '#ABFCB2')
 					nextBtn.removeAttr('disabled');
 					$('#body_type ul').html(data);
-                    $('.jumbotron #gen').html(data);
+				//Manual Exception №2
+					if ( /PC-SG-.*/.test(Core.eqModeTitle) ) {
+						$('#body_type ul').prepend('<li value="0">без индикатора</li>');
+						reviveBodyTypeForPCSG();
+					} else {
+				//End Exception №2
 					 reviveNextParam(nextParam);
+						}
+					$('.jumbotron #gen').html(data);
 				} else {
 					blink(nextParam, '#FFA0A0');
+				//Manual Exception №2(part2)
+					if ( (/PC-SG-.*/.test(Core.eqModeTitle)) || (/PC-28P/.test(Core.eqModeTitle)) ) {
+						$('#body_type button').text('без индикатора');
+						$('#process_connection button').text(' - ');
+						getValveUnits();
+					} else {
+				//End Exception №2(part2)
 					$('#body_type button').text('нет данных');
+					}
 				}
 			}
 		});
@@ -372,6 +387,32 @@ function reviveBodyType(){
 		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50'){
 			$('#modalTube').modal();
 		}
+
+//func for Manual Exception №2
+function reviveBodyTypeForPCSG() {
+	$('#body_type ul li').on('click', function() {
+
+		var bodyTypeID = this.value,
+				bodyTypeTitle = this.innerText;
+		Core.bodyTypeID = bodyTypeID;
+		Core.bodyTypeTitle = bodyTypeTitle;
+
+		$('#body_type button').text(bodyTypeTitle);
+
+		//Type Tube Length
+		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50') {
+			$('#modalTube').modal();
+		}
+
+		$('#process_connection button').text(' - ');
+		//Redirect to ValveUnits, cause PC-SG-.* have not ProcessConnection
+		getValveUnits();
+	});
+}
+
+function getProcessConnection() {
+	var thisBtn = $('#process_connection button'),
+			thisParam = +thisBtn.attr('id');
 
 		$.ajax({
 			url: Core.ajaxUrl,
