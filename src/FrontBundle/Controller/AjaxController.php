@@ -101,6 +101,7 @@ class AjaxController extends Controller
                         ->join('m.unit', 'u')
                         ->where('e.id = :eq_mode_id')
                         ->andWhere('a.id = :accuracy_id') //in prod need "andWhere"
+                        ->orderBy('m.theRange', 'ASC')
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':accuracy_id' => $accuracy_id])
 //                  ->setParameter(':eq_mode_id', $eq_mode_id)
                 ->getQuery();
@@ -120,6 +121,7 @@ class AjaxController extends Controller
                         ->join('b.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
                         ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->orderBy('b.name', 'ASC')
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $bodyTypes = $query->getResult(2);
@@ -138,6 +140,7 @@ class AjaxController extends Controller
                         ->join('p.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
                         ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->orderBy('p.name', 'ASC')
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $processConnections = $query->getResult(2);
@@ -152,6 +155,7 @@ class AjaxController extends Controller
                         ->createQueryBuilder('v')
                         ->join('v.processConnections', 'p')
                         ->where('p.id = :process_connection_id')
+                        ->orderBy('v.name', 'ASC')
                 ->setParameter(':process_connection_id', $process_connection_id)
                 ->getQuery();
         $valveUnits = $query->getResult(2);
@@ -173,6 +177,7 @@ class AjaxController extends Controller
                         ->where('p.id = :process_connection_id')
                         ->andWhere('v.id = :valve_unit_id')
                         ->andWhere('e.id = :eq_mode_id')
+                        ->orderBy('w.name', 'ASC')
                 ->setParameters([':process_connection_id' => $process_connection_id,
                              ':valve_unit_id' => $valve_unit_id,
                              ':eq_mode_id' => $eq_mode_id])
@@ -196,6 +201,7 @@ class AjaxController extends Controller
                         ->where('p.id = :process_connection_id')
                         ->andWhere('bo.id = :body_type_id')
                         ->andWhere('e.id = :eq_mode_id')
+                        ->orderBy('b.name', 'ASC')
                     ->setParameters([':process_connection_id' => $process_connection_id,
                                      ':body_type_id' => $body_type_id,
                                      ':eq_mode_id' => $eq_mode_id])
@@ -208,6 +214,7 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
         $countryCodes = $em->getRepository('AppBundle:CountryCode')
                             ->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC')
                             ->getQuery()
                             ->getResult(2);
         return $this->render('FrontBundle::list.html.php', array('data' => $countryCodes));
