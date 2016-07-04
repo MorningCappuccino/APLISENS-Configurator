@@ -147,8 +147,6 @@ function reviveEqMode(){
 		// accuracyBtn.text('');
 
 		//#more Special Version
-		$('.more-spec-ver').hide();
-		//and clear
 		destroyOtherSpecialVersions();
 
 		$.ajax({
@@ -190,8 +188,6 @@ function reviveAccuracy(){
 		Core.accuracyID = accuracyID;
 
 		//#more Special Version
-		$('.more-spec-ver').hide();
-		//and clear
 		destroyOtherSpecialVersions();
 
 		//set Title to Dropdown
@@ -234,7 +230,8 @@ function reviveSpecialVersion(){
 		//more spec version
 		if (specialVersionTitle != 'без спец. исп.'){
 			initOtherSpecVers();
-		} else { $('.more-spec-ver').hide(); }
+			$('#modalMoreSpecialVersions').modal();
+		}
 
 		//Cable PTFE Modal
 		if (specialVersionTitle == 'L') {
@@ -260,7 +257,7 @@ function reviveSpecialVersion(){
 				Helpers.showAlert('alert-require-special-version',
 				'Вы должны обязательно выбрать спец. исполнение "0,4 - 2 В" или "0 - 2 В" ');
 				//hide more Special Version
-				$('.more-spec-ver').hide();
+				$('#modalMoreSpecialVersions').modal('hide');
 
 				} else {
 					getMeasurementRange();
@@ -783,118 +780,110 @@ function getFromMountingPartsModal(){
 /*
 	More Special Version Modal
  */
-$('.more-spec-ver').click(function(){
-	$('#modalMoreSpecialVersions').modal();
-});
-
-function getFromMoreSpecialVersionsModal(){
+function getFromMoreSpecialVersionsModal() {
 	$('#modalMoreSpecialVersions').modal('hide');
 }
 
-function initOtherSpecVers(){
+function initOtherSpecVers() {
 	var currSpecialVersions = [],
-			cont = $('#modalMoreSpecialVersions').find('#many-spec-ver');
+			cont = $('#modalMoreSpecialVersions').find('#many-spec-ver'),
+			btn = ('#spec_ver_2 button');
 
 	//insert Clear Dropdown in container
 	cont.html('<div id="" class="dropdown dd-mod dd-mod-spec-ver">'+
-			'<button id="btn-more-spec-ver" class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
-			'<ul class="dropdown-menu">'+
-			'</ul>'+
-			'</div>'+
-			'<i onclick="addSpecVer()" class="fa fa-plus-circle fa-2x add-spec-ver"></i>');
+							'<button id="btn-more-spec-ver" class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
+							'<ul class="dropdown-menu">'+
+							'</ul>'+
+						'</div>'+
+						'<i onclick="addSpecVer()" class="fa fa-plus-circle fa-2x add-spec-ver"></i>');
 	//assigned him ID
-	$( cont ).find('.dropdown').attr('id','spec_ver_'+2);
+	$( cont ).find('.dropdown').attr('id','spec_ver_2');
 	currSpecialVersions = $.parseHTML($('button#3 + ul').html());
 	//delete first li with "без спец. исп."
 	currSpecialVersions.splice(0,1);
-	$('#spec_ver_'+ 2 + ' ul').html( currSpecialVersions );
-
+	$('#spec_ver_2 ul').html( currSpecialVersions );
 	//Add first SpecialVersion to CurrID and to Caption
 	Core.ContOtherSpecVers.currID = currSpecialVersions[0].value;
 	Core.ContOtherSpecVers.currTitle = currSpecialVersions[0].innerText;
-	var btn = ('#spec_ver_2 button');
-	$( btn ).text(Core.ContOtherSpecVers.currTitle);
-	//
+	$(btn).text(Core.ContOtherSpecVers.currTitle);
 
-	reviveNewSpecVer(2);
-
-	$('.more-spec-ver').fadeIn();
+	reviveNewSpecVer();
 }
 
-function reviveNewSpecVer(id){
-	$('#spec_ver_'+ id + ' ul li').on('click', function(){
+function reviveNewSpecVer() {
+	$('#spec_ver_2 ul li').on('click', function() {
+		var btn = ('#spec_ver_2 button');
+
 		Core.ContOtherSpecVers.currID = this.value,
-				Core.ContOtherSpecVers.currTitle = this.innerText;
-		var btn = ('#spec_ver_'+ id + ' button');
-		$( btn ).text(this.innerText);
-		//Core.ContOtherSpecVers.arr[this.value] = this.innerText;
-	})
+		Core.ContOtherSpecVers.currTitle = this.innerText;
+		$(btn).text(this.innerText);
+	});
 }
 
-function addSpecVer(){
+function addSpecVer() {
 	var SV = Core.ContOtherSpecVers,
-			currTag, flag = true;
+			currTag,
+			flag = true;
 
-	//TOD: check duplicate with DEFAULT entity
-	if (SV.currTitle == $('#special_version button').text()){
-		flag = false;
+	//check duplicate with DEFAULT entity
+	if (SV.currTitle == $('#special_version button').text()) {
 		var msg = $.parseHTML(Helpers.Alerts.danger);
-		$( msg ).find('p').text('Такое спец. исполнение уже было выбрано ранее');
+
+		flag = false;
+		$( msg ).find('p').text('Данное специальное исполнение уже было выбрано ранее');
 		//bad check, but minimalistic: msg NOT exist ? insert before : show old msg
-		if ( $('#modalMoreSpecialVersions .alert-danger')[0] == undefined ){
+		if ( $('#modalMoreSpecialVersions .alert-danger')[0] == undefined ) {
 			$('#modalMoreSpecialVersions .primary-text').before(msg);
 		}
-		$( '#modalMoreSpecialVersions .alert-danger' ).slideDown(500);
+
+		$('#modalMoreSpecialVersions .alert-danger').slideDown(500);
 		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
 	}
 
 	//Tag exist in SV.Array?
-	$.each(SV.arr, function(index, value){
+	$.each(SV.arr, function(index, value) {
 		if (index == SV.currID) flag = false;
 	});
 
-	if (flag == true){
+	if (flag == true) {
+		var stareElem = $('.spec-ver-tag[val='+SV.currID+']');
+
 		SV.arr[SV.currID] = SV.currTitle;
-		//for BackEndj
+		//for BackEnd
 		SV.ids.push(SV.currID);
 
 		currTag = $.parseHTML('<div class="spec-ver-tag">' +
-				'<span></span><i onclick="delSpecVer(this)" class="fa fa-close"></i>' +
-				'</div>');
+														'<span></span><i onclick="delSpecVer(this)" class="fa fa-close"></i>' +
+													'</div>');
 		$(currTag).attr('val', SV.currID);
 		$(currTag).find('span').text(SV.currTitle);
 		$('#tag-showcase').append( currTag );
-		//console.log(SV.arr);
-		//console.log(SV.ids);
 	} else {
 		//message about entity was exist
 		blink('btn-more-spec-ver', Helpers.Colors.danger);
-		var stareElem = $('.spec-ver-tag[val='+SV.currID+']');
 		stareElem.animate({
 			backgroundColor: Helpers.Colors.success
-		}, 300, 'swing', function(){
-			stareElem.animate({backgroundColor: '#fff'}, 200)
-		})
+		}, 300, 'swing', function() {
+			stareElem.animate({backgroundColor: '#fff'}, 200);
+		});
 	}
 
 }
 
-function delSpecVer(obj){
-	var SV = Core.ContOtherSpecVers;
+function delSpecVer(obj) {
+	var SV = Core.ContOtherSpecVers,
+			tarElem = $( obj ).parent(),
+			tagID = tarElem.attr('val');
 	//delete tag
-	var tarElem = $( obj ).parent();
-	var tagID = tarElem.attr('val');
 	tarElem.remove();
 	//delete elem from Object
 	delete SV.arr[tagID];
-	SV.ids.forEach(function(item, i, arr){
+	SV.ids.forEach(function(item, i, arr) {
 		if (item == tagID) delete arr[i];
 	});
-	//console.log(SV.arr);
-	//console.log(SV.ids);
 }
 
-function destroyOtherSpecialVersions(){
+function destroyOtherSpecialVersions() {
 	$('#tag-showcase').empty();
 	Core.ContOtherSpecVers.arr = {}
 }
