@@ -6,6 +6,7 @@
 #Rewrite
 #Manage Section
   - Choice Buttons
+  - mess section
 #Jumbotron
   ##Generated
 #Modal
@@ -120,6 +121,27 @@ table.transcript {
 
 #parameters {
   margin-top: 35px;
+}
+
+//mess section
+//mess section
+.mess {
+  margin-top: 100px;
+  .logo {
+    // border: 1px solid #ddd;i
+    height: 120px;
+    border-radius: 4px;
+    text-align: center;
+    img {
+      transform: translateY(10%);
+    }
+    .sign {
+      transform: translateY(80%);
+      color: #ffd300;
+      font-size: 18px;
+      display: block;
+    }
+  }
 }
 
 //special version button
