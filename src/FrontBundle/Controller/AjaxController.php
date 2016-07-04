@@ -241,6 +241,8 @@ class AjaxController extends Controller
         $body_type_id = $params['bodyTypeID'];
 				$tube_length = $params['tubeLength'];
         $process_connection_id = $params['processConnectionID'];
+                $pulse_pipe_length = $params['pulsePipeLength'];
+                $cable_length = $params['cableLength'];
         $second_process_connection_id = $params['secondProcessConnection'];
         $valve_unit_id = $params['valveUnitID'];
         $welded_element_id = $params['weldedElementID'];
@@ -270,6 +272,8 @@ class AjaxController extends Controller
             'bodyType' => $bodyType,
             'tubeLength' => $tube_length,
             'processConnection' => $processConnection,
+            'pulsePipeLength' => $pulse_pipe_length,
+            'cableLength' => $cable_length,
             'secondProcessConnection' => $secondProcessConnection,
             'valveUnit' => $valveUnit,
             'weldedElement' => $weldedElement,

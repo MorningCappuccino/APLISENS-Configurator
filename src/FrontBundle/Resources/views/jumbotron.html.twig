@@ -65,7 +65,11 @@
         {% endif %}
 
         {% if bodyType %}
-            {% set bodyTypeName = bodyType.name ~ ' /' %}
+            {% if tubeLength %}
+                {% set bodyTypeName = bodyType.name ~ '/L=' ~ tubeLength ~ ' /' %}
+            {% else %}
+                {% set bodyTypeName = bodyType.name ~ ' /' %}
+            {% endif %}
             <tr>
                 <td>{{ bodyType.name }}</td>
                 <td>{{ bodyType.descr }}</td>
@@ -137,14 +141,22 @@
             {{ secondProcessConnectionName|default('') }}
 
             {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
-            {% if tubeLength %}
+{#             {% if tubeLength %}
 							L={{ tubeLength }} /
 						{% endif %}
-
+ #}
             {{ valveUnitName|default('') }}
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
+            {#Cable or Capilar(K=)#}
+            {% if pulsePipeLength %}
+                {{ '/K=' ~ cableLength }}
+            {% endif %}
+            {% if pulsePipeLength %}
+                {{ '/K=' ~ pulsePipeLength }}
+            {% endif %}
+
             {{ PTFEenvelopeName|default('') }}
 
         <span class="ty">ТУ РБ 390171150.001-2004</span>
