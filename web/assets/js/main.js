@@ -452,17 +452,18 @@ function reviveProcessConnection(){
 			$('#modalSecondProcessConnection').modal();
 		}
 
-		var check;
-		//if ProcessConnection finish on "K" / "PC-SG-*" / PK
-		if ( (check = /K$/i.test(processConnectionTitle)) && (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
+		//if ProcessConnection finish on "K"
+		if ( /K$/i.test(processConnectionTitle) ) {
+			$('#modalPulsePipe').modal();
+		}
+
+		//if EqMode finish on "PC-SG-*" or bodyType finish on PK
+		if ( (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
 			//call modalCable
 			$('#modalCable').on('shown.bs.modal', function () {
 				$('#cableLength').focus();
 			});
 			$('#modalCable').modal();
-		} else if (check){
-			$('#modalPulsePipe').modal();
-			//call modal pulise pipe
 		} else {
 			//call function to mounting_parts
 			getValveUnits();
