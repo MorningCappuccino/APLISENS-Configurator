@@ -1,10 +1,16 @@
 <div id="generated">
     <h3>Технические характеристики: </h3>
-    {% if eqMode.imageName != '' %}
-    <img class="sensor" src="{{ asset("assets/img/products/") }}{{ eqMode.imageName }}">
-    {% else %}
-    <img class="sensor" src="{{ asset("assets/img/no-image.png") }}">
-    {% endif %}
+    <div class="img-container">
+        {% if eqMode.imageName != '' %}
+        <img class="sensor" src="{{ asset("assets/img/products/") }}{{ eqMode.imageName }}">
+        {% else %}
+        <img class="sensor" src="{{ asset("assets/img/no-image.png") }}">
+        {% endif %}
+        <div class="sign-for-img">
+            Картинка носит информационный характер
+             и не всегда совпадает с выбранными исполнениями
+        </div>
+    </div>
     <table class="table transcript">
         <thead>
         <tr>

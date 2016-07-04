@@ -159,10 +159,13 @@ table.transcript {
 #generated {
   display: none;
   opacity: 0;
-  img.sensor {
-    float: right;
-    // width: 100%;
+  .img-container {
+    text-align: center;
     max-width: 250px;
+    float: right;
+    img.sensor {
+      max-width: 250px;
+    }
   }
   table.transcript {
     max-width: 720px;
