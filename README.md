@@ -50,5 +50,12 @@ For some reason I temporarily decided leave it here:
 
 ta
 
+Start of release branch for v.0.1.12
 
 A Symfony project created on April 20, 2016, 1:31 pm.
+
+
+
+
+
+master 1
