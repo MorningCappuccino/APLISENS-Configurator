@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
 
-        {% stylesheets filter="scssphp" output="css/admin.css"
+        {% stylesheets filter="scssphp" output="css/generated/admin.css"
         "assets/scss/main.scss"
         %}
         <link rel="stylesheet" href="{{ asset_url }}" />
@@ -122,9 +122,8 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 {% block javascripts %}
-    {% javascripts
+    {% javascripts output='js/generated/admin.js'
             'assets/vendor/bootstrap/dist/js/bootstrap.js'
-             output='js/generated/main.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
