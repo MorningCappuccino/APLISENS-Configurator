@@ -85,7 +85,7 @@ class AjaxController extends Controller
                     ->setParameter(':eq_mode_id', $eq_mode_id)
                     ->getQuery();
         $specialVersions = $query->getResult(2);
-        return $this->render('FrontBundle::SpecialVersionList.html.php', array('data' => $specialVersions));
+        return $this->render('FrontBundle::specialVersionList.html.php', array('data' => $specialVersions));
     }
 
     public function getMeasurementRangesByEqModeIDAndAccuracyID($request)
