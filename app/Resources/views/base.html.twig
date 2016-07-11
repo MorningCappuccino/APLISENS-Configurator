@@ -14,10 +14,13 @@
     <!-- Bootstrap core CSS -->
     {% block stylesheets %}
 
-        {% stylesheets filter="scssphp" output="css/app.css"
-        "%kernel.root_dir%/Resources/assets/scss/main.scss"
+        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
+
+        {% stylesheets filter="scssphp" output="css/generated/admin.css"
+        "assets/scss/main.scss"
         %}
-        {#<link rel="stylesheet" href="{{ asset_url }}" />#}
+        <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
 
@@ -29,10 +32,6 @@
         {% endstylesheets %}#}
 
 
-        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
-        {#<link rel="stylesheet" href="{{ asset('css/app.css') }}">#}
-        <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
         <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
     {% endblock %}
 
@@ -77,7 +76,7 @@
                 <li><a href="#">Export</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li class=""><a href="{{ path('eqtype_index') }}">Equipment type</a></li>
+                <li class="disabled"><a href="{{ path('eqtype_index') }}">Equipment type</a></li>
                 <li><a href="{{ path('eqmode_index') }}">Equipment mode</a></li>
                 <li><a href="{{ path('accuracy_index') }}">Accuracy class</a></li>
                 <li><a href="{{ path('specialversion_index') }}">Special version</a></li>
@@ -108,6 +107,12 @@
                 </div>
             {% endfor %}
 
+            {% for flash_message in app.session.flashBag.get('warning') %}
+                <div class="alert alert-danger">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+
             {% block body %}{% endblock %}
 
         </div>
@@ -117,9 +122,8 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 {% block javascripts %}
-    {% javascripts
+    {% javascripts output='js/generated/admin.js'
             'assets/vendor/bootstrap/dist/js/bootstrap.js'
-             output='js/generated/main.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}

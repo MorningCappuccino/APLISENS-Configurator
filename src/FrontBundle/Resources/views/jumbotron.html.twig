@@ -1,6 +1,16 @@
 <div id="generated">
     <h3>Технические характеристики: </h3>
-    <img class="sensor" src="{{ asset("assets/img/no-image.png") }}">
+    <div class="img-container">
+        {% if eqMode.imageName != '' %}
+        <img class="sensor" src="{{ asset("assets/img/products/") }}{{ eqMode.imageName }}">
+        {% else %}
+        <img class="sensor" src="{{ asset("assets/img/no-image.png") }}">
+        {% endif %}
+        <div class="sign-for-img">
+            Картинка носит информационный характер
+             и не всегда совпадает с выбранными исполнениями
+        </div>
+    </div>
     <table class="table transcript">
         <thead>
         <tr>
@@ -14,25 +24,73 @@
             <td>{{ eqMode.descr }}</td>
         </tr>
         <tr>
-            <td>{{ accuracy.value }} </td>
+            <td>{{ accuracy.value + 0 }} </td>
             <td>Основная приведённая погрешность</td>
         </tr>
+        {% if specialVersion %}
+            {% if cablePTFELength %}
+                {% set specialVersionName = specialVersion.name ~ '=' ~ cablePTFELength ~ ' /'%}
+            {% else %}
+                {% set specialVersionName = specialVersion.name ~ ' /'%}
+            {% endif %}
         <tr>
             <td>{{ specialVersion.name }} </td>
             <td>{{ specialVersion.descr }}</td>
         </tr>
+            {% if otherSpecialVersions %}
+                {% for item in otherSpecialVersions %}
+                <tr>
+                    <td>{{ item.name }} </td>
+                    <td>{{ item.descr }}</td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+
+        {# PTFE envelope length #}
+        {% if PTFEenvelopeLength %}
+            {% set PTFEenvelopeName = '/ Кфт=' ~ PTFEenvelopeLength %}
+        {% endif %}
+
         <tr>
             <td>{{ measurementRange.displayName() }} </td>
             <td>Диапазон измерения</td>
         </tr>
-        <tr>
-            <td>{{ bodyType.name }}</td>
-            <td>{{ bodyType.descr }}</td>
-        </tr>
-        <tr>
-            <td>{{ processConnection.name }} </td>
-            <td>{{ processConnection.descr }}</td>
-        </tr>
+        {% if anotherMeasurementRange %}
+            {% set anotherMeasurementRangeName = anotherMeasurementRange ~ ' /' %}
+            <tr>
+                <td>{{ anotherMeasurementRange }} </td>
+                <td>Установленный диапазон измерения</td>
+            </tr>
+        {% endif %}
+
+        {% if bodyType %}
+            {% if tubeLength %}
+                {% set bodyTypeName = bodyType.name ~ '/L=' ~ tubeLength ~ ' /' %}
+            {% else %}
+                {% set bodyTypeName = bodyType.name ~ ' /' %}
+            {% endif %}
+            <tr>
+                <td>{{ bodyType.name }}</td>
+                <td>{{ bodyType.descr }}</td>
+            </tr>
+        {% endif %}
+
+        {% if processConnection %}
+            {% set firstProcessConnectionName = processConnection.name ~ ' /' %}
+            <tr>
+                <td>{{ processConnection.name }} </td>
+                <td>{{ processConnection.descr }}</td>
+            </tr>
+        {% endif %}
+        {% if secondProcessConnection %}
+            {% set secondProcessConnectionName = '(-) ' ~ secondProcessConnection.name ~ ' /' %}
+            {% set firstProcessConnectionName = '(+) ' ~ processConnection.name ~ ' /' %}
+            <tr>
+                <td>{{ secondProcessConnection.name }} </td>
+                <td>{{ secondProcessConnection.descr }}</td>
+            </tr>
+        {% endif %}
         {% if valveUnit %}
             {% set valveUnitName = valveUnit.name ~ ' /'%}
         <tr>
@@ -62,16 +120,46 @@
     </table>
     <div class="code-again">
         <p><span>Преобразователь давления измерительный</span>
+            <br>
             {{ eqMode.getName() }} /
-            {{ accuracy.value }} /
-            {{ specialVersion.name }} /
+            {{ accuracy.value + 0 }} /
+
+            {#Special Versions#}
+            {% if specialVersionName is defined %}
+                {{ specialVersionName }}
+                {% if otherSpecialVersions %}
+                    {% for item in otherSpecialVersions %}
+                            <td>{{ item.name }} / </td>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+
             {{ measurementRange.displayName() }} /
-            {{ bodyType.name }} /
-            {{ processConnection.name }} /
+            {{ anotherMeasurementRangeName|default('') }}
+            {{ bodyTypeName|default('') }}
+            {{ firstProcessConnectionName|default('') }}
+            {{ secondProcessConnectionName|default('') }}
+
+            {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
+{#             {% if tubeLength %}
+							L={{ tubeLength }} /
+						{% endif %}
+ #}
             {{ valveUnitName|default('') }}
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
+            {#Cable or Capilar(K=)#}
+            {% if pulsePipeLength %}
+                {{ '/K=' ~ cableLength }}
+            {% endif %}
+            {% if pulsePipeLength %}
+                {{ '/K=' ~ pulsePipeLength }}
+            {% endif %}
+
+            {{ PTFEenvelopeName|default('') }}
+
+        <span class="ty">ТУ РБ 390171150.001-2004</span>
         </p>
     </div>
     <div class="clearfix"></div>

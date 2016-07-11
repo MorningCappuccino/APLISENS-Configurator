@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rainbow</title>
+    <title>Конфигуратор оборудования АПЛИСЕНС</title>
 
     {% block stylesheets %}
 
         {#"assets/css/animate.css"#}
-        {% stylesheets filter="scssphp" output="css/app.css"
+        {% stylesheets filter="scssphp" output="css/generated/app.css"
+        "assets/vendor/font-awesome/css/font-awesome.min.css"
         "assets/vendor/bootstrap/dist/css/bootstrap.min.css"
         "assets/scss/front.scss"
         %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-        <link rel="stylesheet" href="{{ asset("assets/vendor/font-awesome/css/font-awesome.min.css") }}">
+            <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
 
     {% endblock %}
@@ -22,143 +22,108 @@
 </head>
 <body>
 <div class="container">
-    <div class="page-header">
-        <h1><small>logo</small></h1>
-    </div>
-    <div class="row">
+     <div class="row mess">
+        <div class="col-lg-4 col-md-4">
+            <div class="logo">
+                <img src="{{ asset("assets/img/new_logo.png") }}">
+                <span class="sign">Конфигуратор оборудования</span>
+            </div>
+        </div>
         <div class="col-lg-4 col-md-5 col-sm-8">
             <div class="list-group">
                 <a href="#" class="list-group-item active">Преобразователи давления измерительные</a>
-                <a href="#" class="list-group-item">Преобразователи температуры</a>
-                <a href="#" class="list-group-item">Измерители-регуляторы</a>
+                <a href="#" class="list-group-item disabled">Преобразователи температуры</a>
             </div>
+            {#<label>Преобразователь давления измерительный</label>#}
         </div>
-        <div class="col-lg-6 col-md-5 hidden-sm">
-            <div class="input-group-inline">
-                <label>Введите код заказа:</label>
-                <input type="text" class="form-control" placeholder="например: APC-2000/0,25/Ex/20МПа/M/K=2000м/.../BY">
-            </div>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-4">
+        <div class="col-lg-4 col-md-3 col-sm-4">
             <div class="list-group">
-                <a href="#" class="list-group-item active">по коду</a>
-                <a href="#" class="list-group-item">по хар-кам</a>
+                <a href="#" class="list-group-item active">по коду заказа</a>
+                <a href="#" class="list-group-item disabled">по тех. характеристикам</a>
             </div>
         </div>
     </div>
     <div class="row" id="config-param">
         <div class="col-lg-12">
 
-            <label>Преобразователь давления измерительный</label>
-            <!-- equipment mode -->
-            <div id="eq_mode" class="dropdown dd-mod" title="Модификация преобразователя">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
+            <div id="parameters">
+                <!-- equipment mode -->
+                <div id="eq_mode" class="dropdown dd-mod" title="Модификация преобразователя">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="1" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true"></button>
 
-                <ul class="dropdown-menu" aria-labelledby="1" id="1">
-                    {#<li><a href="#">APC-2000 (AL)</a></li>#}
-                    {#<li><a href="#">PC-28</a></li>#}
-                    {#<li><a href="#">PC-50</a></li>#}
-                </ul>
+                    <ul class="dropdown-menu" aria-labelledby="1" id="1">
+                    </ul>
 
+                </div>
+
+                <span>/</span>
+                <!-- accuracy class -->
+                <div id="accuracy" class="dropdown dd-mod" title="Класс точности">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true" disabled></button>
+                    <ul class="dropdown-menu" aria-labelledby="2" id="2">
+                    </ul>
+                </div>
+
+                <span>/</span>
+                <!-- special version -->
+                <div id="special_version" class="dropdown dd-mod" title="Спец. исполнение">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="3" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true" disabled></button>
+                    <ul class="dropdown-menu" aria-labelledby="3" id="3">
+                    </ul>
+                </div>
+
+
+                <span>/</span>
+                <!-- measurement range -->
+                <div id="measurement_range" class="dropdown dd-mod" title="Измерительный диапазон">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="4" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true" disabled></button>
+                    <ul class="dropdown-menu" aria-labelledby="4" id="4">
+
+                    </ul>
+                </div>
+
+                <span>/</span>
+                <!-- body type -->
+                <div id="body_type" class="dropdown dd-mod" title="Исполнение корпуса">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="5" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true" disabled></button>
+                    <ul class="dropdown-menu" aria-labelledby="5" id="5">
+
+                    </ul>
+                </div>
+                <!-- process connection -->
+                <span>/</span>
+
+                <div id="process_connection" class="dropdown dd-mod" title="Тип штуцера или разделителя сред">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="6" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true" disabled></button>
+                    <ul class="dropdown-menu" aria-labelledby="6" id="6">
+
+                    </ul>
+                </div>
+                <!-- mounting_parts -->
+                <span>/</span>
+
+                <div id="mounting_parts" class="dropdown dd-mod" title="Комплект монтажных частей">
+                    <button class="btn btn-default dropdown-toggle btn-conf btn-long" type="button" id="10"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                </div>
+                <!-- country_code -->
+                <span>/</span>
+
+                <div id="country_code" class="dropdown dd-mod" title="Код гос-ва потрибителя">
+                    <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="11"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
+                    <ul class="dropdown-menu" aria-labelledby="11" id="11">
+
+                    </ul>
+                </div>
             </div>
 
-            <span>/</span>
-            <!-- accuracy class -->
-            <div id="accuracy" class="dropdown dd-mod" title="Класс точности">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                <ul class="dropdown-menu" aria-labelledby="2" id="2">
-                    <!--             <li><a href="#">0,2</a></li>
-                                <li><a href="#">0,25</a></li>
-                                <li><a href="#">0,3</a></li>
-                                <li><a href="#">0,4</a></li>
-                                <li><a href="#">0,8</a></li>
-                     -->          </ul>
-            </div>
-
-            <span>/</span>
-            <!-- special version -->
-            <div id="special_version" class="dropdown dd-mod" title="Спец. исполнение">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                <ul class="dropdown-menu" aria-labelledby="3" id="3">
-                    <!--             <li><a href="#">Ex</a></li>
-                                <li><a href="#">Exd</a></li>
-                                <li><a href="#">Hastelloy</a></li>
-                                <li><a href="#">PPD</a></li>
-                                <li><a href="#">T</a></li>
-                                <li><a href="#">VE</a></li>
-                                <li><a href="#">SN</a></li>
-                                <li><a href="#">CT</a></li>
-                                <li><a href="#">SQ</a></li> -->
-                </ul>
-            </div>
-
-
-            <span>/</span>
-            <!-- measurement range -->
-            <div id="measurement_range" class="dropdown dd-mod" title="Измерительный диапазон">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                <ul class="dropdown-menu" aria-labelledby="4" id="4">
-
-                </ul>
-            </div>
-
-            <span>/</span>
-            <!-- body type -->
-            <div id="body_type" class="dropdown dd-mod" title="Исполнение корпуса">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                <ul class="dropdown-menu" aria-labelledby="5" id="5">
-
-                </ul>
-            </div>
-            <!-- process connection -->
-            <span>/</span>
-            <div id="process_connection" class="dropdown dd-mod" title="Тип штуцера или разделителя сред">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                <ul class="dropdown-menu" aria-labelledby="6" id="6">
-
-                </ul>
-            </div>
-        {#choice 1 from 2 or noting#}
-            <!-- (?1)pulse pipe -->
-{#            <span>/</span>
-            <div id="pulse_pipe" class="dropdown dd-mod" title="Длина капилляра или импульсной трубки">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
-                    <!-- Dropdown -->
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="7" id="7">
-                    <li>0,5</li>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>15</li>
-                </ul>
-            </div>#}
-            <!-- (?2)cable -->
-{#            <span>/</span>
-            <div id="cable" class="dropdown dd-mod" title="Длина кабеля">
-                <button class="btn btn-default dropdown-toggle btn-conf" disabled type="button" id="7,5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled>
-                    <!-- Dropdown -->
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="7,5" id="7,5">
-
-                </ul>
-            </div>#}
-        {#/endchoice 1 from 2 or noting#}
-            <!-- mounting_parts -->
-            <span>/</span>
-            <div id="mounting_parts" class="dropdown dd-mod" title="Комплект монтажных частей">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="b10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-            </div>
-            <!-- country_code -->
-            <span>/</span>
-            <div id="country_code" class="dropdown dd-mod" title="Код гос-ва потрибителя">
-                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                <ul class="dropdown-menu" aria-labelledby="11" id="11">
-
-                </ul>
-            </div>
         </div>
         <div class="clearfix"></div>
         <button onclick="generate()" class="btn btn-primary btn-configurate">Сконфигурировать</button>
@@ -166,21 +131,20 @@
 
     <div class="jumbotron">
         <div id="gen">
-            <h3>Здесь будут тех. хар-ки</h3>
-            <p>...</p>
+            <h3>Здесь будут технические характеристики</h3>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-8"></div>
         <div class="col-lg-3">
-            <button class="btn btn-warning pull-right">Заказать</button>
+            {#<button class="btn btn-danger pull-right">Заказать</button>#}
         </div>
         <div class="col-lg-1"></div>
     </div>
 
 
-    <footer class="footer">&copy; <?= date("Y") ?> {company_name} Inc.</footer>
+    <footer class="footer">&copy; <?= date("Y") ?> СООО «АПЛИСЕНС»</footer>
 </div><!-- /container -->
 
 
@@ -189,14 +153,18 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Длина кабеля</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину кабеля <span class="text-danger">(в метрах)</span>:</p>
+                <p class="text-primary primary-text">Выберите длину кабеля <span class="text-danger">(в метрах)</span>:
+                </p>
+
                 <div class="alert alert-warning">Ограничение от 3 - 5000</div>
                 <form method="POST" action="javascript:void(null);" id="Cable" onsubmit="getFromModal(this)">
-                    <input min="3" max="5000" class="form-control" type="number" id="cableLength" required placeholder="Пример: 666">
+                    <input min="3" max="5000" class="form-control" type="number" id="cableLength" required
+                           placeholder="Пример: 10">
                 </form>
             </div>
             <div class="modal-footer">
@@ -212,14 +180,18 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Длина капилляра</h4>
             </div>
             <div class="modal-body">
-                <p class="text-primary primary-text">Впишите длину капилляра <span class="text-danger">(в метрах)</span>:</p>
+                <p class="text-primary primary-text">Выберите длину капилляра <span class="text-danger">(в метрах)</span>:
+                </p>
+
                 <div class="alert alert-warning">Ограничение от 1 - 15</div>
                 <form method="POST" action="javascript:void(null);" id="PulsePipe" onsubmit="getFromModal(this)">
-                    <input min="1" max="15" class="form-control" type="number" id="cableLength" required placeholder="Пример: 666">
+                    <input min="1" max="15" class="form-control" type="number" id="cableLength" required
+                           placeholder="Пример: 5">
                 </form>
             </div>
             <div class="modal-footer">
@@ -230,44 +202,80 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+{# Modal Tube Length#}
+<div class="modal fade" id="modalTube" tabindex="-1" role="dialog" aria-labelledby="modalTubeLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Длина трубы</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Выберите длину трубы <span class="text-danger">(в миллиметрах)</span>:
+                </p>
+
+                <div class="alert alert-warning">Ограничение от 250 - 1800</div>
+                <form method="POST" action="javascript:void(null);" id="Tube" onsubmit="getFromModal(this)">
+                    <input min="250" max="1800" class="form-control" type="number" id="tubeLength" required
+                           placeholder="Пример: 700">
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input form="Tube" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 {# Modal Mounting Parts #}
 <div class="modal fade" id="modalMountingParts" tabindex="-1" role="dialog" aria-labelledby="modalMountingPartsLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Комплект монтажных частей</h4>
             </div>
             <div class="modal-body">
                 <div class="col-sm-offset-0 col-sm-12">
 
                     <div id="mounting-parts">
-                    <div class="mp-param">
-                        <label id="label_valve_unit">Вентильный блок</label>
-                        <div id="valve_unit" class="dropdown dd-mod" >
-                            <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                            <ul class="dropdown-menu" aria-labelledby="8.1" id="8.1">
-                            </ul>
-                        </div>
-                    </div>
+                        <div class="mp-param">
+                            <label id="label_valve_unit">Вентильный блок</label>
 
-                    <div class="mp-param">
-                        <label id="label_welded_element">Монтажные элементы</label>
-                        <div id="welded_element" class="dropdown dd-mod">
-                            <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled></button>
-                            <ul class="dropdown-menu" aria-labelledby="8.2" id="8.2">
-                            </ul>
+                            <div id="valve_unit" class="dropdown dd-mod">
+                                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="7"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                        disabled></button>
+                                <ul class="dropdown-menu" aria-labelledby="8.1" id="8.1">
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mp-param">
-                        <label id="label_mounting">Крепления</label>
-                        <div id="brace" class="dropdown dd-mod">
-                            <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ></button>
-                            <ul class="dropdown-menu" aria-labelledby="8.3" id="8.3">
-                            </ul>
+                        <div class="mp-param">
+                            <label id="label_welded_element">Монтажные элементы</label>
+
+                            <div id="welded_element" class="dropdown dd-mod">
+                                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="8"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                        disabled></button>
+                                <ul class="dropdown-menu" aria-labelledby="8.2" id="8.2">
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="mp-param">
+                            <label id="label_mounting">Крепления</label>
+
+                            <div id="brace" class="dropdown dd-mod">
+                                <button class="btn btn-default dropdown-toggle btn-conf" type="button" id="9"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
+                                <ul class="dropdown-menu" aria-labelledby="8.3" id="8.3">
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -281,11 +289,149 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+{# Modal Add more Special Version#}
+<div class="modal" id="modalMoreSpecialVersions" tabindex="-1" role="dialog" aria-labelledby="modalMoreSpecialVersionLabel">
+    <div class="modal-dialog modal-450" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Добавление специальных исполнений:</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Здесь Вы можите выбрать больше спец. исполнений</p>
+                <div id="tag-showcase">
+
+                </div>
+                <div id="many-spec-ver">
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <input onclick="getFromMoreSpecialVersionsModal()" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# Modal Add another MeasurementRange #}
+<div class="modal fade" id="modalAnotherMeasurementRange" tabindex="-1" role="dialog" aria-labelledby="modalAnotherMeasurementRangeLabel">
+    <div class="modal-dialog modal-450" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Добавление установленного диапазона:</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Добавте установленный измерительный диапазон(<span class="text-danger">необязательно</span>):</p>
+                <div class="alert alert-warning">В рамках </div>
+                    <input id="another_measurement_range" class="form-control" type="text" placeholder="Пример: (-40) - 100">
+            </div>
+            <div class="modal-footer">
+                <input id="btn-another-measurement-range" onclick="getFromAnotherMeasurementRange()" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{#<div id="styling">#}
+    {#<div class="switch"><i onclick="Dev.prodstyle()"></i></div>#}
+    {#<div class="switch"><i onclick="Dev.devstyle()"></i></div>#}
+{#</div>#}
+
+{# Modal Second ProcessConnection#}
+<div class="modal fade" id="modalSecondProcessConnection" tabindex="-1" role="dialog" aria-labelledby="modalSecondProcessConnectionLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4> Второе процессное соединение </h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Выбeрите второе процессное соединение: </p>
+
+            <div id="container-second-process-connection">
+            </div>
+
+            </div>
+            <div class="modal-footer">
+                <input onclick="getFromSecondProcessConnectionModal()" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# Modal Cable Length (PTFE) #}
+<div class="modal fade" id="modalCablePTFE" tabindex="-1" role="dialog" aria-labelledby="modalCablePTFELabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Длина кабеля</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Выберите длину кабеля <span class="text-danger">(в метрах)</span>:
+                </p>
+
+                <div class="alert alert-warning">Ограничение от 1 - 25</div>
+                <form method="POST" action="javascript:void(null);" id="CablePTFE" onsubmit="getFromModal(this)">
+                    <input min="1" max="25" class="form-control" type="number" id="CablePTFELength" required
+                           placeholder="Пример: 5">
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input form="CablePTFE" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# Modal PTFE envelope #}
+<div class="modal fade" id="modalPTFEenvelope" tabindex="-1" role="dialog" aria-labelledby="modalPTFEenvelopeLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Длина фторопластовой оболочки</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary primary-text">Выберите длину фторопластовой оболочки <span class="text-danger">(в метрах)</span>:
+                </p>
+
+                <div class="alert alert-warning">Ограничение от 1 - 15</div>
+                <form method="POST" action="javascript:void(null);" id="PTFEenvelope" onsubmit="getFromModal(this)">
+                    <input min="1" max="15" class="form-control" type="number" id="PTFEenvelopeLength" required
+                           placeholder="Пример: 5">
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                <input form="PTFEenvelope" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 {% block javascripts %}
-    <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/animate-color.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    {# FOR PROD#}
+    {% javascripts filter="jsqueeze" output="js/generated/app.js"
+        "assets/vendor/jquery/dist/jquery.min.js"
+        "assets/vendor/bootstrap/dist/js/bootstrap.min.js"
+        "assets/js/animate-color.js"
+        "assets/js/main.js"
+        "assets/js/easing.js"
+        "assets/js/dev.js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
 {% endblock %}
 </body>
 </html>

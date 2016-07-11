@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,6 +18,8 @@ class MeasurementRangeType extends AbstractType
         $builder
             ->add('theRange')
             ->add('unit')
+            ->add('add', SubmitType::class, array('label' => 'create'))
+            ->add('saveAndAdd', SubmitType::class, array('label' => 'Save and Add'))
         ;
     }
     

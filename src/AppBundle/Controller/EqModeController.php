@@ -94,6 +94,8 @@ class EqModeController extends Controller
             $em->persist($eqMode);
             $em->flush();
 
+//            $this->container->get('vich_uploader.storage')->upload($eqMode,);
+
             $this->addFlash('notice', 'Your changes were saved!^)');
 
             return $this->redirectToRoute('eqmode_index');

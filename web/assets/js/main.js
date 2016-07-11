@@ -5,16 +5,23 @@
 /*
 * #On load init
 * #Main API
-*   -Rollback Dropdown
+*   - Rollback Dropdown
+* #Modal Windows
+* 	- Mounting Parts
+* 	- Pulse pipe or cable
+* 	- More Special Version
+* #Generator
+* 	- UI Loader
 * #Helpders API
-* #Temprary
+* #Temporarily
 */
 
 
 
-/*
-		On load init
-*/
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+					On load init
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
 	$('.dropdown').tooltip({
 		container: 'body'
 	});
@@ -42,9 +49,9 @@ function getAllEqModes(){
 getAllEqModes();
 
 
-/*
-	main API
- */
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+ 				main API
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 var Core = {
 	ajaxUrl: 'http://rainbow2/ajax/',
@@ -59,6 +66,11 @@ var Core = {
 	//modal field
 	pulsePipeLength: null,
 	cableLength: null,
+	tubeLength: null,
+	anotherMeasurementRange: null,
+	secondProcessConnection: null,
+	cablePTFELength: null,
+	PTFEenvelopeLength: null,
 	//end modal field
 	valveUnitID: null,
 	valveUnitTitle: null,
@@ -67,7 +79,32 @@ var Core = {
 	braceID: null,
 	braceTitle: null,
 	countryCodeID: null,
-	countryCodeTitle: null
+	countryCodeTitle: null,
+	//more stuff
+	ContOtherSpecVers: {
+		currID: '',
+		currTitle: '',
+		arr: {},
+		ids: []
+	}
+}
+
+var Helpers = {
+	Colors: {
+		danger: '#FFA0A0',
+		success: '#ABFCB2'
+	},
+	Alerts: {
+		danger: '<div class="alert alert-danger">' +
+		'<p></p>' +
+		'</div>'
+	},
+	showAlert: function(id, text){
+		var a = $('#' + id);
+		a.find('p').text(text);
+		a.slideDown(500);
+		setTimeout(function(){ a.slideUp(300) }, 4000);
+	}
 }
 
 function reviveNextParam(nextParam){
@@ -109,7 +146,8 @@ function reviveEqMode(){
 		//clear accuracy label
 		// accuracyBtn.text('');
 
-
+		//#more Special Version
+		destroyOtherSpecialVersions();
 
 		$.ajax({
 			url: Core.ajaxUrl,
@@ -149,6 +187,9 @@ function reviveAccuracy(){
 				nextParam = +thisBtn.attr('id');
 		Core.accuracyID = accuracyID;
 
+		//#more Special Version
+		destroyOtherSpecialVersions();
+
 		//set Title to Dropdown
 		$('#accuracy button').text(accuracyTitle);
 
@@ -186,33 +227,74 @@ function reviveSpecialVersion(){
 				nextParam = +thisBtn.attr('id');
 		Core.specialVersionID = specialVersionID;
 
+		//more spec version
+		if (specialVersionTitle != 'без спец. исп.'){
+			initOtherSpecVers();
+			$('#modalMoreSpecialVersions').modal();
+		}
 
-		//set Title to Dropdown
-		$('#special_version button').text(specialVersionTitle);
+		//Cable PTFE Modal
+		if (specialVersionTitle == 'L') {
+			$('#modalCablePTFE').modal();
+		}
 
-		$.ajax({
-			url: Core.ajaxUrl,
-			method: 'post',
-			data: {
-				action_name: 'getMeasurementRangesByEqModeIDAndAccuracyID',
-				eq_mode_id: Core.eqModeID,
-				accuracy_id: Core.accuracyID
-			},
-			success: function(data){
-				if (data != 'no data'){
-					blink(nextParam, '#ABFCB2')
-					thisBtn.removeAttr('disabled');
-					$('#measurement_range ul').html(data); //append
-					//disable header li
-					$('li.header a').on('click', function(){ return false });
-					$('.jumbotron #gen').html(data);
-					reviveNextParam(nextParam);
-				} else {
-					blink(nextParam, '#FFA0A0');
-					$('#measurement_range button').text('нет данных');
+		// PTFE envelope Modal
+		if (specialVersionTitle == 'Фт') {
+			$('#modalPTFEenvelope').modal();
+		}
+
+
+		//Must '0,4 - 2 В' or '0 - 2 В' for P[CR]-28B
+		if ( /P[CR]-28B/.test(Core.eqModeTitle) ) {
+			if ( (specialVersionTitle != '0,4 - 2 В') && (specialVersionTitle != '0 - 2 В') ) {
+				//init alert-danger if not exist
+				if ( !document.getElementById('alert-require-special-version') ) {
+					var msg = $.parseHTML(Helpers.Alerts.danger);
+					$(msg).attr('id', 'alert-require-special-version');
+					$('#config-param').before(msg);
 				}
-			}
-		});
+
+				Helpers.showAlert('alert-require-special-version',
+				'Вы обязательно должны выбрать специальное исполнение с указанием выходного сигнала "0,4 - 2 В" или "0 - 2 В"');
+				//hide more Special Version
+				$('#modalMoreSpecialVersions').modal('hide');
+
+				} else {
+					getMeasurementRange();
+				}
+			} else {
+				getMeasurementRange();
+		}
+
+		function getMeasurementRange() {
+			//set Title to Dropdown
+			$('#special_version button').text(specialVersionTitle);
+
+			$.ajax({
+				url: Core.ajaxUrl,
+				method: 'post',
+				data: {
+					action_name: 'getMeasurementRangesByEqModeIDAndAccuracyID',
+					eq_mode_id: Core.eqModeID,
+					accuracy_id: Core.accuracyID
+				},
+				success: function(data) {
+					if (data != 'no data'){
+						blink(nextParam, '#ABFCB2')
+						thisBtn.removeAttr('disabled');
+						$('#measurement_range ul').html(data); //append
+						//disable header li
+						$('li.header a').on('click', function(){ return false; });
+						$('.jumbotron #gen').html(data);
+						reviveNextParam(nextParam);
+					} else {
+						blink(nextParam, '#FFA0A0');
+						$('#measurement_range button').text('нет данных');
+					}
+				}
+			});
+		}
+
 	});
 }
 
@@ -230,6 +312,23 @@ function reviveMeasurementRange(){
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle +' '+ unit);
 
+		//Choice Anoter Measurement Range
+		var t = Core.eqModeTitle;
+		if (/APC-+/.test(t) || /APR-+/.test(t) || /PC-SG-25S?.Smart/.test(t)){
+			initAnotherMeasurementRange();
+			$('#modalAnotherMeasurementRange').modal();
+			$('#modalAnotherMeasurementRange').on('shown.bs.modal', function () {
+				$('#another_measurement_range').focus();
+			});
+		}
+				//Save Default range to Numbers
+				var res = measurementRangeTitle.match(Re.mr);
+				var arr = Re.filter(res[1], res[4]);
+				Re.DefaultRangeFrom = arr[0];
+				Re.DefaultRangeTo = arr[1];
+				//Save Unit of Default range
+				Re.DefaultRangeUnit = unit;
+
 		$.ajax({
 			url: Core.ajaxUrl,
 			method: 'post',
@@ -243,28 +342,76 @@ function reviveMeasurementRange(){
 					blink(nextParam, '#ABFCB2')
 					nextBtn.removeAttr('disabled');
 					$('#body_type ul').html(data);
-                    $('.jumbotron #gen').html(data);
+				//Manual Exception №2
+					if ( /PC-SG-.*/.test(Core.eqModeTitle) ) {
+						$('#body_type ul').prepend('<li value="0">без индикатора</li>');
+						reviveBodyTypeForPCSG();
+					} else {
+				//End Exception №2
 					 reviveNextParam(nextParam);
+						}
+					$('.jumbotron #gen').html(data);
 				} else {
 					blink(nextParam, '#FFA0A0');
+				//Manual Exception №2(part2)
+					if ( (/PC-SG-.*/.test(Core.eqModeTitle)) || (/PC-28P/.test(Core.eqModeTitle)) ) {
+						$('#body_type button').text('без индикатора');
+						$('#process_connection button').text(' - ');
+						getValveUnits();
+					} else {
+				//End Exception №2(part2)
 					$('#body_type button').text('нет данных');
+					}
 				}
 			}
 		});
 	});
 }
 
-function reviveBodyType(){
-	$('#body_type ul li').on('click', function(){
+function reviveBodyType() {
+	$('#body_type ul li').on('click', function() {
 
 		var bodyTypeID = this.value,
-				bodyTypeTitle = this.innerText,
-				nextBtn = $('#process_connection button'),
-				nextParam = +nextBtn.attr('id');
+				bodyTypeTitle = this.innerText;
 		Core.bodyTypeID = bodyTypeID;
 		Core.bodyTypeTitle = bodyTypeTitle;
 
 		$('#body_type button').text(bodyTypeTitle);
+
+		//Type Tube Length
+		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50') {
+			$('#modalTube').modal();
+		}
+
+		getProcessConnection();
+	});
+}
+
+//func for Manual Exception №2
+function reviveBodyTypeForPCSG() {
+	$('#body_type ul li').on('click', function() {
+
+		var bodyTypeID = this.value,
+				bodyTypeTitle = this.innerText;
+		Core.bodyTypeID = bodyTypeID;
+		Core.bodyTypeTitle = bodyTypeTitle;
+
+		$('#body_type button').text(bodyTypeTitle);
+
+		//Type Tube Length
+		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50') {
+			$('#modalTube').modal();
+		}
+
+		$('#process_connection button').text(' - ');
+		//Redirect to ValveUnits, cause PC-SG-.* have not ProcessConnection
+		getValveUnits();
+	});
+}
+
+function getProcessConnection() {
+	var thisBtn = $('#process_connection button'),
+			thisParam = +thisBtn.attr('id');
 
 		$.ajax({
 			url: Core.ajaxUrl,
@@ -276,57 +423,61 @@ function reviveBodyType(){
 			},
 			success: function(data){
 				if (data != 'no data'){
-					blink(nextParam, '#ABFCB2')
-					nextBtn.removeAttr('disabled');
+					blink(thisParam, '#ABFCB2');
+					thisBtn.removeAttr('disabled');
 					$('#process_connection ul').html(data);
 					$('.jumbotron #gen').html(data);
-					reviveNextParam(nextParam);
+					reviveNextParam(thisParam);
 				} else {
-					blink(nextParam, '#FFA0A0');
+					blink(thisParam, '#FFA0A0');
 					$('#process_connection button').text('нет данных');
 				}
 			}
 		});
-	});
 }
 
 function reviveProcessConnection(){
 	$('#process_connection ul li').on('click', function(){
 
 		var processConnectionID = this.value,
-				processConnectionTitle = this.innerText,
-				nextBtn = $('#valve_unit button'),
-				nextParam = +nextBtn.attr('id');
+				processConnectionTitle = this.innerText;
 		Core.processConnectionID = processConnectionID;
 		Core.processConnectionTitle = processConnectionTitle;
 
 		$('#process_connection button').text(processConnectionTitle);
 
-		var check;
-		//
-		if ( (check = /K$/i.test(processConnectionTitle)) && (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
+		//for Second ProcessConnection
+		if (Core.eqModeTitle == 'APR-2200') {
+			initSecondProcessConnectionModal();
+			$('#modalSecondProcessConnection').modal();
+		}
+
+		//if ProcessConnection finish on "K"
+		if ( /K$/i.test(processConnectionTitle) ) {
+			$('#modalPulsePipe').modal();
+		}
+
+		//if EqMode finish on "PC-SG-*" or bodyType finish on PK
+		if ( (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
 			//call modalCable
 			$('#modalCable').on('shown.bs.modal', function () {
 				$('#cableLength').focus();
 			});
 			$('#modalCable').modal();
-		} else if (check){
-			$('#modalPulsePipe').modal();
-			//call modal pulise pipe
 		} else {
 			//call function to mounting_parts
-			getValveUnits(nextBtn, nextParam);
+			getValveUnits();
 		}
 
 
 	});
 }
 
-function getValveUnits(thisBtn, thisParam){
+function getValveUnits(thisBtn){
 
-	var nextParam = 8,
-		thisBtn = $('#valve_unit button'),
-		nextBtn = $('#welded_element button');
+	var thisBtn = $('#valve_unit button'),
+			nextParam = 8,
+			nextBtn = $('#welded_element button');
 
 			$.ajax({
 			url: Core.ajaxUrl,
@@ -429,8 +580,9 @@ function getWeldedElements(thisBtn, thisParam){
 					reviveNextParam(nextParam);
 				} else {
 					blink(thisParam, '#FFA0A0');
-					$('#welded_element button').text('нет данных');
+					$('#welded_element button').text('без монтаж. эл-ов');
 					$('#welded_element button').attr('disabled', 'disabled');
+					getBracing();
 
 				}
 			}
@@ -475,7 +627,7 @@ function getBracing(){
 				reviveNextParam(nextParam);
 			} else {
 				blink(thisParam, '#FFA0A0');
-				$('#brace button').text('нет данных');
+				$('#brace button').text('без крепления');
 				$('#brace button').attr('disabled', 'disabled');
 
 			}
@@ -484,81 +636,16 @@ function getBracing(){
 }
 
 function reviveBracing(){
-    $('#brace ul li').on('click', function(){
-        var braceID = this.value,
-            braceTitle = this.innerText;
-        Core.braceID = braceID;
-        Core.braceTitle = braceTitle;
+		$('#brace ul li').on('click', function(){
+				var braceID = this.value,
+						braceTitle = this.innerText;
+				Core.braceID = braceID;
+				Core.braceTitle = braceTitle;
 
-        $('#brace button').text(braceTitle);
+				$('#brace button').text(braceTitle);
 
-        //getBracing();
-    });
-}
-
-//Rollback Dropdownds
-$('.dropdown ul').on('click', function(){
-	var currListID = this.id,
-		nextListID = +currListID + 1;
-
-	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
-	if ($('button#' + nextListID).text() != ''){
-		var dis = '';
-		for (var i = nextListID; i<=9; i++){
-			// console.log($('.dropdown button#' + i));
-			$('.dropdown button#' + i).attr('disabled','');
-			$('.dropdown button#' + i).text('');
-			$('.dropdown button#' + i + ' + ul').empty();
-			dis += ' ' + i;
-			//console.log('Button ' + i + ' disabled');
-		}
-	console.log('Disabled Btns: ' + dis);
-	}
-
-});
-
-//Pulse pipe or cable modal
-function getFromModal(form){
-	var input = $(form).find('input').val(),
-		targetBtn = $('button#6');
-	if (form.id == 'Cable'){
-		Core.cableLength = input;
-		targetBtn.append('/K=' + Core.cableLength);
-		getValveUnits();
-	} else if (form.id == 'PulsePipe'){
-		Core.pulsePipeLength = input;
-		targetBtn.append('/K=' + Core.pulsePipeLength);
-		getValveUnits();
-	}
-	$('#modal' + form.id).modal('hide');
-	//console.log(Core);
-	//console.log(typeof input);
-}
-
-//Mounting Parts modal
-function getFromMountingPartsModal(){
-	var flag = true,
-		buttons = $.makeArray( $('#mounting-parts button') );
-	buttons.forEach(function(item, i, arr){
-		if (item.innerText == '') flag = false;
-	})
-
-	if (flag == false){
-		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не все поля заполнены</p></div>';
-			$(msg).insertBefore( $('#mounting-parts') );
-			msg = $('#notFilled');
-			msg.slideDown();
-			setTimeout(function(){ msg.slideUp() }, 2000);
-	} else {
-		$('#modalMountingParts').modal('hide');
-		//Add mountin parts to Button and revive County Code
-		var v = ((Core.valveUnitTitle == undefined) || (Core.valveUnitTitle == 'без вент. блока')) ? '- ' : Core.valveUnitTitle
-		var w = ((Core.weldedElementTitle == undefined)  || (Core.weldedElementTitle == 'без монтаж. эл-ов')) ? ' - ' : Core.weldedElementTitle
-		var b = ((Core.braceTitle == undefined) || (Core.braceTitle == 'без крепления')) ? ' -' : Core.braceTitle
-		$('#mounting_parts button').text( v + '/' + w + '/' + b ).removeAttr('disabled');
-
-		getCountryCodes();
-	}
+				//getBracing();
+		});
 }
 
 function getCountryCodes(){
@@ -599,6 +686,346 @@ function getCountryCodes(){
 	});
 }
 
+/*>>>>>>>>>>>
+	--------------> Rollback Dropdownds
+ */
+$('.dropdown ul').on('click', function(){
+	var currListID = this.id,
+			nextListID = +currListID + 1,
+			nextBtn = $('button#' + nextListID);
+
+	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
+	if ( ($(nextBtn).text() != '') && ($(nextBtn).text() != ' - ') ){
+		var dis = '';
+		for (var i = nextListID; i<=11; i++){
+			// console.log($('.dropdown button#' + i));
+			$('.dropdown button#' + i).attr('disabled','');
+			$('.dropdown button#' + i).text('');
+			$('.dropdown button#' + i + ' + ul').empty();
+			dis += ' ' + i;
+			//console.log('Button ' + i + ' disabled');
+		}
+	console.log('Disabled Btns: ' + dis);
+	}
+
+});
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+ 				Modal Windows
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+/*
+	Pulse pipe or cable modal
+*/
+function getFromModal(form){
+	var inputVal = $(form).find('input').val(),
+		targetBtn = $('button#6');
+	if (form.id == 'Cable'){
+		Core.cableLength = inputVal;
+		targetBtn.append('/K=' + Core.cableLength);
+		getValveUnits();
+	} else if (form.id == 'PulsePipe'){
+		Core.pulsePipeLength = inputVal;
+		targetBtn.append('/K=' + Core.pulsePipeLength);
+		getValveUnits();
+	} else if (form.id == 'Tube'){
+		Core.tubeLength = inputVal;
+		targetBtn.append('/L=' + Core.tubeLength);
+		getValveUnits();
+	} else if (form.id == 'CablePTFE') {
+		Core.cablePTFELength = inputVal;
+		$('#special_version button').append('=' + Core.cablePTFELength);
+	} else if (form.id == 'PTFEenvelope') {
+		Core.PTFEenvelopeLength = inputVal;
+		$('#special_version button').append('=' + Core.PTFEenvelopeLength);
+	}
+	$('#modal' + form.id).modal('hide');
+}
+
+/*
+	Mounting Parts modal
+*/
+function getFromMountingPartsModal(){
+	var flag = true,
+		buttons = $.makeArray( $('#mounting-parts button') );
+	buttons.forEach(function(item, i, arr){
+		if (item.innerText == '') flag = false;
+	})
+
+	if (flag == false){
+		//Msg exist ? create one and show : show old msg
+		if ( !document.getElementById('nfMountingParts') ){
+			var msg = '<div id="nfMountingParts" class="alert alert-danger not-filled"><p>Не все поля заполнены</p></div>';
+			$(msg).insertBefore( $('#mounting-parts') );
+			msg = $('#nfMountingParts');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		} else {
+			msg = $('#nfMountingParts');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		}
+	} else {
+		$('#modalMountingParts').modal('hide');
+		//Add mountin parts to Button and revive County Code
+		var v = ((Core.valveUnitTitle == undefined) || (Core.valveUnitTitle == 'без вент. блока')) ? '- ' : Core.valveUnitTitle
+		var w = ((Core.weldedElementTitle == undefined)  || (Core.weldedElementTitle == 'без монтаж. эл-ов')) ? ' - ' : Core.weldedElementTitle
+		var b = ((Core.braceTitle == undefined) || (Core.braceTitle == 'без крепления')) ? ' -' : Core.braceTitle
+		$('#mounting_parts button').text( v + '/' + w + '/' + b ).removeAttr('disabled');
+
+		getCountryCodes();
+	}
+}
+
+/*
+	More Special Version Modal
+ */
+function getFromMoreSpecialVersionsModal() {
+	$('#modalMoreSpecialVersions').modal('hide');
+}
+
+function initOtherSpecVers() {
+	var currSpecialVersions = [],
+			cont = $('#modalMoreSpecialVersions').find('#many-spec-ver'),
+			btn = ('#spec_ver_2 button');
+
+	//insert Clear Dropdown in container
+	cont.html('<div id="" class="dropdown dd-mod dd-mod-spec-ver">'+
+							'<button id="btn-more-spec-ver" class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
+							'<ul class="dropdown-menu">'+
+							'</ul>'+
+						'</div>'+
+						'<i onclick="addSpecVer()" class="fa fa-plus-circle fa-2x add-spec-ver"></i>');
+	//assigned him ID
+	$( cont ).find('.dropdown').attr('id','spec_ver_2');
+	currSpecialVersions = $.parseHTML($('button#3 + ul').html());
+	//delete first li with "без спец. исп."
+	currSpecialVersions.splice(0,1);
+	$('#spec_ver_2 ul').html( currSpecialVersions );
+	//Add first SpecialVersion to CurrID and to Caption
+	Core.ContOtherSpecVers.currID = currSpecialVersions[0].value;
+	Core.ContOtherSpecVers.currTitle = currSpecialVersions[0].innerText;
+	$(btn).text(Core.ContOtherSpecVers.currTitle);
+
+	reviveNewSpecVer();
+}
+
+function reviveNewSpecVer() {
+	$('#spec_ver_2 ul li').on('click', function() {
+		var btn = ('#spec_ver_2 button');
+
+		Core.ContOtherSpecVers.currID = this.value,
+		Core.ContOtherSpecVers.currTitle = this.innerText;
+		$(btn).text(this.innerText);
+	});
+}
+
+function addSpecVer() {
+	var SV = Core.ContOtherSpecVers,
+			currTag,
+			flag = true;
+
+	//check duplicate with DEFAULT entity
+	if (SV.currTitle == $('#special_version button').text()) {
+		var msg = $.parseHTML(Helpers.Alerts.danger);
+
+		flag = false;
+		$( msg ).find('p').text('Данное специальное исполнение уже было выбрано ранее');
+		//bad check, but minimalistic: msg NOT exist ? insert before : show old msg
+		if ( $('#modalMoreSpecialVersions .alert-danger')[0] == undefined ) {
+			$('#modalMoreSpecialVersions .primary-text').before(msg);
+		}
+
+		$('#modalMoreSpecialVersions .alert-danger').slideDown(500);
+		setInterval(function(){ $( msg ).slideUp(300) }, 5000);
+	}
+
+	//Tag exist in SV.Array?
+	$.each(SV.arr, function(index, value) {
+		if (index == SV.currID) flag = false;
+	});
+
+	if (flag == true) {
+		var stareElem = $('.spec-ver-tag[val='+SV.currID+']');
+
+		SV.arr[SV.currID] = SV.currTitle;
+		//for BackEnd
+		SV.ids.push(SV.currID);
+
+		currTag = $.parseHTML('<div class="spec-ver-tag">' +
+														'<span></span><i onclick="delSpecVer(this)" class="fa fa-close"></i>' +
+													'</div>');
+		$(currTag).attr('val', SV.currID);
+		$(currTag).find('span').text(SV.currTitle);
+		$('#tag-showcase').append( currTag );
+	} else {
+		//message about entity was exist
+		blink('btn-more-spec-ver', Helpers.Colors.danger);
+		stareElem.animate({
+			backgroundColor: Helpers.Colors.success
+		}, 300, 'swing', function() {
+			stareElem.animate({backgroundColor: '#fff'}, 200);
+		});
+	}
+
+}
+
+function delSpecVer(obj) {
+	var SV = Core.ContOtherSpecVers,
+			tarElem = $( obj ).parent(),
+			tagID = tarElem.attr('val');
+	//delete tag
+	tarElem.remove();
+	//delete elem from Object
+	delete SV.arr[tagID];
+	SV.ids.forEach(function(item, i, arr) {
+		if (item == tagID) delete arr[i];
+	});
+}
+
+function destroyOtherSpecialVersions() {
+	$('#tag-showcase').empty();
+	Core.ContOtherSpecVers.arr = {}
+}
+
+/*
+	Second ProcessConnection Modal
+ */
+function initSecondProcessConnectionModal() {
+
+	//Add dropdown to DOM
+	//WHY: this hardcode for escape Listener called RollbackDropdown
+	var htmlDropdown = '<div id="second_process_connection" class="dropdown dd-mod">' +
+											'<button class="btn btn-default dropdown-toggle btn-conf" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>' +
+											'<ul class="dropdown-menu" aria-labelledby="">' +
+											'</ul>'+
+										 '</div>';
+	$('#container-second-process-connection').html(htmlDropdown);
+
+	//Copy list items from ProcessConnection
+	var listElem = $('#process_connection ul').html(),
+			newDropdown = $('#second_process_connection');
+	$(newDropdown).find('ul').html(listElem);
+
+	//Add handler to new list
+	$(newDropdown).find('ul li').on('click', function() {
+		Core.secondProcessConnection = this.value;
+		$(newDropdown).find('button').text(this.innerText);
+	});
+
+}
+
+function getFromSecondProcessConnectionModal() {
+	if ( $('#second_process_connection button').text() != '' ) {
+		$('#modalSecondProcessConnection').modal('hide');
+	} else {
+
+		if ( !document.getElementById('alert-second-proccess-connection') ) {
+			var msg = '<div id="alert-second-proccess-connection" class="alert alert-danger"><p>Должно быть выбрано второе процессное соединение</p></div>';
+			$('#container-second-process-connection').prev().before(msg);
+			$('#alert-second-proccess-connection').slideDown(300);
+			setTimeout(function(){ $('#alert-second-proccess-connection').slideUp(400)}, 4000 );
+		} else {
+			$('#alert-second-proccess-connection').slideDown(300);
+			setTimeout(function(){ $('#alert-second-proccess-connection').slideUp(400)}, 4000 );
+		}
+
+	}
+}
+
+/*
+ Another Measurement Range Modal
+ */
+ var Re = {
+	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)/,
+	match: function(str){
+		var res = str.match(Re.mr);
+		if (res != null){
+			Re.p1 = res[1];
+			Re.p2 = res[4];
+			return true;
+		} else {
+			return false;
+		}
+	},
+	filter: function(p1, p2){
+		var re = /[()]/g;
+		var np1 = +p1.replace(re, '');
+		var np2 = +p2.replace(re, '');
+		return [np1, np2];
+	}
+ }
+
+function initAnotherMeasurementRange(){
+	var sel = $('#modalAnotherMeasurementRange');
+	sel.find('.alert-warning').text('В рамках '+ $('#measurement_range button').text());
+
+	//Confirmation on Enter
+	$('#another_measurement_range').off('keypress');
+	$('#another_measurement_range').on('keypress', function(e){
+			if(e.which == 13){ //Enter key pressed
+					$('#btn-another-measurement-range').click(); //Trigger button click event
+			}
+	});
+
+	//Alerts
+	if ( !document.getElementById('alert-another-measurement-range') ){
+		var alert = $.parseHTML(Helpers.Alerts.danger);
+		$(alert).attr('id', 'alert-another-measurement-range');
+		sel.find('.text-primary').before( alert );
+	}
+
+}
+
+
+function getFromAnotherMeasurementRange(){
+	var range = $('#another_measurement_range').val();
+	//if user nothing Type
+	if (range != ''){
+		//Check text which user send
+		//his input is valid?
+		if (Re.match(range) == true){
+			//convert/filter Second range
+			var arr = Re.filter(Re.p1, Re.p2);
+			Re.SecondRangeFrom = arr[0];
+			Re.SecondRangeTo = arr[1];
+			//Number incoming in Default Range?
+			var minDef = Re.DefaultRangeFrom,
+			maxDef = Re.DefaultRangeTo,
+			minSec = Re.SecondRangeFrom,
+			maxSec = Re.SecondRangeTo;
+			//Deafault and Second range is the same?
+			if ((minDef != minSec) || (maxDef != maxSec)){
+				//First number must less then Second
+				if (minSec < maxSec){
+					if (( (maxDef > minSec) && (minSec >= minDef) ) && ( (maxDef >= maxSec) && (maxSec > minDef) )){
+						//write true values to Core
+						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.DefaultRangeUnit;
+						$('#modalAnotherMeasurementRange').modal('hide');
+						// alert('ALL CORRECTO');
+					} else {
+						Helpers.showAlert('alert-another-measurement-range', 'Превышены границы основного диапазона измерения');
+					}
+				} else {
+					Helpers.showAlert('alert-another-measurement-range', 'Начало диапазона должно быть меньше, чем его верхнее значение');
+				}
+			} else {
+				Helpers.showAlert('alert-another-measurement-range', 'В случае совпадения диапазонов - установленный диапазон не указывается');
+			}
+		} else {
+			Helpers.showAlert('alert-another-measurement-range', 'Некорректный диапазон');
+		}
+	} else {
+		Core.anotherMeasurementRange = '';
+		$('#modalAnotherMeasurementRange').modal('hide');
+	}
+}
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+				 Generator
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
 var requestInProgress = false;
 function generate(){
 	var flag = true,
@@ -608,11 +1035,18 @@ function generate(){
 	})
 
 	if (flag == false){ //!!!!! for test change on '!='
-		var msg = '<div id="notFilled" class="alert alert-danger"><p>Не хватает параметров для конфигурации</p></div>';
-		$(msg).insertBefore( $('#config-param') );
-		msg = $('#notFilled');
-		msg.slideDown();
-		setTimeout(function(){ msg.slideUp() }, 2000);
+		//Msg Exist ? create one and show : show old message
+		if ( !document.getElementById('nfGenerator') ){
+			var msg = '<div id="nfGenerator" class="alert alert-danger not-filled"><p>Необходимо заполнить все поля</p></div>';
+			$(msg).insertBefore( $('#config-param') );
+			msg = $('#nfGenerator');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		} else {
+			msg = $('#nfGenerator');
+			msg.slideDown();
+			setTimeout(function(){ msg.slideUp() }, 2000);
+		}
 	} else {
 
 		requestInProgress = true;
@@ -639,7 +1073,12 @@ function generate(){
 				} else {
 					$('.jumbotron #gen').text('data not found');
 				}
+			},
+			error: function(jqXHR, textStatus, errorThrow){
+				killLoader(listenerInit);
+				$('.jumbotron #gen').text('К сожалению, что-то пошло не так. Запрос не удался. Сконфигурируйте заново.');
 			}
+
 		});
 
 		//Front-End generate
@@ -647,28 +1086,9 @@ function generate(){
 	}
 }
 
-/*
-	helpers API
- */
-
-function blink(dropDownID, color){
-	var btn = $('button#' + dropDownID);
-	btn.animate(
-	{
-		backgroundColor: color,
-		// opacity: 1
-	},
-	{
-		duration: 200,
-		complete: function(){
-			btn.animate({backgroundColor: '#fff'}, 200)
-		}
-	});
-}
-
-/* ----------
-	Loader
- ---------- */
+/*>>>>>>>>>>>
+		 ------------> UI Loader
+*/
 var loaderView = "<div style='display:none' id='loader' class='fa fa-spinner fa-3x fa-pulse'></div>";
 
 var il; //id InitLoader Listener
@@ -699,6 +1119,27 @@ function listenerInit(){
 		if (requestInProgress == true) initLoader();
 	}, 200)
 }
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*\
+			Helpers API
+\*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+function blink(dropDownID, color){
+	var btn = $('button#' + dropDownID);
+	btn.animate(
+	{
+		backgroundColor: color,
+		// opacity: 1
+	},
+	{
+		duration: 400,
+		complete: function(){
+			btn.animate({backgroundColor: '#fff'}, 200);
+		}
+	});
+}
+
+
 
 /*
 	Temprary

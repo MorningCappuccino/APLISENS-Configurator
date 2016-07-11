@@ -1,7 +1,85 @@
 @import "bootstrap/_variables.scss";
 
+/*
+#Vars
+#Text
+#Rewrite
+#Manage Section
+  - Choice Buttons
+  - mess section
+#Jumbotron
+  ##Generated
+#Modal
+*/
+
+//-----------Vars----------//
+$mainColor: #ffd300;
+$btnTextColor: #2e2e2e;
+$btnBorderColor: #ebc300;
+$btnHoverColor: #ffbf00;
+$btnHoverBorderColor: #eba100;
+//-----------text----------//
+h1 {
+  color: $mainColor;
+}
+
+h3 {
+  text-align: center;
+}
+
+.primary-text {
+  font-size: 16px;
+  color: inherit;
+}
+
+.generated p {
+  font-size: 15px;
+}
+
+table.transcript {
+  thead {
+    font-size: 17px;
+  }
+  tbody {
+    font-size: 15px;
+  }
+}
+
+.alert-danger {
+  display: none;
+}
+
+//rewrite original
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+  color: $btnTextColor;
+  background-color: $mainColor;
+  border-color: $mainColor;
+}
+
+.btn {
+  transition: all .1s;
+}
+
+.btn-primary {
+  color: $btnTextColor;
+  background-color: $mainColor;
+  border-color: $btnBorderColor;
+}
+
+.form-control:focus {
+  border-color: #ffe369;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(243, 217, 24, 0.57);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active,
+.btn-primary:active:focus {
+  color: $btnTextColor;
+  background-color: $btnHoverColor;
+  border-color: $btnHoverBorderColor;
+}
+
 //choice buttons
-#config-param {
+#config-param, #many-spec-ver, #container-second-process-connection  {
   label {
     display: block;
   }
@@ -11,7 +89,7 @@
     .btn-conf {
       width: 115px;
       height: 33px;
-      &#b10 {
+      &.btn-long {
         width: 220px !important;
       }
     }
@@ -40,6 +118,100 @@
     margin: 25px auto;
   }
 }
+
+#parameters {
+  margin-top: 35px;
+}
+
+//mess section
+//mess section
+.mess {
+  margin-top: 100px;
+  .logo {
+    // border: 1px solid #ddd;i
+    height: 120px;
+    border-radius: 4px;
+    text-align: center;
+    img {
+      transform: translateY(10%);
+    }
+    .sign {
+      transform: translateY(80%);
+      color: #ffd300;
+      font-size: 18px;
+      display: block;
+    }
+  }
+}
+
+//special version button
+#special_version {
+  position: relative;
+
+  .more-spec-ver {
+    display: none;
+    position: absolute;
+    top: -55px;
+    right: 0;
+    font-size: 1.5em;
+  }
+}
+
+//font-awesome style
+.more-spec-ver, .add-spec-ver, .fa-close {
+  cursor: pointer;
+  transition: color .2s;
+  &:hover {
+    color: $mainColor;
+  }
+}
+
+//-----------jumbotron----------//
+.jumbotron {
+  position: relative;
+  #loader {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+  }
+
+}
+
+//-----------Generated----------//
+#generated {
+  display: none;
+  opacity: 0;
+  .img-container {
+    text-align: center;
+    max-width: 250px;
+    float: right;
+    img.sensor {
+      max-width: 250px;
+    }
+  }
+  table.transcript {
+    max-width: 720px;
+  }
+  .code-again {
+    background-color: rgba(255, 211, 0, .7);
+    padding: 6px 18px;
+    border-radius: 10px;
+    span {
+      font-size: 17px;
+    }
+    span.ty {
+      opacity: .3;
+    }
+    p {
+      font-size: 1.3em;
+      margin-bottom: 0;
+    }
+  }
+}
+
+/********************************
+                Modal----------//
+********************************/
 
 //-----------Modal Mounting Parts----------//
 #modalMountingParts {
@@ -89,61 +261,92 @@
   }
 }
 
-//-----------text----------//
-h3 {
-  text-align: center;
+//----------Modal More Special Version----------//
+.modal-450 {
+  width: 450px;
 }
 
-.primary-text {
-  font-size: 1.3em;
+.dd-mod-spec-ver {
+  margin: 0 auto;
+  width: 115px;
+  //display: block !important;
+  margin-left: 120px;
 }
 
-.generated p {
-  font-size: 15px;
+.add-spec-ver {
+  vertical-align: middle;
+  margin-left: 10px;
 }
 
-table.transcript {
-  thead {
-    font-size: 17px;
-  }
-  tbody {
-    font-size: 15px;
+#tag-showcase {
+  min-height: 69px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #eee;
+  padding: 10px;
+  font-size: 16px;
+
+  .spec-ver-tag {
+    display: inline-block;
+    margin-right: 20px;
+
+    padding: 2px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    span {
+      margin-right: 5px;
+    }
   }
 }
 
 //----------Modal----------//
-#notFilled {
+.not-filled {
   display: none;
 }
 
-//-----------jumbotron----------//
-.jumbotron {
-  position: relative;
-  #loader {
-    position: absolute;
-    top: 50%;
-    right: 50%;
+//Second process connection
+#second_process_connection {
+  margin-left: 190px;
+  margin-bottom: 35px;
+  margin-top: 35px;
+
+  button {
+    width: 185px !important;
   }
 
+  ul {
+    min-width: 205px !important;
+  }
 }
 
-#generated {
-  display: none;
-  opacity: 0;
-  img.sensor {
-    float: right;
-    // width: 100%;
-    max-width: 250px;
-  }
-  table.transcript {
-    max-width: 720px;
-  }
-  .code-again {
-    span {
-      font-size: 17px;
+//----------Styling----------//
+#styling {
+  position: fixed;
+  top: 85%;
+  background-color: #dfdfdf;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+
+  .switch {
+
+    i {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      margin: 3px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
     }
-    p {
-      font-size: 1.3em;
+    &:nth-child(1) i {
+      background-color: $mainColor;
+      border: 1px solid $btnBorderColor;
+    }
+    &:nth-child(2) i {
+      background-color: #337ab7;
     }
   }
 }

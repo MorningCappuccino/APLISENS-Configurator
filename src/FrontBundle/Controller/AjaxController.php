@@ -85,7 +85,7 @@ class AjaxController extends Controller
                     ->setParameter(':eq_mode_id', $eq_mode_id)
                     ->getQuery();
         $specialVersions = $query->getResult(2);
-        return $this->render('@Front/list.html.twig', array('data' => $specialVersions));
+        return $this->render('FrontBundle::SpecialVersionList.html.php', array('data' => $specialVersions));
     }
 
     public function getMeasurementRangesByEqModeIDAndAccuracyID($request)
@@ -101,6 +101,7 @@ class AjaxController extends Controller
                         ->join('m.unit', 'u')
                         ->where('e.id = :eq_mode_id')
                         ->andWhere('a.id = :accuracy_id') //in prod need "andWhere"
+                        ->orderBy('m.theRange', 'ASC')
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':accuracy_id' => $accuracy_id])
 //                  ->setParameter(':eq_mode_id', $eq_mode_id)
                 ->getQuery();
@@ -115,10 +116,12 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository('AppBundle:BodyType')
                         ->createQueryBuilder('b')
+                        ->distinct(true) //in PROD may without distinct
                         ->join('b.eqModes', 'e')
                         ->join('b.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
                         ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->orderBy('b.name', 'ASC')
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $bodyTypes = $query->getResult(2);
@@ -132,10 +135,12 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository('AppBundle:ProcessConnection')
                         ->createQueryBuilder('p')
+                        ->distinct(true) //in PROD may without distinct
                         ->join('p.eqModes', 'e')
                         ->join('p.specialVersions', 's')
                         ->where('e.id = :eq_mode_id')
-                        ->andWhere('s.id = :special_version_id')
+                        ->andWhere('s.id = :special_version_id') //in PROD -> 'andWhere'
+                        ->orderBy('p.name', 'ASC')
                 ->setParameters([':eq_mode_id' => $eq_mode_id, ':special_version_id' => $special_version_id])
                 ->getQuery();
         $processConnections = $query->getResult(2);
@@ -150,6 +155,7 @@ class AjaxController extends Controller
                         ->createQueryBuilder('v')
                         ->join('v.processConnections', 'p')
                         ->where('p.id = :process_connection_id')
+                        ->orderBy('v.name', 'ASC')
                 ->setParameter(':process_connection_id', $process_connection_id)
                 ->getQuery();
         $valveUnits = $query->getResult(2);
@@ -170,7 +176,8 @@ class AjaxController extends Controller
                         ->join('w.eqModes', 'e')
                         ->where('p.id = :process_connection_id')
                         ->andWhere('v.id = :valve_unit_id')
-                        ->orWhere('e.id = :eq_mode_id')
+                        ->andWhere('e.id = :eq_mode_id')
+                        ->orderBy('w.name', 'ASC')
                 ->setParameters([':process_connection_id' => $process_connection_id,
                              ':valve_unit_id' => $valve_unit_id,
                              ':eq_mode_id' => $eq_mode_id])
@@ -194,6 +201,7 @@ class AjaxController extends Controller
                         ->where('p.id = :process_connection_id')
                         ->andWhere('bo.id = :body_type_id')
                         ->andWhere('e.id = :eq_mode_id')
+                        ->orderBy('b.name', 'ASC')
                     ->setParameters([':process_connection_id' => $process_connection_id,
                                      ':body_type_id' => $body_type_id,
                                      ':eq_mode_id' => $eq_mode_id])
@@ -206,6 +214,7 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
         $countryCodes = $em->getRepository('AppBundle:CountryCode')
                             ->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC')
                             ->getQuery()
                             ->getResult(2);
         return $this->render('FrontBundle::list.html.php', array('data' => $countryCodes));
@@ -213,25 +222,40 @@ class AjaxController extends Controller
 
     public function generate($request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $params = $request->get('params');
         $eq_mode_id = $params['eqModeID'];
         $accuracy_id = $params['accuracyID'];
         $special_version_id = $params['specialVersionID'];
+            $cable_PTFE_length = $params['cablePTFELength'];
+            $PTFE_envelope_length = $params['PTFEenvelopeLength'];
+        if (isset($params['ContOtherSpecVers']['ids'])){
+            $otherSpecialVersions_ids = $params['ContOtherSpecVers']['ids'];
+            $otherSpecialVersions = $em->getRepository('AppBundle:SpecialVersion')->findBy(['id' => $otherSpecialVersions_ids]);
+        } else {
+            $otherSpecialVersions = null;
+        }
         $measurement_range_id = $params['measurementRangeID'];
+        $another_measurement_range = $params['anotherMeasurementRange'];
         $body_type_id = $params['bodyTypeID'];
+				$tube_length = $params['tubeLength'];
         $process_connection_id = $params['processConnectionID'];
+                $pulse_pipe_length = $params['pulsePipeLength'];
+                $cable_length = $params['cableLength'];
+        $second_process_connection_id = $params['secondProcessConnection'];
         $valve_unit_id = $params['valveUnitID'];
         $welded_element_id = $params['weldedElementID'];
         $brace_id = $params['braceID'];
         $country_code_id = $params['countryCodeID'];
 
-        $em = $this->getDoctrine()->getManager();
         $eqMode = $em->getRepository('AppBundle:EqMode')->findOneBy(['id' => $eq_mode_id]);
         $accuracy = $em->getRepository('AppBundle:Accuracy')->findOneBy(['id' => $accuracy_id]);
         $specialVersion = $em->getRepository('AppBundle:SpecialVersion')->findOneBy(['id' => $special_version_id]);
         $measurementRange = $em->getRepository('AppBundle:MeasurementRange')->findOneBy(['id' => $measurement_range_id]);
         $bodyType = $em->getRepository('AppBundle:BodyType')->findOneBy(['id' => $body_type_id]);
         $processConnection = $em->getRepository('AppBundle:ProcessConnection')->findOneBy(['id' => $process_connection_id]);
+        $secondProcessConnection = $em->getRepository('AppBundle:ProcessConnection')->findOneBy(['id' => $second_process_connection_id]);
         $valveUnit = $em->getRepository('AppBundle:ValveUnit')->findOneBy(['id' => $valve_unit_id]);
         $weldedElement = $em->getRepository('AppBundle:WeldedElement')->findOneBy(['id' => $welded_element_id]);
         $brace = $em->getRepository('AppBundle:Brace')->findOneBy(['id' => $brace_id]);
@@ -240,9 +264,17 @@ class AjaxController extends Controller
             'eqMode' => $eqMode,
             'accuracy' => $accuracy,
             'specialVersion' => $specialVersion,
+            'cablePTFELength' => $cable_PTFE_length,
+            'PTFEenvelopeLength' => $PTFE_envelope_length,
+            'otherSpecialVersions' => $otherSpecialVersions,
             'measurementRange' => $measurementRange,
+            'anotherMeasurementRange' => $another_measurement_range,
             'bodyType' => $bodyType,
+            'tubeLength' => $tube_length,
             'processConnection' => $processConnection,
+            'pulsePipeLength' => $pulse_pipe_length,
+            'cableLength' => $cable_length,
+            'secondProcessConnection' => $secondProcessConnection,
             'valveUnit' => $valveUnit,
             'weldedElement' => $weldedElement,
             'brace' => $brace,
