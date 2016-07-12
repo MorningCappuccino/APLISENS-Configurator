@@ -695,19 +695,46 @@ $('.dropdown ul').on('click', function(){
 			nextBtn = $('button#' + nextListID);
 
 	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
-	if ( ($(nextBtn).text() != '') && ($(nextBtn).text() != ' - ') ){
+	if ( ($(nextBtn).text() != '') && ($(nextBtn).text() != ' - ') ) {
 		var dis = '';
-		for (var i = nextListID; i<=11; i++){
+
+		for (var i = nextListID; i <= 11; i++) {
 			// console.log($('.dropdown button#' + i));
 			$('.dropdown button#' + i).attr('disabled','');
 			$('.dropdown button#' + i).text('');
 			$('.dropdown button#' + i + ' + ul').empty();
 			dis += ' ' + i;
-			//console.log('Button ' + i + ' disabled');
 		}
 	console.log('Disabled Btns: ' + dis);
 	}
 
+	//rollback Modal values
+	switch (currListID) {
+		case '1':
+		case '2':
+			Core.ContOtherSpecVers.arr = {};
+			Core.ContOtherSpecVers.ids = [];
+		case '3':
+			Core.PTFEenvelopeLength = null;
+			Core.cablePTFELength = null;
+		case '4':
+			Core.anotherMeasurementRange = null;
+		case '5':
+			Core.tubeLength = null;
+		case '6':
+			Core.secondProcessConnection = null;
+			Core.pulsePipeLength = null;
+			Core.cableLength = null;
+			//clear mounting parts
+			Core.valveUnitID = null;
+			Core.valveUnitTitle = ' - ';
+			Core.weldedElementID = null;
+			Core.weldedElementTitle = ' - ';
+			Core.braceID = null;
+			Core.weldedElementTitle = ' - ';
+			break;
+		default:
+	}
 });
 
 
