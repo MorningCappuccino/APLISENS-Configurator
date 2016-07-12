@@ -889,10 +889,10 @@ function addSpecVer() {
 	} else {
 		//message about entity was exist
 		blink('btn-more-spec-ver', Helpers.Colors.danger);
-		stareElem.animate({
+		$(stareElem).animate({
 			backgroundColor: Helpers.Colors.success
 		}, 300, 'swing', function() {
-			stareElem.animate({backgroundColor: '#fff'}, 200);
+			$(stareElem).animate({backgroundColor: '#fff'}, 200);
 		});
 	}
 
