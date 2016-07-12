@@ -312,6 +312,15 @@ function reviveMeasurementRange(){
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle +' '+ unit);
 
+		//if EqMode finish on "PC-SG-*"
+		if (/^PC-SG-[a-zA-Z0-9_]/.test(Core.eqModeTitle)) {
+			//call modalCable
+			$('#modalCable').on('shown.bs.modal', function () {
+				$('#cableLength').focus();
+			});
+			$('#modalCable').modal();
+		}
+
 		//Choice Anoter Measurement Range
 		var t = Core.eqModeTitle;
 		if (/APC-+/.test(t) || /APR-+/.test(t) || /PC-SG-25S?.Smart/.test(t)){
@@ -383,6 +392,15 @@ function reviveBodyType() {
 			$('#modalTube').modal();
 		}
 
+		//if bodyType finish on PK
+		if ('PK' == Core.bodyTypeTitle) {
+			//call modalCable
+			$('#modalCable').on('shown.bs.modal', function () {
+				$('#cableLength').focus();
+			});
+			$('#modalCable').modal();
+		}
+
 		getProcessConnection();
 	});
 }
@@ -444,6 +462,10 @@ function reviveProcessConnection(){
 		Core.processConnectionID = processConnectionID;
 		Core.processConnectionTitle = processConnectionTitle;
 
+		if (Core.cableLength) {
+			processConnectionTitle += '/K=' + Core.cableLength;
+		}
+
 		$('#process_connection button').text(processConnectionTitle);
 
 		//for Second ProcessConnection
@@ -457,19 +479,7 @@ function reviveProcessConnection(){
 			$('#modalPulsePipe').modal();
 		}
 
-		//if EqMode finish on "PC-SG-*" or bodyType finish on PK
-		if ( (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
-			//call modalCable
-			$('#modalCable').on('shown.bs.modal', function () {
-				$('#cableLength').focus();
-			});
-			$('#modalCable').modal();
-		} else {
-			//call function to mounting_parts
-			getValveUnits();
-		}
-
-
+		getValveUnits();
 	});
 }
 
@@ -719,12 +729,12 @@ $('.dropdown ul').on('click', function(){
 			Core.cablePTFELength = null;
 		case '4':
 			Core.anotherMeasurementRange = null;
+			Core.cableLength = null;
 		case '5':
 			Core.tubeLength = null;
 		case '6':
 			Core.secondProcessConnection = null;
 			Core.pulsePipeLength = null;
-			Core.cableLength = null;
 			//clear mounting parts
 			Core.valveUnitID = null;
 			Core.valveUnitTitle = ' - ';
@@ -750,8 +760,6 @@ function getFromModal(form){
 		targetBtn = $('button#6');
 	if (form.id == 'Cable'){
 		Core.cableLength = inputVal;
-		targetBtn.append('/K=' + Core.cableLength);
-		getValveUnits();
 	} else if (form.id == 'PulsePipe'){
 		Core.pulsePipeLength = inputVal;
 		targetBtn.append('/K=' + Core.pulsePipeLength);
