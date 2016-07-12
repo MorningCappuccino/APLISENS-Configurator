@@ -49,7 +49,7 @@
 
         {# PTFE envelope length #}
         {% if PTFEenvelopeLength %}
-            {% set PTFEenvelopeName = '/ Кфт=' ~ PTFEenvelopeLength %}
+            {% set PTFEenvelopeName = 'Кфт=' ~ PTFEenvelopeLength ~ ' /' %}
         {% endif %}
 
         <tr>
@@ -140,24 +140,23 @@
             {{ firstProcessConnectionName|default('') }}
             {{ secondProcessConnectionName|default('') }}
 
-            {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
-{#             {% if tubeLength %}
-							L={{ tubeLength }} /
-						{% endif %}
- #}
+            {#Cable, Capilar(K) or PTFE envelope(Kфт)#}
+            {% if cableLength %}
+                {{ 'K=' ~ cableLength ~ ' /' }}
+            {% endif %}
+
+            {% if pulsePipeLength %}
+                {{ 'K=' ~ pulsePipeLength ~ ' /' }}
+            {% endif %}
+
+            {{ PTFEenvelopeName|default('') }}
+
+
             {{ valveUnitName|default('') }}
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
-            {#Cable or Capilar(K=)#}
-            {% if pulsePipeLength %}
-                {{ '/K=' ~ cableLength }}
-            {% endif %}
-            {% if pulsePipeLength %}
-                {{ '/K=' ~ pulsePipeLength }}
-            {% endif %}
 
-            {{ PTFEenvelopeName|default('') }}
 
         <span class="ty">ТУ РБ 390171150.001-2004</span>
         </p>
