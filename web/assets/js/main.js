@@ -730,6 +730,9 @@ $('.dropdown ul').on('click', function(){
 		case '4':
 			Core.anotherMeasurementRange = null;
 			Core.cableLength = null;
+			//clear main params (exception need for probes)
+			Core.bodyTypeID = null;
+			Core.processConnectionID = null;
 		case '5':
 			Core.tubeLength = null;
 		case '6':
@@ -741,7 +744,7 @@ $('.dropdown ul').on('click', function(){
 			Core.weldedElementID = null;
 			Core.weldedElementTitle = ' - ';
 			Core.braceID = null;
-			Core.weldedElementTitle = ' - ';
+			Core.braceTitle = ' - ';
 			break;
 		default:
 	}
