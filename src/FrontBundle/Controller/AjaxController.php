@@ -216,19 +216,31 @@ class AjaxController extends Controller
 		$process_connection_id = $request->get('process_connection_id');
 		$body_type_id = $request->get('body_type_id');
 		$em = $this->getDoctrine()->getManager();
-		$query = $em->getRepository('AppBundle:Brace')
-						->createQueryBuilder('b')
-						->join('b.processConnections', 'p')
-						->join('b.bodyTypes', 'bo')
-						->join('b.eqModes', 'e')
-						->where('p.id = :process_connection_id')
-						->andWhere('bo.id = :body_type_id')
-						->andWhere('e.id = :eq_mode_id')
-						->orderBy('b.name', 'ASC')
-					->setParameters([':process_connection_id' => $process_connection_id,
-									 ':body_type_id' => $body_type_id,
-									 ':eq_mode_id' => $eq_mode_id])
-					->getQuery();
+
+		if (+$body_type_id) {
+			$query = $em->getRepository('AppBundle:Brace')
+							->createQueryBuilder('b')
+							->join('b.processConnections', 'p')
+							->join('b.bodyTypes', 'bo')
+							->join('b.eqModes', 'e')
+							->where('p.id = :process_connection_id')
+							->andWhere('bo.id = :body_type_id')
+							->andWhere('e.id = :eq_mode_id')
+							->orderBy('b.name', 'ASC')
+						->setParameters([':process_connection_id' => $process_connection_id,
+										 ':body_type_id' => $body_type_id,
+										 ':eq_mode_id' => $eq_mode_id])
+						->getQuery();
+		} else {
+			$query = $em->getRepository('AppBundle:Brace')
+							->createQueryBuilder('b')
+							->join('b.eqModes', 'e')
+							->where('e.id = :eq_mode_id')
+							->orderBy('b.name', 'ASC')
+						->setParameter(':eq_mode_id', $eq_mode_id)
+						->getQuery();
+		}
+
 		$braces = $query->getResult(2);
 		return $this->render('FrontBundle::BraceList.html.php', array('data' => $braces));
 	}
