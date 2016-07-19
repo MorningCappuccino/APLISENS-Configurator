@@ -57,7 +57,7 @@
             <td>Диапазон измерения</td>
         </tr>
         {% if anotherMeasurementRange %}
-            {% set anotherMeasurementRangeName = anotherMeasurementRange ~ ' /' %}
+            {% set anotherMeasurementRangeName = anotherMeasurementRange|replaceABS ~ ' /' %}
             <tr>
                 <td>{{ anotherMeasurementRange }} </td>
                 <td>Установленный диапазон измерения</td>
@@ -134,7 +134,7 @@
                 {% endif %}
             {% endif %}
 
-            {{ measurementRange.displayName() }} /
+            {{ measurementRange.displayName()|replaceABS }} /
             {{ anotherMeasurementRangeName|default('') }}
             {{ bodyTypeName|default('') }}
             {{ firstProcessConnectionName|default('') }}
