@@ -187,25 +187,34 @@ class AjaxController extends Controller
 
 	public function getWeldedElementByEqModeProcessConnectionValveUnitID($request)
 	{
+		$em = $this->getDoctrine()->getManager();
 		$eq_mode_id = $request->get('eq_mode_id');
 		$process_connection_id = $request->get('process_connection_id');
 		$valve_unit_id = $request->get('valve_unit_id');
-		$em = $this->getDoctrine()->getManager();
-		$query = $em->getRepository('AppBundle:WeldedElement')
-						->createQueryBuilder('w')
-						->distinct(true)
-						->join('w.processConnections', 'p')
-						->join('w.valveUnits', 'v')
-						->join('w.eqModes', 'e')
-						->where('p.id = :process_connection_id')
-						->andWhere('v.id = :valve_unit_id')
-						->andWhere('e.id = :eq_mode_id')
-						->orderBy('w.name', 'ASC')
-				->setParameters([':process_connection_id' => $process_connection_id,
-							 ':valve_unit_id' => $valve_unit_id,
-							 ':eq_mode_id' => $eq_mode_id])
-//                ->setParameter(':process_connection_id', $process_connection_id)
-				->getQuery();
+
+		if (+$process_connection_id) {
+			$query = $em->getRepository('AppBundle:WeldedElement')
+					->createQueryBuilder('w')
+					->distinct(true)
+					->join('w.processConnections', 'p')
+					->join('w.valveUnits', 'v')
+					->join('w.eqModes', 'e')
+					->where('p.id = :process_connection_id')
+					->andWhere('v.id = :valve_unit_id')
+					->andWhere('e.id = :eq_mode_id')
+					->orderBy('w.name', 'ASC')
+					->setParameters([':process_connection_id' => $process_connection_id,
+							':valve_unit_id' => $valve_unit_id,
+							':eq_mode_id' => $eq_mode_id])
+					->getQuery();
+		} else {
+			$query = $em->getRepository('AppBundle:WeldedElement')
+					->createQueryBuilder('w')
+					->join('w.eqModes', 'e')
+					->where('e.id = :eq_mode_id')
+					->setParameter(':eq_mode_id', $eq_mode_id)
+					->getQuery();
+		}
 		$weldedElements = $query->getResult(2);
 		return $this->render('FrontBundle::weldedElementsList.html.php', array('data' => $weldedElements));
 	}
@@ -217,7 +226,7 @@ class AjaxController extends Controller
 		$body_type_id = $request->get('body_type_id');
 		$em = $this->getDoctrine()->getManager();
 
-		if (+$body_type_id) {
+		if ( (+$body_type_id) && (+$process_connection_id) ) {
 			$query = $em->getRepository('AppBundle:Brace')
 							->createQueryBuilder('b')
 							->join('b.processConnections', 'p')
@@ -231,14 +240,25 @@ class AjaxController extends Controller
 										 ':body_type_id' => $body_type_id,
 										 ':eq_mode_id' => $eq_mode_id])
 						->getQuery();
+		} else if (+$body_type_id) {
+			$query = $em->getRepository('AppBundle:Brace')
+					->createQueryBuilder('b')
+					->join('b.bodyTypes', 'bo')
+					->join('b.eqModes', 'e')
+					->where('bo.id = :body_type_id')
+					->andWhere('e.id = :eq_mode_id')
+					->orderBy('b.name', 'ASC')
+					->setParameters([ ':body_type_id' => $body_type_id,
+							          ':eq_mode_id' => $eq_mode_id])
+					->getQuery();
 		} else {
 			$query = $em->getRepository('AppBundle:Brace')
-							->createQueryBuilder('b')
-							->join('b.eqModes', 'e')
-							->where('e.id = :eq_mode_id')
-							->orderBy('b.name', 'ASC')
-						->setParameter(':eq_mode_id', $eq_mode_id)
-						->getQuery();
+					->createQueryBuilder('b')
+					->join('b.eqModes', 'e')
+					->where('e.id = :eq_mode_id')
+					->orderBy('b.name', 'ASC')
+					->setParameter(':eq_mode_id', $eq_mode_id)
+					->getQuery();
 		}
 
 		$braces = $query->getResult(2);
