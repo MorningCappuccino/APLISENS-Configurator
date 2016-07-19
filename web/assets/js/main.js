@@ -976,12 +976,13 @@ function getFromSecondProcessConnectionModal() {
  Another Measurement Range Modal
  */
  var Re = {
-	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)/,
+	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)(\s+)?(ABS)?/,
 	match: function(str){
 		var res = str.match(Re.mr);
 		if (res != null){
 			Re.p1 = res[1];
 			Re.p2 = res[4];
+			Re.Type = res[6];
 			return true;
 		} else {
 			return false;
@@ -1039,7 +1040,7 @@ function getFromAnotherMeasurementRange(){
 				if (minSec < maxSec){
 					if (( (maxDef > minSec) && (minSec >= minDef) ) && ( (maxDef >= maxSec) && (maxSec > minDef) )){
 						//write true values to Core
-						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.DefaultRangeUnit;
+						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.Type + ' '+ Re.DefaultRangeUnit;
 						$('#modalAnotherMeasurementRange').modal('hide');
 						// alert('ALL CORRECTO');
 					} else {
