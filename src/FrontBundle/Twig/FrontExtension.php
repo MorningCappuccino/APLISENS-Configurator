@@ -11,6 +11,7 @@ class FrontExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('replaceABS', array($this, 'replaceABSFilter')),
             new \Twig_SimpleFilter('removeAL', array($this, 'removeALFilter')),
+            new \Twig_SimpleFilter('DotToComma', array($this, 'DotToCommaFilter')),
         );
     }
 
@@ -27,6 +28,13 @@ class FrontExtension extends \Twig_Extension
     public function removeALFilter($str)
     {
         $result = preg_replace('/\(AL\)/', '', $str);
+
+        return $result;
+    }
+
+    public function DotToCommaFilter($str)
+    {
+        $result = preg_replace('/\./', ',', $str);
 
         return $result;
     }
