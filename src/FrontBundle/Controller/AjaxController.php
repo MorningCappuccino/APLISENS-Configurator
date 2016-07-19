@@ -192,7 +192,7 @@ class AjaxController extends Controller
 		$process_connection_id = $request->get('process_connection_id');
 		$valve_unit_id = $request->get('valve_unit_id');
 
-		if (+$process_connection_id) {
+		if ( (+$process_connection_id) && (+$valve_unit_id) ) {
 			$query = $em->getRepository('AppBundle:WeldedElement')
 					->createQueryBuilder('w')
 					->distinct(true)
