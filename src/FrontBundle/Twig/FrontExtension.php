@@ -9,7 +9,8 @@ class FrontExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('replaceABS', array($this, 'replaceABSFilter'))
+            new \Twig_SimpleFilter('replaceABS', array($this, 'replaceABSFilter')),
+            new \Twig_SimpleFilter('removeAL', array($this, 'removeALFilter')),
         );
     }
 
@@ -19,6 +20,13 @@ class FrontExtension extends \Twig_Extension
         $replacement = '$1 $3 $2';
 
         $result = preg_replace($pattern, $replacement, $str);
+
+        return $result;
+    }
+
+    public function removeALFilter($str)
+    {
+        $result = preg_replace('/\(AL\)/', '', $str);
 
         return $result;
     }

@@ -121,7 +121,7 @@
     <div class="code-again">
         <p><span>Преобразователь давления измерительный</span>
             <br>
-            {{ eqMode.getName() }} /
+            {{ eqMode.getName()|removeAL }} /
             {{ accuracy.value + 0 }} /
 
             {#Special Versions#}
