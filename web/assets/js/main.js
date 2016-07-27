@@ -25,6 +25,35 @@
 	$('.dropdown').tooltip({
 		container: 'body'
 	});
+    $('#input-code').on('keypress', function(e){
+        if(e.which == 13){
+				requestInProgress = true;
+      	$.ajax({
+				url: Core.ajaxUrl,
+				type: 'POST',
+				data: {
+					action_name: 'predictor',
+					str: $('#input-code').val()
+				},
+				success: function(data) {
+					requestInProgress = false;
+					$('.jumbotron #gen').html(data);
+
+					$('.jumbotron #gen').html(data).promise().done( function(){
+						$('#generated').animate({
+							opacity: 1,
+							height: 'show',
+						}, 1000)
+					} );
+				},
+				error: function(jqXHR, textStatus, errorThrow){
+					killLoader(listenerInit);
+					$('.jumbotron #gen').text('fail:)');
+			}
+
+			});
+        }
+    });
 // $('#eq_mode').on('load', function(event, value, caption) {
 
 function getAllEqModes(){

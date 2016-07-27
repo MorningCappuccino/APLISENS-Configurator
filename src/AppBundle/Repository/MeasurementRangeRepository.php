@@ -10,4 +10,23 @@ namespace AppBundle\Repository;
  */
 class MeasurementRangeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function parse($str)
+    {
+       $str = preg_replace('/\s+/', '', $str);
+//        preg_match("/(\d+-\d+[,.]?(\d+)?)(\w+)/u", $str, $matches);
+        preg_match("/(\(?-?\d+\)?-\d+[,.]?(\d+)?\)?)(\w+)/u", $str, $matches);
+
+        if ( !empty($matches[1]) && !empty($matches[3]) ) {
+            //if MR something like "(-10)-10"
+            if ( preg_match("/\(-\d+\)/", $matches[1]) ) {
+                $theRange = preg_replace("/\)-/", ") - ", $matches[1]);
+            } else {
+                $theRange = preg_replace("/[-]/", " - ", $matches[1]);
+            }
+           $unit = $matches[3];
+           return ['theRange' => $theRange, 'unit' => $unit];
+        } else {
+           return false;
+        }
+    }
 }

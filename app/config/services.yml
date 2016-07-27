@@ -12,3 +12,11 @@ services:
         public: false
         tags:
             - {name: twig.extension}
+
+    app.predictor:
+        class: FrontBundle\Predictor\PredictorController
+        arguments: ['@service_container']
+
+    app.finder:
+        class: FrontBundle\Predictor\Finder
+        arguments: ['@service_container']
