@@ -24,6 +24,26 @@ class AjaxController extends Controller
 		return $this->render('eqmode/table.html.twig', array('eqModes' => $eq_modes));
 	}
 
+	public function predictor($request)
+	{
+		$str = $request->get('str');
+		$predictor = $this->get('app.predictor');
+		$response = $predictor->makePrediction($str);
+//		$predictor = new ForecasterController();
+//		$response = $predictor->makePrediction($str);
+
+		//if response == message then return new Response(message) //without generate
+		if ( gettype($response) === 'string' ) {
+			return new Response($response);
+		}
+
+		$likeRequest = new Request();
+		$likeRequest->request->add($response);
+
+		$result = $this->generate($likeRequest)->getContent();
+		return new Response($result);
+	}
+
 	/**
 	 * @Route("/", name="ajax")
 	 */
