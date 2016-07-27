@@ -25,6 +25,13 @@
 	$('.dropdown').tooltip({
 		container: 'body'
 	});
+
+    $('#input-code').tooltip({
+        container: 'body',
+		trigger: 'focus'
+    });
+
+
     $('#input-code').on('keypress', function(e){
         if(e.which == 13){
 				requestInProgress = true;
