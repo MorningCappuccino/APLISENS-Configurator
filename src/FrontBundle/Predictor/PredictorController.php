@@ -141,8 +141,27 @@ class PredictorController extends Controller
             /*-----------------------------------------
             assume Valve Unit is exist
             -----------------------------------------*/
-            $valve_unit_id = $finder->isValveUnit($arr[++$curr_position]);
-            $valve_unit_id === false ? --$curr_position : false;
+
+            //Temporary fix problems with find "VM-3/A" and "VM-5/A"
+            $vu = $arr[$curr_position+1];
+            if ( ($vu === 'VM-3') || ($vu === 'VM-5') ) {
+                if ($vu === 'VM-3') {
+                    if ($arr[$curr_position+2] === 'A') {
+                        $valve_unit_id = $finder->isValveUnit('VM-3/A');
+                        $curr_position += 2;
+                    }
+                }
+                if ($vu === 'VM-5') {
+                    if ($arr[$curr_position+2] === 'A') {
+                        $valve_unit_id = $finder->isValveUnit('VM-5/A');
+                        $curr_position += 2;
+                    }
+                }
+            } else {
+                //end temporary fix
+                $valve_unit_id = $finder->isValveUnit($arr[++$curr_position]);
+                $valve_unit_id === false ? --$curr_position : false;
+            }
         } else {
             --$curr_position;
         }
