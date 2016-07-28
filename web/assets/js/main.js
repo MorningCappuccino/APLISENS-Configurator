@@ -45,8 +45,6 @@
 				},
 				success: function(data) {
 					requestInProgress = false;
-					$('.jumbotron #gen').html(data);
-
 					$('.jumbotron #gen').html(data).promise().done( function(){
 						$('#generated').animate({
 							opacity: 1,
@@ -81,7 +79,7 @@ function getAllEqModes(){
 				action_name: 'getAllEqMode'
 		},
 		success: function(data){
-			$('.jumbotron #gen').html(data);
+			//$('.jumbotron #gen').html(data);
 			$('#eq_mode ul').html(data);
 			reviveEqMode();
 		}
@@ -205,7 +203,7 @@ function reviveEqMode(){
 			if (data != "no data") {
 				blink(2, '#ABFCB2');
 				accuracyBtn.removeAttr('disabled');
-				$('.jumbotron #gen').html(data);
+				//$('.jumbotron #gen').html(data);
 				$('#accuracy ul').html(data);
 				reviveNextParam(nextParam);
 			} else {
@@ -330,7 +328,7 @@ function reviveSpecialVersion(){
 						$('#measurement_range ul').html(data); //append
 						//disable header li
 						$('li.header a').on('click', function(){ return false; });
-						$('.jumbotron #gen').html(data);
+						//$('.jumbotron #gen').html(data);
 						reviveNextParam(nextParam);
 					} else {
 						blink(nextParam, '#FFA0A0');
@@ -404,7 +402,7 @@ function reviveMeasurementRange(){
 				//End Exception №2
 					 reviveNextParam(nextParam);
 						}
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 				} else {
 					blink(nextParam, '#FFA0A0');
 				//Manual Exception №2(part2)
@@ -489,7 +487,7 @@ function getProcessConnection() {
 					blink(thisParam, '#ABFCB2');
 					thisBtn.removeAttr('disabled');
 					$('#process_connection ul').html(data);
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 					reviveNextParam(thisParam);
 				} else {
 					blink(thisParam, '#FFA0A0');
@@ -546,7 +544,7 @@ function getValveUnits(thisBtn){
 					blink(7, '#ABFCB2')
 					thisBtn.removeAttr('disabled');
 					$('#valve_unit ul').html(data);
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					//blink(nextParam, '#FFA0A0');
@@ -631,7 +629,7 @@ function getWeldedElements(thisBtn, thisParam){
 					thisBtn.removeAttr('disabled');
 					thisBtn.text('');
 					$('#welded_element ul').html(data);
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					blink(thisParam, '#FFA0A0');
@@ -678,7 +676,7 @@ function getBracing(){
 				thisBtn.removeAttr('disabled');
 				thisBtn.text('');
 				$('#brace ul').html(data);
-				$('.jumbotron #gen').html(data);
+				//$('.jumbotron #gen').html(data);
 				reviveNextParam(nextParam);
 			} else {
 				blink(thisParam, '#FFA0A0');
@@ -719,7 +717,7 @@ function getCountryCodes(){
 				thisBtn.removeAttr('disabled');
 				thisBtn.text('');
 				$('#country_code ul').html(data);
-				$('.jumbotron #gen').html(data);
+				//$('.jumbotron #gen').html(data);
 
 				(function reviveCountryCode(){
 					$('#country_code ul li').on('click', function(){
