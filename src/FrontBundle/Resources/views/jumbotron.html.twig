@@ -120,7 +120,8 @@
     </table>
     <div class="code-again">
         <p><span>Преобразователь давления измерительный</span>
-            <br>
+           <br>
+           <span id="orderCode">
             {{ eqMode.getName()|removeAL }} /
             {{ (accuracy.value + 0)|DotToComma}} /
 
@@ -156,7 +157,7 @@
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
-
+           </span>
 
         <span class="ty">ТУ РБ 390171150.001-2004</span>
         </p>

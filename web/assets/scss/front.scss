@@ -9,6 +9,8 @@
 #Jumbotron
   ##Generated
 #Modal
+#Styling
+#SideMessage
 */
 
 //-----------Vars----------//
@@ -44,7 +46,7 @@ table.transcript {
   }
 }
 
-.alert-danger {
+.alert-danger, .alert-success {
   display: none;
 }
 
@@ -276,6 +278,17 @@ table.transcript {
     }
   }
 }
+//----------Modal More Special Version----------//
+#modalOrder {
+  span.section {
+    display: block;
+    font-size: 1.3em;
+    margin-bottom: 2%;
+  }
+  .input-group {
+    margin-bottom: 10px;
+  }
+}
 
 //----------Modal----------//
 .not-filled {
@@ -326,5 +339,22 @@ table.transcript {
     &:nth-child(2) i {
       background-color: #337ab7;
     }
+  }
+}
+
+//----------Side-message----------//
+#side-message {
+  position: fixed;
+  bottom: 10%;
+  right: 0;
+  height: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  p {
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 45px;
   }
 }
