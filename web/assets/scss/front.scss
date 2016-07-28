@@ -50,6 +50,21 @@ table.transcript {
   display: none;
 }
 
+.logo {
+  height: 60px;
+  border-radius: 4px;
+  img {
+    height: 60px;
+  }
+  .sign {
+    //transform: translateY(80%);
+    color: #ffd300;
+    font-size: 18px;
+    transform: translateY(30%);
+    display: inline-block;
+  }
+}
+
 //rewrite original
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
   color: $btnTextColor;
