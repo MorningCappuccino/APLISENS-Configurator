@@ -55,7 +55,7 @@
 				},
 				error: function(jqXHR, textStatus, errorThrow){
 					killLoader(listenerInit);
-					$('.jumbotron #gen').text('fail:)');
+					$('.jumbotron #gen').text('К сожалению, не получилось корректно обработать данные. Попробуйте снова.');
 			}
 
 			});
