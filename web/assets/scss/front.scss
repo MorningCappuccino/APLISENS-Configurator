@@ -80,6 +80,10 @@ table.transcript {
 }
 
 //choice buttons
+#config-param {
+  margin-top: 10px;
+}
+
 #config-param, #many-spec-ver, #container-second-process-connection  {
   label {
     display: block;
@@ -121,7 +125,7 @@ table.transcript {
 }
 
 #parameters {
-  margin-top: 35px;
+  margin-top: 15px;
 }
 
 //special version button
