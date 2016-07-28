@@ -190,7 +190,7 @@
     <div class="row">
         <div class="col-lg-8"></div>
         <div class="col-lg-3">
-            <button class="btn btn-danger pull-right">Заказать</button>
+            <button id="btn-order" class="btn btn-danger pull-right" disabled>Заказать</button>
         </div>
         <div class="col-lg-1"></div>
     </div>
@@ -198,6 +198,11 @@
 
     <footer class="footer">&copy; <?= date("Y") ?> {company_name} Inc.</footer>
 </div><!-- /container -->
+
+{# Mail Success Alert #}
+<div id="side-message">
+    <p></p>
+</div>
 
 
 {# Modal Cable#}
@@ -466,6 +471,57 @@
             <div class="modal-footer">
                 {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
                 <input form="PTFEenvelope" type="submit" class="btn btn-primary" value="ok">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{# Modal PTFE envelope #}
+<div class="modal fade" id="modalOrder" tabindex="-1" role="dialog" aria-labelledby="modalOrderLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Запрос на оборудование</h4>
+            </div>
+            <div class="modal-body">
+
+                <form method="POST" action="javascript:void(null);" id="Order" onsubmit="getFromModal(this)">
+                    <span class="section">Продукт</span>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="addon1">Код</span>
+                        <input type="text" id="equipmentCode" class="form-control" aria-describedby="addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="addon2">Количество</span>
+                        <input type="number" id="equipmentCount" min="1" max="1000" class="form-control" aria-labelledby="addon2">
+                    </div>
+                    <span class="section">Контактные данные:</span>
+                    {#awww! fucking spaces :D #}
+                    <div class="input-group">
+                        <span class="input-group-addon" id="addon3">ФИО
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <input type="text" id="FIO" class="form-control" aria-describedby="addon3">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="addon4">Компания&nbsp;&nbsp;</span>
+                        <input type="text" id="company" class="form-control" aria-describedby="addon4">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="addon5">Телефон&nbsp;&nbsp;&nbsp;</span>
+                        <input type="text" id="phone" class="form-control" aria-describedby="addon5">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="addon6">Email
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <input type="text" id="email" class="form-control" aria-describedby="addon6">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <input form="Order" type="submit" class="btn btn-primary" value="Отправить запрос">
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

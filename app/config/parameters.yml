@@ -6,7 +6,7 @@ parameters:
     database_user: root
     database_password: null
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_host: mail.aplisens.by
+    mailer_user: postmaster@aplisens.by
+    mailer_password: aEogmvUi
     secret: 230bc3edfe68a8087cc11524e6ec359949dea816

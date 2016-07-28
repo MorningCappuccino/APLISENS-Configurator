@@ -12,6 +12,7 @@
 * 	- More Special Version
 * #Generator
 * 	- UI Loader
+* #Order
 * #Helpders API
 * #Temporarily
 */
@@ -52,6 +53,7 @@
 							height: 'show',
 						}, 1000)
 					} );
+					initOrder();
 				},
 				error: function(jqXHR, textStatus, errorThrow){
 					killLoader(listenerInit);
@@ -61,6 +63,12 @@
 			});
         }
     });
+
+//init event for modalOrder
+	$('#btn-order').on('click', function(){
+		$('#modalOrder').modal();
+	});
+
 // $('#eq_mode').on('load', function(event, value, caption) {
 
 function getAllEqModes(){
@@ -122,7 +130,8 @@ var Core = {
 		currTitle: '',
 		arr: {},
 		ids: []
-	}
+	},
+	orderCode: ''
 }
 
 var Helpers = {
@@ -813,7 +822,32 @@ function getFromModal(form){
 	} else if (form.id == 'PTFEenvelope') {
 		Core.PTFEenvelopeLength = inputVal;
 		$('#special_version button').append('=' + Core.PTFEenvelopeLength);
+	} else if (form.id == 'Order') {
+		$.ajax({
+			url: Core.ajaxUrl,
+			type: 'POST',
+			data: {
+				action_name: 'sendMail',
+				equipment_code: $('#equipmentCode').val(),
+				equipment_count: $('#equipmentCount').val(),
+				fio: $('#FIO').val(),
+				company: $('#company').val(),
+				phone: $('#phone').val(),
+				email: $('#email').val()
+			},
+			success: function(data) {
+				requestInProgress = false;
+				$('#side-message p').text(data);
+				showSideMessage();
+			},
+			error: function(jqXHR, textStatus, errorThrow){
+				$('#side-message p').text('Запрос не удался');
+				showSideMessage('danger');
+			}
+
+		});
 	}
+
 	$('#modal' + form.id).modal('hide');
 }
 
@@ -1144,7 +1178,7 @@ function generate(){
 							height: 'show',
 						}, 1000)
 					} );
-					//$('.jumbotron #gen').html(data);
+					initOrder();
 				} else {
 					$('.jumbotron #gen').text('data not found');
 				}
@@ -1160,6 +1194,19 @@ function generate(){
 
 	}
 }
+
+//#Order
+function initOrder() {
+	var currOrderCode = $('#orderCode').text().replace(/\s+/g,"");
+
+	$('#btn-order').removeAttr('disabled');
+	if (currOrderCode != '') {
+		Core.orderCode = currOrderCode;
+	}
+
+	$('#equipmentCode').val(Core.orderCode);
+}
+
 
 /*>>>>>>>>>>>
 		 ------------> UI Loader
@@ -1211,6 +1258,27 @@ function blink(dropDownID, color){
 		complete: function(){
 			btn.animate({backgroundColor: '#fff'}, 200);
 		}
+	});
+}
+
+function showSideMessage(type) {
+	var msg = $('#side-message');
+
+	if (type === undefined)
+		msg.removeClass().addClass('alert alert-success');
+	if (type === 'danger')
+		msg.removeClass().addClass('alert alert-danger');
+	
+	msg.show().animate(
+		{
+		width: '220px'
+		},
+		300,
+		'easeInOutSine',
+		function() {
+			setTimeout(function (){
+				msg.animate({width: 0}, 100, function(){ msg.hide() })
+			}, 3000)
 	});
 }
 

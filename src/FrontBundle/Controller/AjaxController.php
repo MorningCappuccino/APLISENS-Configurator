@@ -24,6 +24,45 @@ class AjaxController extends Controller
 		return $this->render('eqmode/table.html.twig', array('eqModes' => $eq_modes));
 	}
 
+	public function sendMail($request)
+	{
+		$em = $request->get('equipment_code');
+		$message = \Swift_Message::newInstance()
+				->setSubject('Конфигуратор АПЛИСЕНС - запрос оборудования')
+				->setFrom('mail@aplisens.com')
+				->setTo('AlexanderMinchenkov@yandex.by')
+//				->setTo('i_am_ajibfa_oo@mail.ru')
+				->setBody(
+						$this->renderView(
+						// app/Resources/views/Emails/order.html.twig
+								'Emails/order.html.twig',
+								array('equipment_code' => $request->get('equipment_code'),
+									  'equipment_count' => $request->get('equipment_count'),
+									  'fio' => $request->get('fio'),
+									  'company' => $request->get('company'),
+									  'phone' => $request->get('phone'),
+									  'email' => $request->get('email')
+										)
+						),
+						'text/html'
+				)
+
+			/*
+            // If you also want to include a plaintext version of the message
+            ->addPart(
+                $this->renderView(
+                    'Emails/registration.txt.twig',
+                    array('name' => $name)
+                ),
+                'text/plain'
+            )
+            */
+		;
+		$this->get('mailer')->send($message);
+
+		return new Response('Запрос отпревлен');
+	}
+
 	public function predictor($request)
 	{
 		$str = $request->get('str');
