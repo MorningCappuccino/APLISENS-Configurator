@@ -1,5 +1,5 @@
 
-// (function(){
+ (function(){
 	"use strict";
 
 /*
@@ -12,6 +12,7 @@
 * 	- More Special Version
 * #Generator
 * 	- UI Loader
+* #Order
 * #Helpders API
 * #Temporarily
 */
@@ -25,6 +26,47 @@
 	$('.dropdown').tooltip({
 		container: 'body'
 	});
+
+    $('#input-code').tooltip({
+        container: 'body',
+		trigger: 'focus'
+    });
+
+
+    $('#input-code').on('keypress', function(e){
+        if(e.which == 13){
+				requestInProgress = true;
+      	$.ajax({
+				url: Core.ajaxUrl,
+				type: 'POST',
+				data: {
+					action_name: 'predictor',
+					str: $('#input-code').val()
+				},
+				success: function(data) {
+					requestInProgress = false;
+					$('.jumbotron #gen').html(data).promise().done( function(){
+						$('#generated').animate({
+							opacity: 1,
+							height: 'show',
+						}, 1000)
+					} );
+					initOrder();
+				},
+				error: function(jqXHR, textStatus, errorThrow){
+					killLoader(listenerInit);
+					$('.jumbotron #gen').text('К сожалению, не получилось корректно обработать данные. Попробуйте снова.');
+			}
+
+			});
+        }
+    });
+
+//init event for modalOrder
+	$('#btn-order').on('click', function(){
+		$('#modalOrder').modal();
+	});
+
 // $('#eq_mode').on('load', function(event, value, caption) {
 
 function getAllEqModes(){
@@ -37,7 +79,7 @@ function getAllEqModes(){
 				action_name: 'getAllEqMode'
 		},
 		success: function(data){
-			$('.jumbotron #gen').html(data);
+			//$('.jumbotron #gen').html(data);
 			$('#eq_mode ul').html(data);
 			reviveEqMode();
 		}
@@ -86,7 +128,8 @@ var Core = {
 		currTitle: '',
 		arr: {},
 		ids: []
-	}
+	},
+	orderCode: ''
 }
 
 var Helpers = {
@@ -160,7 +203,7 @@ function reviveEqMode(){
 			if (data != "no data") {
 				blink(2, '#ABFCB2');
 				accuracyBtn.removeAttr('disabled');
-				$('.jumbotron #gen').html(data);
+				//$('.jumbotron #gen').html(data);
 				$('#accuracy ul').html(data);
 				reviveNextParam(nextParam);
 			} else {
@@ -285,7 +328,7 @@ function reviveSpecialVersion(){
 						$('#measurement_range ul').html(data); //append
 						//disable header li
 						$('li.header a').on('click', function(){ return false; });
-						$('.jumbotron #gen').html(data);
+						//$('.jumbotron #gen').html(data);
 						reviveNextParam(nextParam);
 					} else {
 						blink(nextParam, '#FFA0A0');
@@ -311,6 +354,15 @@ function reviveMeasurementRange(){
 
 		//set Title to Dropdown
 		$('#measurement_range button').text(measurementRangeTitle +' '+ unit);
+
+		//if EqMode finish on "PC-SG-*"
+		if (/^PC-SG-[a-zA-Z0-9_]/.test(Core.eqModeTitle)) {
+			//call modalCable
+			$('#modalCable').on('shown.bs.modal', function () {
+				$('#cableLength').focus();
+			});
+			$('#modalCable').modal();
+		}
 
 		//Choice Anoter Measurement Range
 		var t = Core.eqModeTitle;
@@ -350,7 +402,7 @@ function reviveMeasurementRange(){
 				//End Exception №2
 					 reviveNextParam(nextParam);
 						}
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 				} else {
 					blink(nextParam, '#FFA0A0');
 				//Manual Exception №2(part2)
@@ -381,6 +433,15 @@ function reviveBodyType() {
 		//Type Tube Length
 		if (Core.eqModeTitle == 'PC-28P' || Core.eqModeTitle == 'PC-SP-50') {
 			$('#modalTube').modal();
+		}
+
+		//if bodyType finish on PK
+		if ('PK' == Core.bodyTypeTitle) {
+			//call modalCable
+			$('#modalCable').on('shown.bs.modal', function () {
+				$('#cableLength').focus();
+			});
+			$('#modalCable').modal();
 		}
 
 		getProcessConnection();
@@ -426,7 +487,7 @@ function getProcessConnection() {
 					blink(thisParam, '#ABFCB2');
 					thisBtn.removeAttr('disabled');
 					$('#process_connection ul').html(data);
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 					reviveNextParam(thisParam);
 				} else {
 					blink(thisParam, '#FFA0A0');
@@ -444,6 +505,10 @@ function reviveProcessConnection(){
 		Core.processConnectionID = processConnectionID;
 		Core.processConnectionTitle = processConnectionTitle;
 
+		if (Core.cableLength) {
+			processConnectionTitle += '/K=' + Core.cableLength;
+		}
+
 		$('#process_connection button').text(processConnectionTitle);
 
 		//for Second ProcessConnection
@@ -457,19 +522,7 @@ function reviveProcessConnection(){
 			$('#modalPulsePipe').modal();
 		}
 
-		//if EqMode finish on "PC-SG-*" or bodyType finish on PK
-		if ( (/^PC-SG-[a-zA-Z0-9_]/ == Core.eqModeTitle) || ('PK' == Core.bodyTypeTitle) ){
-			//call modalCable
-			$('#modalCable').on('shown.bs.modal', function () {
-				$('#cableLength').focus();
-			});
-			$('#modalCable').modal();
-		} else {
-			//call function to mounting_parts
-			getValveUnits();
-		}
-
-
+		getValveUnits();
 	});
 }
 
@@ -491,7 +544,7 @@ function getValveUnits(thisBtn){
 					blink(7, '#ABFCB2')
 					thisBtn.removeAttr('disabled');
 					$('#valve_unit ul').html(data);
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					//blink(nextParam, '#FFA0A0');
@@ -576,7 +629,7 @@ function getWeldedElements(thisBtn, thisParam){
 					thisBtn.removeAttr('disabled');
 					thisBtn.text('');
 					$('#welded_element ul').html(data);
-					$('.jumbotron #gen').html(data);
+					//$('.jumbotron #gen').html(data);
 					reviveNextParam(nextParam);
 				} else {
 					blink(thisParam, '#FFA0A0');
@@ -623,7 +676,7 @@ function getBracing(){
 				thisBtn.removeAttr('disabled');
 				thisBtn.text('');
 				$('#brace ul').html(data);
-				$('.jumbotron #gen').html(data);
+				//$('.jumbotron #gen').html(data);
 				reviveNextParam(nextParam);
 			} else {
 				blink(thisParam, '#FFA0A0');
@@ -664,7 +717,7 @@ function getCountryCodes(){
 				thisBtn.removeAttr('disabled');
 				thisBtn.text('');
 				$('#country_code ul').html(data);
-				$('.jumbotron #gen').html(data);
+				//$('.jumbotron #gen').html(data);
 
 				(function reviveCountryCode(){
 					$('#country_code ul li').on('click', function(){
@@ -695,19 +748,49 @@ $('.dropdown ul').on('click', function(){
 			nextBtn = $('button#' + nextListID);
 
 	//if next Dropwdown selected we reset all Dropdonws since next Dropdown
-	if ( ($(nextBtn).text() != '') && ($(nextBtn).text() != ' - ') ){
+	if ( ($(nextBtn).text() != '') && ($(nextBtn).text() != ' - ') ) {
 		var dis = '';
-		for (var i = nextListID; i<=11; i++){
+
+		for (var i = nextListID; i <= 11; i++) {
 			// console.log($('.dropdown button#' + i));
 			$('.dropdown button#' + i).attr('disabled','');
 			$('.dropdown button#' + i).text('');
 			$('.dropdown button#' + i + ' + ul').empty();
 			dis += ' ' + i;
-			//console.log('Button ' + i + ' disabled');
 		}
 	console.log('Disabled Btns: ' + dis);
 	}
 
+	//rollback Modal values
+	switch (currListID) {
+		case '1':
+		case '2':
+			Core.ContOtherSpecVers.arr = {};
+			Core.ContOtherSpecVers.ids = [];
+		case '3':
+			Core.PTFEenvelopeLength = null;
+			Core.cablePTFELength = null;
+		case '4':
+			Core.anotherMeasurementRange = null;
+			Core.cableLength = null;
+			//clear main params (exception need for probes)
+			Core.bodyTypeID = null;
+			Core.processConnectionID = null;
+		case '5':
+			Core.tubeLength = null;
+		case '6':
+			Core.secondProcessConnection = null;
+			Core.pulsePipeLength = null;
+			//clear mounting parts
+			Core.valveUnitID = null;
+			Core.valveUnitTitle = ' - ';
+			Core.weldedElementID = null;
+			Core.weldedElementTitle = ' - ';
+			Core.braceID = null;
+			Core.braceTitle = ' - ';
+			break;
+		default:
+	}
 });
 
 
@@ -723,8 +806,6 @@ function getFromModal(form){
 		targetBtn = $('button#6');
 	if (form.id == 'Cable'){
 		Core.cableLength = inputVal;
-		targetBtn.append('/K=' + Core.cableLength);
-		getValveUnits();
 	} else if (form.id == 'PulsePipe'){
 		Core.pulsePipeLength = inputVal;
 		targetBtn.append('/K=' + Core.pulsePipeLength);
@@ -739,7 +820,32 @@ function getFromModal(form){
 	} else if (form.id == 'PTFEenvelope') {
 		Core.PTFEenvelopeLength = inputVal;
 		$('#special_version button').append('=' + Core.PTFEenvelopeLength);
+	} else if (form.id == 'Order') {
+		$.ajax({
+			url: Core.ajaxUrl,
+			type: 'POST',
+			data: {
+				action_name: 'sendMail',
+				equipment_code: $('#equipmentCode').val(),
+				equipment_count: $('#equipmentCount').val(),
+				fio: $('#FIO').val(),
+				company: $('#company').val(),
+				phone: $('#phone').val(),
+				email: $('#email').val()
+			},
+			success: function(data) {
+				requestInProgress = false;
+				$('#side-message p').text(data);
+				showSideMessage();
+			},
+			error: function(jqXHR, textStatus, errorThrow){
+				$('#side-message p').text('Запрос не удался');
+				showSideMessage('danger');
+			}
+
+		});
 	}
+
 	$('#modal' + form.id).modal('hide');
 }
 
@@ -862,10 +968,10 @@ function addSpecVer() {
 	} else {
 		//message about entity was exist
 		blink('btn-more-spec-ver', Helpers.Colors.danger);
-		stareElem.animate({
+		$(stareElem).animate({
 			backgroundColor: Helpers.Colors.success
 		}, 300, 'swing', function() {
-			stareElem.animate({backgroundColor: '#fff'}, 200);
+			$(stareElem).animate({backgroundColor: '#fff'}, 200);
 		});
 	}
 
@@ -938,12 +1044,13 @@ function getFromSecondProcessConnectionModal() {
  Another Measurement Range Modal
  */
  var Re = {
-	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)/,
+	mr: /(\(?-?\d+\)?)(\s+)?-(\s+)?(\d+)(\s+)?(ABS)?/,
 	match: function(str){
 		var res = str.match(Re.mr);
 		if (res != null){
 			Re.p1 = res[1];
 			Re.p2 = res[4];
+			Re.Type = res[6];
 			return true;
 		} else {
 			return false;
@@ -1001,7 +1108,7 @@ function getFromAnotherMeasurementRange(){
 				if (minSec < maxSec){
 					if (( (maxDef > minSec) && (minSec >= minDef) ) && ( (maxDef >= maxSec) && (maxSec > minDef) )){
 						//write true values to Core
-						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.DefaultRangeUnit;
+						Core.anotherMeasurementRange = minSec + ' - ' + maxSec + ' ' + Re.Type + ' '+ Re.DefaultRangeUnit;
 						$('#modalAnotherMeasurementRange').modal('hide');
 						// alert('ALL CORRECTO');
 					} else {
@@ -1069,7 +1176,7 @@ function generate(){
 							height: 'show',
 						}, 1000)
 					} );
-					//$('.jumbotron #gen').html(data);
+					initOrder();
 				} else {
 					$('.jumbotron #gen').text('data not found');
 				}
@@ -1085,6 +1192,19 @@ function generate(){
 
 	}
 }
+
+//#Order
+function initOrder() {
+	var currOrderCode = $('#orderCode').text().replace(/\s+/g,"");
+
+	$('#btn-order').removeAttr('disabled');
+	if (currOrderCode != '') {
+		Core.orderCode = currOrderCode;
+	}
+
+	$('#equipmentCode').val(Core.orderCode);
+}
+
 
 /*>>>>>>>>>>>
 		 ------------> UI Loader
@@ -1139,6 +1259,27 @@ function blink(dropDownID, color){
 	});
 }
 
+function showSideMessage(type) {
+	var msg = $('#side-message');
+
+	if (type === undefined)
+		msg.removeClass().addClass('alert alert-success');
+	if (type === 'danger')
+		msg.removeClass().addClass('alert alert-danger');
+	
+	msg.show().animate(
+		{
+		width: '220px'
+		},
+		300,
+		'easeInOutSine',
+		function() {
+			setTimeout(function (){
+				msg.animate({width: 0}, 100, function(){ msg.hide() })
+			}, 3000)
+	});
+}
+
 
 
 /*
@@ -1148,4 +1289,4 @@ function blink(dropDownID, color){
 
 //$('#pulse_pipe').fadeOut(2000);
 
-// })();
+ })();

@@ -7,3 +7,16 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.twig_extension:
+        class: FrontBundle\Twig\FrontExtension
+        public: false
+        tags:
+            - {name: twig.extension}
+
+    app.predictor:
+        class: FrontBundle\Predictor\PredictorController
+        arguments: ['@service_container']
+
+    app.finder:
+        class: FrontBundle\Predictor\Finder
+        arguments: ['@service_container']

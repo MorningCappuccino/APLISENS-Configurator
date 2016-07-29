@@ -49,7 +49,7 @@
 
         {# PTFE envelope length #}
         {% if PTFEenvelopeLength %}
-            {% set PTFEenvelopeName = '/ Кфт=' ~ PTFEenvelopeLength %}
+            {% set PTFEenvelopeName = 'Кфт=' ~ PTFEenvelopeLength ~ ' /' %}
         {% endif %}
 
         <tr>
@@ -57,7 +57,7 @@
             <td>Диапазон измерения</td>
         </tr>
         {% if anotherMeasurementRange %}
-            {% set anotherMeasurementRangeName = anotherMeasurementRange ~ ' /' %}
+            {% set anotherMeasurementRangeName = anotherMeasurementRange|replaceABS ~ ' /' %}
             <tr>
                 <td>{{ anotherMeasurementRange }} </td>
                 <td>Установленный диапазон измерения</td>
@@ -120,9 +120,10 @@
     </table>
     <div class="code-again">
         <p><span>Преобразователь давления измерительный</span>
-            <br>
-            {{ eqMode.getName() }} /
-            {{ accuracy.value + 0 }} /
+           <br>
+           <span id="orderCode">
+            {{ eqMode.getName()|removeAL }} /
+            {{ (accuracy.value + 0)|DotToComma}} /
 
             {#Special Versions#}
             {% if specialVersionName is defined %}
@@ -134,30 +135,29 @@
                 {% endif %}
             {% endif %}
 
-            {{ measurementRange.displayName() }} /
+            {{ measurementRange.displayName()|replaceABS }} /
             {{ anotherMeasurementRangeName|default('') }}
             {{ bodyTypeName|default('') }}
             {{ firstProcessConnectionName|default('') }}
             {{ secondProcessConnectionName|default('') }}
 
-            {#tube Length (L), Cable or Capilar(K), PTFE envelope()#}
-{#             {% if tubeLength %}
-							L={{ tubeLength }} /
-						{% endif %}
- #}
+            {#Cable, Capilar(K) or PTFE envelope(Kфт)#}
+            {% if cableLength %}
+                {{ 'K=' ~ cableLength ~ ' /' }}
+            {% endif %}
+
+            {% if pulsePipeLength %}
+                {{ 'K=' ~ pulsePipeLength ~ ' /' }}
+            {% endif %}
+
+            {{ PTFEenvelopeName|default('') }}
+
+
             {{ valveUnitName|default('') }}
             {{ weldedElementName|default('') }}
             {{ braceName|default('') }}
             {{ countryCode.name }}
-            {#Cable or Capilar(K=)#}
-            {% if pulsePipeLength %}
-                {{ '/K=' ~ cableLength }}
-            {% endif %}
-            {% if pulsePipeLength %}
-                {{ '/K=' ~ pulsePipeLength }}
-            {% endif %}
-
-            {{ PTFEenvelopeName|default('') }}
+           </span>
 
         <span class="ty">ТУ РБ 390171150.001-2004</span>
         </p>

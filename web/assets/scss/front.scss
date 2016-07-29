@@ -6,10 +6,11 @@
 #Rewrite
 #Manage Section
   - Choice Buttons
-  - mess section
 #Jumbotron
   ##Generated
 #Modal
+#Styling
+#SideMessage
 */
 
 //-----------Vars----------//
@@ -45,8 +46,23 @@ table.transcript {
   }
 }
 
-.alert-danger {
+.alert-danger, .alert-success {
   display: none;
+}
+
+.logo {
+  height: 60px;
+  border-radius: 4px;
+  img {
+    height: 60px;
+  }
+  .sign {
+    //transform: translateY(80%);
+    color: #ffd300;
+    font-size: 18px;
+    transform: translateY(30%);
+    display: inline-block;
+  }
 }
 
 //rewrite original
@@ -79,6 +95,10 @@ table.transcript {
 }
 
 //choice buttons
+#config-param {
+  margin-top: 10px;
+}
+
 #config-param, #many-spec-ver, #container-second-process-connection  {
   label {
     display: block;
@@ -94,7 +114,7 @@ table.transcript {
       }
     }
     ul {
-      max-height: 160px;
+      max-height: 260px;
       min-width: 140px;
       overflow-y: scroll;
       li {
@@ -120,28 +140,7 @@ table.transcript {
 }
 
 #parameters {
-  margin-top: 35px;
-}
-
-//mess section
-//mess section
-.mess {
-  margin-top: 100px;
-  .logo {
-    // border: 1px solid #ddd;i
-    height: 120px;
-    border-radius: 4px;
-    text-align: center;
-    img {
-      transform: translateY(10%);
-    }
-    .sign {
-      transform: translateY(80%);
-      color: #ffd300;
-      font-size: 18px;
-      display: block;
-    }
-  }
+  margin-top: 15px;
 }
 
 //special version button
@@ -200,7 +199,7 @@ table.transcript {
       font-size: 17px;
     }
     span.ty {
-      opacity: .3;
+      opacity: .7;
     }
     p {
       font-size: 1.3em;
@@ -298,6 +297,17 @@ table.transcript {
     }
   }
 }
+//----------Modal More Special Version----------//
+#modalOrder {
+  span.section {
+    display: block;
+    font-size: 1.3em;
+    margin-bottom: 2%;
+  }
+  .input-group {
+    margin-bottom: 10px;
+  }
+}
 
 //----------Modal----------//
 .not-filled {
@@ -348,5 +358,22 @@ table.transcript {
     &:nth-child(2) i {
       background-color: #337ab7;
     }
+  }
+}
+
+//----------Side-message----------//
+#side-message {
+  position: fixed;
+  bottom: 10%;
+  right: 0;
+  height: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  p {
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 45px;
   }
 }
