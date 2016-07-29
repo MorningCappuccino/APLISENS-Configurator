@@ -1,5 +1,5 @@
 
- (function(){
+// (function(){
 	"use strict";
 
 /*
@@ -1289,4 +1289,4 @@ function showSideMessage(type) {
 
 //$('#pulse_pipe').fadeOut(2000);
 
- })();
+// })();
